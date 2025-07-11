@@ -1,19 +1,15 @@
-using System.Collections.ObjectModel;
-
 namespace CinemaTicketingSystem.Domain;
 
 public class AggregateRoot<T> : Entity<T>
 {
-    private readonly ICollection<DomainEvent> _domainEvents = new Collection<DomainEvent>();
-    private readonly ICollection<DomainEvent> _integrationEvents = new Collection<DomainEvent>();
+    private readonly List<IDomainEvent> _domainEvents = [];
+    private readonly List<IDomainEvent> _integrationEvents = [];
 
 
-    public IEnumerable<DomainEvent> GetDomainEvents => _domainEvents;
+    public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
-    public IEnumerable<DomainEvent> GetIntegrationEvents()
-    {
-        return _integrationEvents;
-    }
+    public IReadOnlyCollection<IDomainEvent> IntegrationEvents => _integrationEvents.AsReadOnly();
+
 
     public void ClearDomainEvents()
     {
@@ -25,13 +21,13 @@ public class AggregateRoot<T> : Entity<T>
         _integrationEvents.Clear();
     }
 
-    protected virtual void AddLocalEvent(object eventData)
+    protected virtual void AddDomainEvent(IDomainEvent eventData)
     {
-        _domainEvents.Add(new DomainEvent(eventData));
+        _domainEvents.Add(eventData);
     }
 
-    protected virtual void AddDistributedEvent(object eventData)
+    protected virtual void AddDistributedEvent(IDomainEvent eventData)
     {
-        _integrationEvents.Add(new DomainEvent(eventData));
+        _integrationEvents.Add(eventData);
     }
 }
