@@ -1,4 +1,6 @@
-﻿namespace CinemaTicketingSystem.Domain.Ticketing
+﻿using CinemaTicketingSystem.Domain.Ticketing.Exceptions;
+
+namespace CinemaTicketingSystem.Domain.Ticketing
 {
     public class PurchasedTicket : Entity<Guid>
     {
@@ -7,6 +9,7 @@
         public string TicketCode { get; private set; }
         public bool IsUsed { get; private set; }
         public DateTime? UsedAt { get; private set; }
+
         internal PurchasedTicket(SeatNumber seatNumber, Price price)
         {
             Id = Guid.CreateVersion7();
@@ -15,7 +18,6 @@
             TicketCode = GenerateTicketCode();
             IsUsed = false;
         }
-
 
         public bool CanBeUsed()
         {
@@ -40,7 +42,7 @@
         public void MarkAsUsed()
         {
             if (IsUsed)
-                throw new InvalidOperationException("Ticket already used.");
+                throw new TicketAlreadyUsedException(TicketCode);
 
             IsUsed = true;
             UsedAt = DateTime.UtcNow;

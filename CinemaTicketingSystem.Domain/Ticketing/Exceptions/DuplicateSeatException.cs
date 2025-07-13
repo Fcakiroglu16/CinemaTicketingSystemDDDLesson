@@ -1,7 +1,9 @@
-﻿namespace CinemaTicketingSystem.Domain.Ticketing.Exceptions
+﻿using CinemaTicketingSystem.Domain.Core;
+
+namespace CinemaTicketingSystem.Domain.Ticketing.Exceptions
 {
     public class DuplicateSeatException(SeatNumber seatNumber)
-        : TicketPurchaseException($"Seat {seatNumber} cannot be added twice to the same purchase.")
+        : BusinessException($"Seat {seatNumber} cannot be added twice to the same purchase.", TicketingErrorCodes.DuplicateSeatErrorCode)
     {
         public SeatNumber SeatNumber { get; } = seatNumber;
     }

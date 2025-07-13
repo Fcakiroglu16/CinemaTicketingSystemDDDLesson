@@ -1,4 +1,5 @@
 ﻿using CinemaTicketingSystem.Domain.Ticketing.DomainEvents;
+using CinemaTicketingSystem.Domain.Ticketing.Exceptions;
 
 namespace CinemaTicketingSystem.Domain.Ticketing
 {
@@ -25,22 +26,22 @@ namespace CinemaTicketingSystem.Domain.Ticketing
 
         public void AddTicket(PurchasedTicket ticket)
         {
-
             if (_purchasedTickets.Count >= MaxTicketsPerPurchase)
-                throw new InvalidOperationException($"Cannot purchase more than {MaxTicketsPerPurchase} tickets at once.");
+                throw new MaxTicketLimitExceededException(MaxTicketsPerPurchase);
 
             if (_purchasedTickets.Any(t => t.SeatNumber == ticket.SeatNumber))
-                throw new InvalidOperationException("Same seat cannot be added twice.");
+                throw new DuplicateSeatException(ticket.SeatNumber);
 
             _purchasedTickets.Add(ticket);
             ApplyBulkDiscountIfEligible();
             AddDomainEvent(new TicketPurchasedEvent(ticket.Id, CustomerId!.Value, ticket.Price));
         }
+
         public void RemoveTicket(SeatNumber seatNumber)
         {
             var ticket = _purchasedTickets.FirstOrDefault(t => t.SeatNumber == seatNumber);
             if (ticket == null)
-                throw new InvalidOperationException("Ticket not found.");
+                throw new TicketNotFoundException(seatNumber);
 
             _purchasedTickets.Remove(ticket);
             AddDomainEvent(new TicketReleasedEvent(ticket.Id));
@@ -57,16 +58,11 @@ namespace CinemaTicketingSystem.Domain.Ticketing
             ApplyBulkDiscountIfEligible();
         }
 
-
-
-
         private void ApplyBulkDiscountIfEligible()
         {
             if (_purchasedTickets.Count >= 3 && !IsDiscountApplied)
             {
-
                 IsDiscountApplied = true;
-
             }
         }
 
@@ -76,14 +72,11 @@ namespace CinemaTicketingSystem.Domain.Ticketing
                 .Select(t => t.Price)
                 .Aggregate((total, next) => total + next);
 
-            if (IsDiscountApplied)
-            {
-                // Apply 10% discount for bulk purchases
-                decimal discountMultiplier = 0.9m; // 10% off
-                return new Price(baseTotal.Amount * discountMultiplier, baseTotal.Currency);
-            }
+            if (!IsDiscountApplied) return baseTotal;
 
-            return baseTotal;
+            decimal discountMultiplier = 0.9m; // 10% off
+            return new Price(baseTotal.Amount * discountMultiplier, baseTotal.Currency);
+
         }
 
         public void MarkTicketsAsUsed()
@@ -99,7 +92,5 @@ namespace CinemaTicketingSystem.Domain.Ticketing
         {
             return _purchasedTickets.Any(t => t.SeatNumber == seatNumber);
         }
-
-
     }
 }
