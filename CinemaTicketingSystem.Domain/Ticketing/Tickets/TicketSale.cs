@@ -1,11 +1,11 @@
 ﻿using CinemaTicketingSystem.Domain.Ticketing.Tickets.Exceptions;
-using CinemaTicketingSystem.Domain.Ticketing.Tickets.ValueObjects;
+using CinemaTicketingSystem.Domain.Ticketing.ValueObjects;
 
 namespace CinemaTicketingSystem.Domain.Ticketing.Tickets;
 
-public class PurchasedTicket : Entity<Guid>
+public class TicketSale : Entity<Guid>
 {
-    internal PurchasedTicket(SeatNumber seatNumber, Price price)
+    internal TicketSale(SeatNumber seatNumber, Price price)
     {
         Id = Guid.CreateVersion7();
         SeatNumber = seatNumber;

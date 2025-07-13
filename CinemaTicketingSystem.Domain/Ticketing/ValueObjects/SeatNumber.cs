@@ -1,4 +1,4 @@
-﻿namespace CinemaTicketingSystem.Domain.Ticketing.Tickets.ValueObjects;
+﻿namespace CinemaTicketingSystem.Domain.Ticketing.ValueObjects;
 
 public class SeatNumber : ValueObject
 {

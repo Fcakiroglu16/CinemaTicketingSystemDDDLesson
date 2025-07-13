@@ -1,4 +1,4 @@
-using CinemaTicketingSystem.Domain.Ticketing.Tickets.ValueObjects;
+using CinemaTicketingSystem.Domain.Ticketing.ValueObjects;
 
 namespace CinemaTicketingSystem.Domain.Ticketing.Reservations;
 

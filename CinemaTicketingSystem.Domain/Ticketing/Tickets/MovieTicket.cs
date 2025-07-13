@@ -1,10 +1,10 @@
 ﻿using CinemaTicketingSystem.Domain.Ticketing.Tickets.DomainEvents;
 using CinemaTicketingSystem.Domain.Ticketing.Tickets.Exceptions;
-using CinemaTicketingSystem.Domain.Ticketing.Tickets.ValueObjects;
+using CinemaTicketingSystem.Domain.Ticketing.ValueObjects;
 
 namespace CinemaTicketingSystem.Domain.Ticketing.Tickets;
 
-internal class TicketPurchase : AggregateRoot<Guid>
+public class MovieTicket : AggregateRoot<Guid>
 {
     private const int MaxTicketsPerPurchase = 10;
 
@@ -13,9 +13,9 @@ internal class TicketPurchase : AggregateRoot<Guid>
     public Guid MovieSessionId { get; private set; }
     public bool IsDiscountApplied { get; private set; }
 
-    private List<PurchasedTicket> _purchasedTickets { get; } = [];
+    private List<TicketSale> _purchasedTickets { get; } = [];
 
-    public IReadOnlyCollection<PurchasedTicket> PurchasedTickets => _purchasedTickets.AsReadOnly();
+    public IReadOnlyCollection<TicketSale> PurchasedTickets => _purchasedTickets.AsReadOnly();
 
     public void Create(Guid movieSessionId, Guid customerId)
     {
@@ -24,7 +24,7 @@ internal class TicketPurchase : AggregateRoot<Guid>
         CustomerId = customerId;
     }
 
-    public void AddTicket(PurchasedTicket ticket)
+    public void AddTicket(TicketSale ticket)
     {
         if (_purchasedTickets.Count >= MaxTicketsPerPurchase)
             throw new MaxTicketLimitExceededException(MaxTicketsPerPurchase);
@@ -49,7 +49,7 @@ internal class TicketPurchase : AggregateRoot<Guid>
         ApplyBulkDiscountIfEligible();
     }
 
-    public void AddTickets(IEnumerable<PurchasedTicket> tickets)
+    public void AddTickets(IEnumerable<TicketSale> tickets)
     {
         foreach (var ticket in tickets) AddTicket(ticket);
         ApplyBulkDiscountIfEligible();

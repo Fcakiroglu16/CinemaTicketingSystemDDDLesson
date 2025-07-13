@@ -1,5 +1,5 @@
 ﻿using CinemaTicketingSystem.Domain.Core;
-using CinemaTicketingSystem.Domain.Ticketing.Tickets.ValueObjects;
+using CinemaTicketingSystem.Domain.Ticketing.ValueObjects;
 
 namespace CinemaTicketingSystem.Domain.Ticketing.Tickets.Exceptions;
 

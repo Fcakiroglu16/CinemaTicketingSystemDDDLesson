@@ -1,10 +1,10 @@
 using CinemaTicketingSystem.Domain.Ticketing.Reservations.DomainEvents;
 using CinemaTicketingSystem.Domain.Ticketing.Reservations.Exceptions;
-using CinemaTicketingSystem.Domain.Ticketing.Tickets.ValueObjects;
+using CinemaTicketingSystem.Domain.Ticketing.ValueObjects;
 
 namespace CinemaTicketingSystem.Domain.Ticketing.Reservations;
 
-internal class Reservation : AggregateRoot<Guid>
+public class SeatReservation : AggregateRoot<Guid>
 {
     private const int MaxSeatsPerReservation = 10;
     private const int ReservationExpiryMinutes = 30;
