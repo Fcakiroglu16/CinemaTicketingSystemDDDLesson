@@ -1,16 +1,8 @@
-namespace CinemaTicketingSystem.Domain.Reservations.DomainEvents;
+using CinemaTicketingSystem.Domain.Ticketing.Tickets.ValueObjects;
 
-public class SeatReservedEvent : IDomainEvent
+namespace CinemaTicketingSystem.Domain.Ticketing.Reservations.DomainEvents;
+
+public record SeatReservedEvent(Guid ReservationId, SeatNumber SeatNumber, Guid CustomerId) : IDomainEvent
 {
-    public SeatReservedEvent(Guid reservationId, SeatNumber seatNumber, Guid customerId)
-    {
-        ReservationId = reservationId;
-        SeatNumber = seatNumber;
-        CustomerId = customerId;
-    }
-
-    public Guid ReservationId { get; }
-    public SeatNumber SeatNumber { get; }
-    public Guid CustomerId { get; }
     public DateTime OccurredOn { get; } = DateTime.UtcNow;
 }

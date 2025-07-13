@@ -1,3 +1,5 @@
+using CinemaTicketingSystem.Domain.Ticketing.Tickets.ValueObjects;
+
 namespace CinemaTicketingSystem.Domain.Ticketing.Reservations;
 
 public class ReservedSeat : Entity<Guid>

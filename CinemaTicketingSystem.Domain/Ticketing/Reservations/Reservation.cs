@@ -1,7 +1,6 @@
-using CinemaTicketingSystem.Domain.Reservations.DomainEvents;
-using CinemaTicketingSystem.Domain.Reservations.Exceptions;
 using CinemaTicketingSystem.Domain.Ticketing.Reservations.DomainEvents;
 using CinemaTicketingSystem.Domain.Ticketing.Reservations.Exceptions;
+using CinemaTicketingSystem.Domain.Ticketing.Tickets.ValueObjects;
 
 namespace CinemaTicketingSystem.Domain.Ticketing.Reservations;
 
@@ -15,9 +14,9 @@ internal class Reservation : AggregateRoot<Guid>
     public DateTime ExpirationTime { get; private set; }
     public ReservationStatus Status { get; private set; }
 
-    private List<ReservedSeat> _reservedSeats { get; } = [];
+    private List<ReservedSeat> reservedSeats { get; } = [];
 
-    public IReadOnlyCollection<ReservedSeat> ReservedSeats => _reservedSeats.AsReadOnly();
+    public IReadOnlyCollection<ReservedSeat> ReservedSeats => reservedSeats.AsReadOnly();
 
     public void Create(Guid movieSessionId, Guid customerId)
     {
@@ -33,29 +32,29 @@ internal class Reservation : AggregateRoot<Guid>
 
     public void AddSeat(ReservedSeat seat)
     {
-        if (_reservedSeats.Count >= MaxSeatsPerReservation)
+        if (reservedSeats.Count >= MaxSeatsPerReservation)
             throw new MaxSeatLimitExceededException(MaxSeatsPerReservation);
 
-        if (_reservedSeats.Any(s => s.SeatNumber == seat.SeatNumber))
+        if (reservedSeats.Any(s => s.SeatNumber == seat.SeatNumber))
             throw new DuplicateReservedSeatException(seat.SeatNumber);
 
         if (Status != ReservationStatus.Pending)
             throw new InvalidReservationStateException(Status, "add seats");
 
-        _reservedSeats.Add(seat);
+        reservedSeats.Add(seat);
         AddDomainEvent(new SeatReservedEvent(Id, seat.SeatNumber, CustomerId!.Value));
     }
 
     public void RemoveSeat(SeatNumber seatNumber)
     {
-        var seat = _reservedSeats.FirstOrDefault(s => s.SeatNumber == seatNumber);
+        var seat = reservedSeats.FirstOrDefault(s => s.SeatNumber == seatNumber);
         if (seat == null)
             throw new ReservedSeatNotFoundException(seatNumber);
 
         if (Status != ReservationStatus.Pending)
             throw new InvalidReservationStateException(Status, "remove seats");
 
-        _reservedSeats.Remove(seat);
+        reservedSeats.Remove(seat);
         AddDomainEvent(new SeatReservationReleasedEvent(Id, seatNumber));
     }
 
@@ -66,7 +65,7 @@ internal class Reservation : AggregateRoot<Guid>
 
     public bool HasSeat(SeatNumber seatNumber)
     {
-        return _reservedSeats.Any(s => s.SeatNumber == seatNumber);
+        return reservedSeats.Any(s => s.SeatNumber == seatNumber);
     }
 
     public void Confirm()
@@ -74,7 +73,7 @@ internal class Reservation : AggregateRoot<Guid>
         if (Status != ReservationStatus.Pending)
             throw new InvalidReservationStateException(Status, "confirm");
 
-        if (!_reservedSeats.Any())
+        if (!reservedSeats.Any())
             throw new EmptyReservationException();
 
         if (DateTime.UtcNow > ExpirationTime)

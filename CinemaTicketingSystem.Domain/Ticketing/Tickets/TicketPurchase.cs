@@ -1,5 +1,6 @@
 ﻿using CinemaTicketingSystem.Domain.Ticketing.Tickets.DomainEvents;
 using CinemaTicketingSystem.Domain.Ticketing.Tickets.Exceptions;
+using CinemaTicketingSystem.Domain.Ticketing.Tickets.ValueObjects;
 
 namespace CinemaTicketingSystem.Domain.Ticketing.Tickets;
 
@@ -39,7 +40,7 @@ internal class TicketPurchase : AggregateRoot<Guid>
     public void RemoveTicket(SeatNumber seatNumber)
     {
         var ticket = _purchasedTickets.FirstOrDefault(t => t.SeatNumber == seatNumber);
-        if (ticket == null)
+        if (ticket is null)
             throw new TicketNotFoundException(seatNumber);
 
         _purchasedTickets.Remove(ticket);

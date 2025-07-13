@@ -2,14 +2,9 @@ using CinemaTicketingSystem.Domain.Core;
 
 namespace CinemaTicketingSystem.Domain.Ticketing.Tickets.Exceptions;
 
-public class TicketAlreadyUsedException : BusinessException
+public class TicketAlreadyUsedException(string ticketCode) : BusinessException(
+    $"Ticket {ticketCode} has already been used and cannot be used again.",
+    TicketingErrorCodes.TicketAlreadyUsed)
 {
-    public TicketAlreadyUsedException(string ticketCode)
-        : base($"Ticket {ticketCode} has already been used and cannot be used again.",
-            TicketingErrorCodes.TicketAlreadyUsed)
-    {
-        TicketCode = ticketCode;
-    }
-
-    public string TicketCode { get; }
+    public string TicketCode { get; } = ticketCode;
 }
