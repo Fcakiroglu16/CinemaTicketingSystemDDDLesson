@@ -1,3 +1,6 @@
 namespace CinemaTicketingSystem.Domain;
 
-public interface IDomainEvent;
+public interface IDomainEvent
+{
+    DateTime OccurredOn { get; }
+}

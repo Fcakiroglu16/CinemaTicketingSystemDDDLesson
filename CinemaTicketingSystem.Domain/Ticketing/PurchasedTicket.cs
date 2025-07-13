@@ -36,5 +36,14 @@
                 .Select(_ => chars[random.Next(chars.Length)])
                 .ToArray());
         }
+
+        public void MarkAsUsed()
+        {
+            if (IsUsed)
+                throw new InvalidOperationException("Ticket already used.");
+
+            IsUsed = true;
+            UsedAt = DateTime.UtcNow;
+        }
     }
 }
