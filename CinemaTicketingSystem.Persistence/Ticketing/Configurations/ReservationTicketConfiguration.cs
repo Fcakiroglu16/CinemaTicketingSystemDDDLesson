@@ -18,7 +18,7 @@ namespace CinemaTicketingSystem.Persistence.Ticketing.Configurations
             builder.Property(x => x.ReservationTime).IsRequired();
             builder.Property(x => x.ExpirationTime).IsRequired();
             builder.Property(x => x.Status).IsRequired();
-            builder.HasMany(x => x.ReservedSeats).WithOne(x => x.SeatReservation).HasForeignKey();
+            // builder.HasMany(x => x.ReservedSeats).WithOne();
 
 
         }

@@ -28,7 +28,7 @@ namespace CinemaTicketingSystem.Persistence.Ticketing.Configurations
 
 
 
-            builder.HasMany(x => x.TicketSales).WithOne().HasForeignKey();
+            //builder.HasMany(x => x.TicketSales).WithOne(y => y.MovieTicket);
 
 
 

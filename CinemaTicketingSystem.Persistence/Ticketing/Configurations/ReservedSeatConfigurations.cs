@@ -12,8 +12,17 @@ namespace CinemaTicketingSystem.Persistence.Ticketing.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedNever();
 
-            builder.HasOne(x => x.SeatReservation).WithMany(x => x.ReservedSeats).HasForeignKey();
-            builder.OwnsOne(x => x.SeatNumber);
+            builder.OwnsOne(x => x.SeatNumber, seatBuilder =>
+            {
+                seatBuilder.Property(s => s.Number)
+                    .HasColumnName("Number")
+                    .IsRequired();
+
+                seatBuilder.Property(s => s.Row)
+                    .HasColumnName("Row")
+                    .HasMaxLength(1).IsFixedLength()
+                    .IsRequired().IsUnicode(false);
+            });
         }
     }
 }

@@ -13,10 +13,7 @@ namespace CinemaTicketingSystem.Persistence.Ticketing.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedNever();
 
-            // Configure relationship with MovieTicket
-            builder.HasOne(x => x.MovieTicket)
-                .WithMany(x => x.TicketSales)
-                .HasForeignKey();
+
 
             // Configure scalar properties
             builder.Property(x => x.TicketCode).IsFixedLength().HasMaxLength(6)

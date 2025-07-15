@@ -11,7 +11,10 @@ namespace CinemaTicketingSystem.Persistence
 
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("CinemaTicketingDb"));
+                options.UseSqlServer(configuration.GetConnectionString("CinemaTicketingDb"), options =>
+                {
+                    options.MigrationsAssembly(typeof(PersistenceAssembly).Assembly);
+                });
             });
 
             return services;

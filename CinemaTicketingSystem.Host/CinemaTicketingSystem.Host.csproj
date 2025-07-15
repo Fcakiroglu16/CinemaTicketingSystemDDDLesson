@@ -7,12 +7,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.5"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.5" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\CinemaTicketingSystem.API\CinemaTicketingSystem.API.csproj" />
-        <ProjectReference Include="..\CinemaTicketingSystem.Application\CinemaTicketingSystem.Application.csproj"/>
+        <ProjectReference Include="..\CinemaTicketingSystem.Application\CinemaTicketingSystem.Application.csproj" />
         <ProjectReference Include="..\CinemaTicketingSystem.Persistence\CinemaTicketingSystem.Persistence.csproj" />
     </ItemGroup>
 
