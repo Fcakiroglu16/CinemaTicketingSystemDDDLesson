@@ -18,6 +18,9 @@ namespace CinemaTicketingSystem.Persistence.Ticketing.Configurations
             builder.Property(x => x.ReservationTime).IsRequired();
             builder.Property(x => x.ExpirationTime).IsRequired();
             builder.Property(x => x.Status).IsRequired();
+
+
+
             builder.HasMany(x => x.ReservedSeats).WithOne();
 
             builder.Metadata.FindNavigation(nameof(SeatReservation.ReservedSeats))!.SetField("reservedSeats");
