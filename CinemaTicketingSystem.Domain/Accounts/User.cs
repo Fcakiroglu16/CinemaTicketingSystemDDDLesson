@@ -1,6 +1,6 @@
-﻿using CinemaTicketingSystem.Domain.UserManagement.ValueObjects;
+﻿using CinemaTicketingSystem.Domain.Accounts.ValueObjects;
 
-namespace CinemaTicketingSystem.Domain.UserManagement;
+namespace CinemaTicketingSystem.Domain.Accounts;
 
 public class User : Entity<UserId>
 {

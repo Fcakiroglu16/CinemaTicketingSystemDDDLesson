@@ -34,7 +34,7 @@ namespace CinemaTicketingSystem.Persistence.Migrations
 
                     b.HasIndex("SeatReservationId");
 
-                    b.ToTable("ReservedSeat");
+                    b.ToTable("ReservedSeat", (string)null);
                 });
 
             modelBuilder.Entity("CinemaTicketingSystem.Domain.Ticketing.Reservations.SeatReservation", b =>
@@ -59,7 +59,7 @@ namespace CinemaTicketingSystem.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SeatReservations");
+                    b.ToTable("SeatReservations", (string)null);
                 });
 
             modelBuilder.Entity("CinemaTicketingSystem.Domain.Ticketing.Tickets.MovieTicket", b =>
@@ -135,7 +135,7 @@ namespace CinemaTicketingSystem.Persistence.Migrations
 
                             b1.HasKey("ReservedSeatId");
 
-                            b1.ToTable("ReservedSeat");
+                            b1.ToTable("ReservedSeat", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("ReservedSeatId");
@@ -155,6 +155,30 @@ namespace CinemaTicketingSystem.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.OwnsOne("CinemaTicketingSystem.Domain.Ticketing.ValueObjects.Price", "Price", b1 =>
+                        {
+                            b1.Property<Guid>("TicketSaleId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<decimal>("Amount")
+                                .HasPrecision(9, 2)
+                                .HasColumnType("decimal(9,2)")
+                                .HasColumnName("Amount");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasMaxLength(3)
+                                .HasColumnType("nvarchar(3)")
+                                .HasColumnName("Currency");
+
+                            b1.HasKey("TicketSaleId");
+
+                            b1.ToTable("TicketSales", "Ticketing");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TicketSaleId");
+                        });
+
                     b.OwnsOne("CinemaTicketingSystem.Domain.Ticketing.ValueObjects.SeatNumber", "SeatNumber", b1 =>
                         {
                             b1.Property<Guid>("TicketSaleId")
@@ -171,30 +195,6 @@ namespace CinemaTicketingSystem.Persistence.Migrations
                                 .HasColumnType("char(1)")
                                 .HasColumnName("Row")
                                 .IsFixedLength();
-
-                            b1.HasKey("TicketSaleId");
-
-                            b1.ToTable("TicketSales", "Ticketing");
-
-                            b1.WithOwner()
-                                .HasForeignKey("TicketSaleId");
-                        });
-
-                    b.OwnsOne("CinemaTicketingSystem.Domain.Ticketing.ValueObjects.Price", "Price", b1 =>
-                        {
-                            b1.Property<Guid>("TicketSaleId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<decimal>("Amount")
-                                .HasPrecision(9, 2)
-                                .HasColumnType("decimal(9,2)")
-                                .HasColumnName("Amount");
-
-                            b1.Property<string>("Currency")
-                                .IsRequired()
-                                .HasMaxLength(3)
-                                .HasColumnType("nvarchar(3)")
-                                .HasColumnName("Currency");
 
                             b1.HasKey("TicketSaleId");
 

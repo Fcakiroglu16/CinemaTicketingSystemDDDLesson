@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace CinemaTicketingSystem.Persistence.UserManagement
+namespace CinemaTicketingSystem.Persistence.Accounts
 {
     public class AppUser : IdentityUser<Guid>
     {

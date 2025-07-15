@@ -20,7 +20,7 @@ public class TicketSale : Entity<Guid>
     //public Guid MovieTicketId { get; set; }
 
 
-    public MovieTicket MovieTicket { get; set; } = null!;
+    public virtual MovieTicket MovieTicket { get; set; } = null!;
 
     public SeatNumber SeatNumber { get; }
     public Price Price { get; }

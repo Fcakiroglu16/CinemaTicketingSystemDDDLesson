@@ -1,6 +1,6 @@
 using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
 using CinemaTicketingSystem.Persistence;
-using CinemaTicketingSystem.Persistence.UserManagement;
+using CinemaTicketingSystem.Persistence.Accounts;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 

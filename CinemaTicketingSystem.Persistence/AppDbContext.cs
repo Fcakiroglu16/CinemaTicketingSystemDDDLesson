@@ -1,6 +1,7 @@
 ﻿using CinemaTicketingSystem.Domain.Ticketing.Reservations;
 using CinemaTicketingSystem.Domain.Ticketing.Tickets;
-using CinemaTicketingSystem.Persistence.UserManagement;
+using CinemaTicketingSystem.Persistence.Accounts;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -31,8 +32,15 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
                 mutableProperty.SetScale(2);
             }
 
-
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+        modelBuilder.Entity<AppUser>().ToTable("Users", "accounts");
+        modelBuilder.Entity<AppRole>().ToTable("Roles", "accounts");
+        modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("UserRoles", "accounts");
+        modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims", "accounts");
+        modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogins", "accounts");
+        modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleClaims", "accounts");
+        modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("UserTokens", "accounts");
     }
 }

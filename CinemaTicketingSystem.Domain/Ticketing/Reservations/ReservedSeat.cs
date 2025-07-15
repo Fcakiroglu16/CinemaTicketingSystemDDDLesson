@@ -13,7 +13,7 @@ public class ReservedSeat : Entity<Guid>
 
     public SeatNumber SeatNumber { get; }
 
-    public SeatReservation SeatReservation { get; set; } = null!;
+    public virtual SeatReservation SeatReservation { get; set; } = null!;
     public string GetSeatInfo()
     {
         return $"Seat: {SeatNumber}";
