@@ -21,7 +21,7 @@ namespace CinemaTicketingSystem.Persistence.Ticketing.Configurations
 
 
 
-            builder.HasMany(x => x.ReservedSeats).WithOne();
+            builder.HasMany(x => x.ReservedSeats).WithOne(y => y.SeatReservation);
 
             builder.Metadata.FindNavigation(nameof(SeatReservation.ReservedSeats))!.SetField("reservedSeats");
 
