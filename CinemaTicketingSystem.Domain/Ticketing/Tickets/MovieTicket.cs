@@ -8,7 +8,7 @@ public class MovieTicket : AggregateRoot<Guid>
 {
     private const int MaxTicketsPerPurchase = 10;
 
-    // Existing properties
+
     public Guid? CustomerId { get; private set; }
     public Guid MovieSessionId { get; private set; }
     public bool IsDiscountApplied { get; private set; }

@@ -8,7 +8,7 @@ public class SeatReservation : AggregateRoot<Guid>
 {
     private const int MaxSeatsPerReservation = 10;
     private const int ReservationExpiryMinutes = 30;
-    public Guid? CustomerId { get; private set; }
+    public Guid CustomerId { get; private set; }
     public Guid MovieSessionId { get; private set; }
     public DateTime ReservationTime { get; private set; }
     public DateTime ExpirationTime { get; private set; }
@@ -27,7 +27,7 @@ public class SeatReservation : AggregateRoot<Guid>
         ExpirationTime = ReservationTime.AddMinutes(ReservationExpiryMinutes);
         Status = ReservationStatus.Pending;
 
-        AddDomainEvent(new ReservationCreatedEvent(Id, CustomerId.Value, MovieSessionId, ReservationTime));
+        AddDomainEvent(new ReservationCreatedEvent(Id, CustomerId, MovieSessionId, ReservationTime));
     }
 
     public void AddSeat(ReservedSeat seat)
@@ -42,7 +42,7 @@ public class SeatReservation : AggregateRoot<Guid>
             throw new InvalidReservationStateException(Status, "add seats");
 
         reservedSeats.Add(seat);
-        AddDomainEvent(new SeatReservedEvent(Id, seat.SeatNumber, CustomerId!.Value));
+        AddDomainEvent(new SeatReservedEvent(Id, seat.SeatNumber, CustomerId));
     }
 
     public void RemoveSeat(SeatNumber seatNumber)
@@ -80,7 +80,7 @@ public class SeatReservation : AggregateRoot<Guid>
             throw new ReservationExpiredException(ExpirationTime);
 
         Status = ReservationStatus.Confirmed;
-        AddDomainEvent(new ReservationConfirmedEvent(Id, CustomerId!.Value, MovieSessionId));
+        AddDomainEvent(new ReservationConfirmedEvent(Id, CustomerId, MovieSessionId));
     }
 
     public void Cancel()
@@ -92,7 +92,7 @@ public class SeatReservation : AggregateRoot<Guid>
             throw new InvalidReservationStateException(Status, "cancel");
 
         Status = ReservationStatus.Canceled;
-        AddDomainEvent(new ReservationCanceledEvent(Id, CustomerId!.Value, MovieSessionId));
+        AddDomainEvent(new ReservationCanceledEvent(Id, CustomerId, MovieSessionId));
     }
 
     public void Expire()
@@ -101,7 +101,7 @@ public class SeatReservation : AggregateRoot<Guid>
             return;
 
         Status = ReservationStatus.Expired;
-        AddDomainEvent(new ReservationExpiredEvent(Id, CustomerId!.Value, MovieSessionId));
+        AddDomainEvent(new ReservationExpiredEvent(Id, CustomerId, MovieSessionId));
     }
 
     public bool IsExpired()

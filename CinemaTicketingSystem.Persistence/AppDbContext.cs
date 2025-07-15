@@ -1,10 +1,11 @@
 ﻿using CinemaTicketingSystem.Domain.Ticketing.Reservations;
 using CinemaTicketingSystem.Domain.Ticketing.Tickets;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace CinemaTicketingSystem.Persistence;
 
-internal class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
 
     public DbSet<MovieTicket> MovieTickets { get; set; }
@@ -23,6 +24,7 @@ internal class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(
             }
 
 
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(modelBuilder);
     }
 }

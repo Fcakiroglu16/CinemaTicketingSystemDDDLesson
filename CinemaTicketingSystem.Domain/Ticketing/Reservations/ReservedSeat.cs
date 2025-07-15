@@ -8,14 +8,13 @@ public class ReservedSeat : Entity<Guid>
     {
         Id = Guid.CreateVersion7();
         SeatNumber = seatNumber;
-        ReservedAt = DateTime.UtcNow;
     }
 
     public SeatNumber SeatNumber { get; }
-    public DateTime ReservedAt { get; }
 
+    public SeatReservation SeatReservation { get; set; } = null!;
     public string GetSeatInfo()
     {
-        return $"Seat: {SeatNumber}, Reserved at: {ReservedAt}";
+        return $"Seat: {SeatNumber}";
     }
 }
