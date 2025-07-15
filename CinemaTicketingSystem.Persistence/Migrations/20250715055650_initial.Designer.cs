@@ -9,223 +9,224 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace CinemaTicketingSystem.Persistence.Migrations
+namespace CinemaTicketingSystem.Persistence.Migrations;
+
+[DbContext(typeof(AppDbContext))]
+[Migration("20250715055650_initial")]
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
+partial class initial
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 {
-    [DbContext(typeof(AppDbContext))]
-    [Migration("20250715055650_initial")]
-    partial class initial
+    /// <inheritdoc />
+    protected override void BuildTargetModel(ModelBuilder modelBuilder)
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
-        {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.7")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+        modelBuilder
+            .HasAnnotation("ProductVersion", "9.0.7")
+            .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+        SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CinemaTicketingSystem.Domain.Ticketing.Reservations.ReservedSeat", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
+        modelBuilder.Entity("CinemaTicketingSystem.Domain.Ticketing.Reservations.ReservedSeat", b =>
+        {
+            b.Property<Guid>("Id")
+                .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("SeatReservationId")
-                        .HasColumnType("uniqueidentifier");
+            b.Property<Guid>("SeatReservationId")
+                .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+            b.HasKey("Id");
 
-                    b.HasIndex("SeatReservationId");
+            b.HasIndex("SeatReservationId");
 
-                    b.ToTable("ReservedSeat");
-                });
+            b.ToTable("ReservedSeat");
+        });
 
-            modelBuilder.Entity("CinemaTicketingSystem.Domain.Ticketing.Reservations.SeatReservation", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
+        modelBuilder.Entity("CinemaTicketingSystem.Domain.Ticketing.Reservations.SeatReservation", b =>
+        {
+            b.Property<Guid>("Id")
+                .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
+            b.Property<Guid>("CustomerId")
+                .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("ExpirationTime")
-                        .HasColumnType("datetime2");
+            b.Property<DateTime>("ExpirationTime")
+                .HasColumnType("datetime2");
 
-                    b.Property<Guid>("MovieSessionId")
-                        .HasColumnType("uniqueidentifier");
+            b.Property<Guid>("MovieSessionId")
+                .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("ReservationTime")
-                        .HasColumnType("datetime2");
+            b.Property<DateTime>("ReservationTime")
+                .HasColumnType("datetime2");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+            b.Property<int>("Status")
+                .HasColumnType("int");
 
-                    b.HasKey("Id");
+            b.HasKey("Id");
 
-                    b.ToTable("SeatReservations");
-                });
+            b.ToTable("SeatReservations");
+        });
 
-            modelBuilder.Entity("CinemaTicketingSystem.Domain.Ticketing.Tickets.MovieTicket", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
+        modelBuilder.Entity("CinemaTicketingSystem.Domain.Ticketing.Tickets.MovieTicket", b =>
+        {
+            b.Property<Guid>("Id")
+                .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
+            b.Property<Guid?>("CustomerId")
+                .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsDiscountApplied")
-                        .HasColumnType("bit");
+            b.Property<bool>("IsDiscountApplied")
+                .HasColumnType("bit");
 
-                    b.Property<Guid>("MovieSessionId")
-                        .HasColumnType("uniqueidentifier");
+            b.Property<Guid>("MovieSessionId")
+                .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+            b.HasKey("Id");
 
-                    b.ToTable("MovieTickets", "Ticketing");
-                });
+            b.ToTable("MovieTickets", "Ticketing");
+        });
 
-            modelBuilder.Entity("CinemaTicketingSystem.Domain.Ticketing.Tickets.TicketSale", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
+        modelBuilder.Entity("CinemaTicketingSystem.Domain.Ticketing.Tickets.TicketSale", b =>
+        {
+            b.Property<Guid>("Id")
+                .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsUsed")
-                        .HasColumnType("bit");
+            b.Property<bool>("IsUsed")
+                .HasColumnType("bit");
 
-                    b.Property<Guid>("MovieTicketId")
-                        .HasColumnType("uniqueidentifier");
+            b.Property<Guid>("MovieTicketId")
+                .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("TicketCode")
-                        .IsRequired()
-                        .HasMaxLength(6)
-                        .HasColumnType("nchar(6)")
-                        .IsFixedLength();
+            b.Property<string>("TicketCode")
+                .IsRequired()
+                .HasMaxLength(6)
+                .HasColumnType("nchar(6)")
+                .IsFixedLength();
 
-                    b.Property<DateTime?>("UsedAt")
-                        .HasColumnType("datetime2");
+            b.Property<DateTime?>("UsedAt")
+                .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+            b.HasKey("Id");
 
-                    b.HasIndex("MovieTicketId");
+            b.HasIndex("MovieTicketId");
 
-                    b.ToTable("TicketSales", "Ticketing");
-                });
+            b.ToTable("TicketSales", "Ticketing");
+        });
 
-            modelBuilder.Entity("CinemaTicketingSystem.Domain.Ticketing.Reservations.ReservedSeat", b =>
-                {
-                    b.HasOne("CinemaTicketingSystem.Domain.Ticketing.Reservations.SeatReservation", "SeatReservation")
-                        .WithMany("ReservedSeats")
-                        .HasForeignKey("SeatReservationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+        modelBuilder.Entity("CinemaTicketingSystem.Domain.Ticketing.Reservations.ReservedSeat", b =>
+        {
+            b.HasOne("CinemaTicketingSystem.Domain.Ticketing.Reservations.SeatReservation", "SeatReservation")
+                .WithMany("ReservedSeats")
+                .HasForeignKey("SeatReservationId")
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
 
-                    b.OwnsOne("CinemaTicketingSystem.Domain.Ticketing.ValueObjects.SeatNumber", "SeatNumber", b1 =>
-                        {
-                            b1.Property<Guid>("ReservedSeatId")
-                                .HasColumnType("uniqueidentifier");
+            b.OwnsOne("CinemaTicketingSystem.Domain.Ticketing.ValueObjects.SeatNumber", "SeatNumber", b1 =>
+            {
+                b1.Property<Guid>("ReservedSeatId")
+                    .HasColumnType("uniqueidentifier");
 
-                            b1.Property<int>("Number")
-                                .HasColumnType("int")
-                                .HasColumnName("Number");
+                b1.Property<int>("Number")
+                    .HasColumnType("int")
+                    .HasColumnName("Number");
 
-                            b1.Property<string>("Row")
-                                .IsRequired()
-                                .HasMaxLength(1)
-                                .IsUnicode(false)
-                                .HasColumnType("char(1)")
-                                .HasColumnName("Row")
-                                .IsFixedLength();
+                b1.Property<string>("Row")
+                    .IsRequired()
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .HasColumnType("char(1)")
+                    .HasColumnName("Row")
+                    .IsFixedLength();
 
-                            b1.HasKey("ReservedSeatId");
+                b1.HasKey("ReservedSeatId");
 
-                            b1.ToTable("ReservedSeat");
+                b1.ToTable("ReservedSeat");
 
-                            b1.WithOwner()
-                                .HasForeignKey("ReservedSeatId");
-                        });
+                b1.WithOwner()
+                    .HasForeignKey("ReservedSeatId");
+            });
 
-                    b.Navigation("SeatNumber")
-                        .IsRequired();
+            b.Navigation("SeatNumber")
+                .IsRequired();
 
-                    b.Navigation("SeatReservation");
-                });
+            b.Navigation("SeatReservation");
+        });
 
-            modelBuilder.Entity("CinemaTicketingSystem.Domain.Ticketing.Tickets.TicketSale", b =>
-                {
-                    b.HasOne("CinemaTicketingSystem.Domain.Ticketing.Tickets.MovieTicket", "MovieTicket")
-                        .WithMany("TicketSales")
-                        .HasForeignKey("MovieTicketId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+        modelBuilder.Entity("CinemaTicketingSystem.Domain.Ticketing.Tickets.TicketSale", b =>
+        {
+            b.HasOne("CinemaTicketingSystem.Domain.Ticketing.Tickets.MovieTicket", "MovieTicket")
+                .WithMany("TicketSales")
+                .HasForeignKey("MovieTicketId")
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
 
-                    b.OwnsOne("CinemaTicketingSystem.Domain.Ticketing.ValueObjects.SeatNumber", "SeatNumber", b1 =>
-                        {
-                            b1.Property<Guid>("TicketSaleId")
-                                .HasColumnType("uniqueidentifier");
+            b.OwnsOne("CinemaTicketingSystem.Domain.Ticketing.ValueObjects.SeatNumber", "SeatNumber", b1 =>
+            {
+                b1.Property<Guid>("TicketSaleId")
+                    .HasColumnType("uniqueidentifier");
 
-                            b1.Property<int>("Number")
-                                .HasColumnType("int")
-                                .HasColumnName("Number");
+                b1.Property<int>("Number")
+                    .HasColumnType("int")
+                    .HasColumnName("Number");
 
-                            b1.Property<string>("Row")
-                                .IsRequired()
-                                .HasMaxLength(1)
-                                .IsUnicode(false)
-                                .HasColumnType("char(1)")
-                                .HasColumnName("Row")
-                                .IsFixedLength();
+                b1.Property<string>("Row")
+                    .IsRequired()
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .HasColumnType("char(1)")
+                    .HasColumnName("Row")
+                    .IsFixedLength();
 
-                            b1.HasKey("TicketSaleId");
+                b1.HasKey("TicketSaleId");
 
-                            b1.ToTable("TicketSales", "Ticketing");
+                b1.ToTable("TicketSales", "Ticketing");
 
-                            b1.WithOwner()
-                                .HasForeignKey("TicketSaleId");
-                        });
+                b1.WithOwner()
+                    .HasForeignKey("TicketSaleId");
+            });
 
-                    b.OwnsOne("CinemaTicketingSystem.Domain.Ticketing.ValueObjects.Price", "Price", b1 =>
-                        {
-                            b1.Property<Guid>("TicketSaleId")
-                                .HasColumnType("uniqueidentifier");
+            b.OwnsOne("CinemaTicketingSystem.Domain.Ticketing.ValueObjects.Price", "Price", b1 =>
+            {
+                b1.Property<Guid>("TicketSaleId")
+                    .HasColumnType("uniqueidentifier");
 
-                            b1.Property<decimal>("Amount")
-                                .HasPrecision(9, 2)
-                                .HasColumnType("decimal(9,2)")
-                                .HasColumnName("Amount");
+                b1.Property<decimal>("Amount")
+                    .HasPrecision(9, 2)
+                    .HasColumnType("decimal(9,2)")
+                    .HasColumnName("Amount");
 
-                            b1.Property<string>("Currency")
-                                .IsRequired()
-                                .HasMaxLength(3)
-                                .HasColumnType("nvarchar(3)")
-                                .HasColumnName("Currency");
+                b1.Property<string>("Currency")
+                    .IsRequired()
+                    .HasMaxLength(3)
+                    .HasColumnType("nvarchar(3)")
+                    .HasColumnName("Currency");
 
-                            b1.HasKey("TicketSaleId");
+                b1.HasKey("TicketSaleId");
 
-                            b1.ToTable("TicketSales", "Ticketing");
+                b1.ToTable("TicketSales", "Ticketing");
 
-                            b1.WithOwner()
-                                .HasForeignKey("TicketSaleId");
-                        });
+                b1.WithOwner()
+                    .HasForeignKey("TicketSaleId");
+            });
 
-                    b.Navigation("MovieTicket");
+            b.Navigation("MovieTicket");
 
-                    b.Navigation("Price")
-                        .IsRequired();
+            b.Navigation("Price")
+                .IsRequired();
 
-                    b.Navigation("SeatNumber")
-                        .IsRequired();
-                });
+            b.Navigation("SeatNumber")
+                .IsRequired();
+        });
 
-            modelBuilder.Entity("CinemaTicketingSystem.Domain.Ticketing.Reservations.SeatReservation", b =>
-                {
-                    b.Navigation("ReservedSeats");
-                });
+        modelBuilder.Entity("CinemaTicketingSystem.Domain.Ticketing.Reservations.SeatReservation", b =>
+        {
+            b.Navigation("ReservedSeats");
+        });
 
-            modelBuilder.Entity("CinemaTicketingSystem.Domain.Ticketing.Tickets.MovieTicket", b =>
-                {
-                    b.Navigation("TicketSales");
-                });
+        modelBuilder.Entity("CinemaTicketingSystem.Domain.Ticketing.Tickets.MovieTicket", b =>
+        {
+            b.Navigation("TicketSales");
+        });
 #pragma warning restore 612, 618
-        }
     }
 }
