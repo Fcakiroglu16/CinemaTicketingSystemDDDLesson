@@ -105,6 +105,9 @@ namespace CinemaTicketingSystem.Persistence.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
 
+                    b.Property<DateTime?>("EarliestShowingDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsCurrentlyShowing")
                         .HasColumnType("bit");
 

@@ -17,7 +17,7 @@ public class CinemaHall : Entity<Guid>
     public int Capacity => Seats.Count;
 
 
-    public virtual Cinema Cinema { get; set; }
+    public virtual Cinema Cinema { get; set; } = null!;
     private CinemaHall() { }
 
     // Constructor

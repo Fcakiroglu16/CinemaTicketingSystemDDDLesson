@@ -5,7 +5,7 @@ public class ShowTime : Entity<Guid>
     public TimeSpan StartTime { get; private set; }
     public TimeSpan EndTime { get; private set; }
     public TimeSpan Duration => EndTime - StartTime;
-    public virtual MovieSchedule MovieSchedule { get; set; }
+    public virtual MovieSchedule MovieSchedule { get; set; } = null!;
     private ShowTime() { }
 
     public ShowTime(TimeSpan startTime, TimeSpan endTime)

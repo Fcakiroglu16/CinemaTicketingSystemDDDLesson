@@ -13,7 +13,9 @@ namespace CinemaTicketingSystem.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20250715131235_y")]
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     partial class y
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

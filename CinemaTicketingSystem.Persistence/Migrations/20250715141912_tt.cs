@@ -6,29 +6,14 @@ namespace CinemaTicketingSystem.Persistence.Migrations
 {
     /// <inheritdoc />
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
-    public partial class j : Migration
+    public partial class tt : Migration
 #pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "IsCurrentlyShowing",
-                schema: "cinema_mgmt",
-                table: "Movies",
-                type: "bit",
-                nullable: false,
-                defaultValue: false);
-
             migrationBuilder.AddColumn<DateTime>(
-                name: "ShowingEndDate",
-                schema: "cinema_mgmt",
-                table: "Movies",
-                type: "datetime2",
-                nullable: true);
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "ShowingStartDate",
+                name: "EarliestShowingDate",
                 schema: "cinema_mgmt",
                 table: "Movies",
                 type: "datetime2",
@@ -39,17 +24,7 @@ namespace CinemaTicketingSystem.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "IsCurrentlyShowing",
-                schema: "cinema_mgmt",
-                table: "Movies");
-
-            migrationBuilder.DropColumn(
-                name: "ShowingEndDate",
-                schema: "cinema_mgmt",
-                table: "Movies");
-
-            migrationBuilder.DropColumn(
-                name: "ShowingStartDate",
+                name: "EarliestShowingDate",
                 schema: "cinema_mgmt",
                 table: "Movies");
         }

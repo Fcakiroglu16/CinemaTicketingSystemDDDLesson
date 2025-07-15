@@ -2,7 +2,7 @@
 
 namespace CinemaTicketingSystem.Persistence;
 
-internal class UnitOfWork(AppDbContext context) : IUnitOfWork
+public class UnitOfWork(AppDbContext context) : IUnitOfWork
 {
     public Task<int> SaveChangesAsync()
     {

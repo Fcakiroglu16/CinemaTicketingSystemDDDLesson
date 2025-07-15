@@ -2,12 +2,12 @@
 
 public class Seat : Entity<Guid>
 {
-    public string Row { get; private set; }
+    public string Row { get; private set; } = null!;
     public int Number { get; private set; }
     public SeatType Type { get; private set; }
     public bool IsAvailable { get; private set; } = true;
 
-    public virtual CinemaHall CinemaHall { get; set; }
+    public virtual CinemaHall CinemaHall { get; set; } = null!;
 
 
     private Seat() { }

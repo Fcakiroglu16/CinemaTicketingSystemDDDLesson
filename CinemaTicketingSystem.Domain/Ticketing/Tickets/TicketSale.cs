@@ -25,9 +25,9 @@ public class TicketSale : Entity<Guid>
 
     public virtual MovieTicket MovieTicket { get; set; } = null!;
 
-    public SeatNumber SeatNumber { get; }
-    public Price Price { get; }
-    public string TicketCode { get; }
+    public SeatNumber SeatNumber { get; } = null!;
+    public Price Price { get; } = null!;
+    public string TicketCode { get; } = null!;
     public bool IsUsed { get; private set; }
     public DateTime? UsedAt { get; private set; }
 

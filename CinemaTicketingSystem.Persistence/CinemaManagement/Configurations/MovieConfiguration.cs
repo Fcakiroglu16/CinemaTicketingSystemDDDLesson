@@ -1,8 +1,9 @@
 ﻿using CinemaTicketingSystem.Domain.CinemaManagement;
+using CinemaTicketingSystem.Domain.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CinemaTicketingSystem.Persistence.CinemaManagment;
+namespace CinemaTicketingSystem.Persistence.CinemaManagement.Configurations;
 
 public class MovieConfiguration : IEntityTypeConfiguration<Movie>
 {
@@ -20,13 +21,13 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
 
         builder.Property(m => m.Title)
             .IsRequired()
-            .HasMaxLength(200);
+            .HasMaxLength(MovieConst.TitleMaxLength);
 
         builder.Property(m => m.OriginalTitle)
-            .HasMaxLength(200);
+            .HasMaxLength(MovieConst.OriginalTitleMaxLength);
 
         builder.Property(m => m.Description)
-            .HasMaxLength(2000);
+            .HasMaxLength(MovieConst.DescriptionMaxLength);
 
         // Owned type for Duration (Value Object)
         builder.OwnsOne(m => m.Duration, duration =>

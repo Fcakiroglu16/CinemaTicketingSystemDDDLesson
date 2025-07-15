@@ -12,9 +12,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaTicketingSystem.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250715134224_h")]
+    [Migration("20250715141912_tt")]
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
-    partial class h
+    partial class tt
 #pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
         /// <inheritdoc />
@@ -110,9 +110,21 @@ namespace CinemaTicketingSystem.Persistence.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
 
+                    b.Property<DateTime?>("EarliestShowingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsCurrentlyShowing")
+                        .HasColumnType("bit");
+
                     b.Property<string>("OriginalTitle")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("ShowingEndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ShowingStartDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .IsRequired()

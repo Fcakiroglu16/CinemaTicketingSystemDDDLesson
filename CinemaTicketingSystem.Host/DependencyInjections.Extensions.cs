@@ -1,8 +1,9 @@
-using System.Reflection;
-using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
+﻿using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
+using CinemaTicketingSystem.Domain.Repositories;
 using CinemaTicketingSystem.Persistence;
 using CinemaTicketingSystem.Persistence.Accounts;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace CinemaTicketingSystem.Host;
 
@@ -14,7 +15,7 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<AppDbContext>(options =>
         {
             options.UseSqlServer(configuration.GetConnectionString("CinemaTicketingDb"),
-                options => { options.MigrationsAssembly(typeof(PersistenceAssembly).Assembly); });
+                sqlServerDbContextOptionsBuilder => { sqlServerDbContextOptionsBuilder.MigrationsAssembly(typeof(PersistenceAssembly).Assembly); });
         });
 
 
@@ -28,10 +29,51 @@ public static class ServiceCollectionExtensions
         }).AddEntityFrameworkStores<AppDbContext>();
 
 
+
+        services.AddScoped(typeof(IGenericRepository<,>), typeof(IGenericRepository<,>));
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        services.RegisterRepositories();
+
+
+
         return services;
     }
 
+    public static IServiceCollection RegisterRepositories(this IServiceCollection services)
+    {
+        var persistenceAssembly = typeof(PersistenceAssembly).Assembly;
 
+        var repositoryTypes = persistenceAssembly
+            .GetTypes()
+            .Where(type => type.Name.EndsWith("Repository") &&
+                           type.IsClass &&
+                           !type.IsAbstract &&
+                           !type.IsGenericTypeDefinition)
+            .ToList();
+
+        foreach (var repositoryType in repositoryTypes)
+        {
+            var interfaces = repositoryType.GetInterfaces()
+                .Where(i => i.Name.EndsWith("Repository") && i != typeof(IGenericRepository<,>))
+                .ToList();
+
+            if (interfaces.Any())
+            {
+                foreach (var interfaceType in interfaces)
+                {
+                    services.AddScoped(interfaceType, repositoryType);
+                }
+            }
+            else
+            {
+                // Eğer interface yoksa concrete type'ı kendisi olarak kaydet
+                services.AddScoped(repositoryType);
+            }
+        }
+
+        return services;
+    }
     public static IServiceCollection AddWithConventions(this IServiceCollection services, params Assembly[] assemblies)
     {
         var allTypes = assemblies

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CinemaTicketingSystem.Persistence.CinemaManagment;
+namespace CinemaTicketingSystem.Persistence.CinemaManagement.Configurations;
 
 public class CinemaConfiguration : IEntityTypeConfiguration<Cinema>
 {

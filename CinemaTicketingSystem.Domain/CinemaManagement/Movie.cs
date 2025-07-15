@@ -1,4 +1,5 @@
 ﻿using CinemaTicketingSystem.Domain.CinemaManagement.DomainEvents;
+using CinemaTicketingSystem.Domain.Core;
 
 namespace CinemaTicketingSystem.Domain.CinemaManagement
 {
@@ -82,26 +83,37 @@ namespace CinemaTicketingSystem.Domain.CinemaManagement
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("Title cannot be empty", nameof(title));
 
+
+            if (title.Length > MovieConst.TitleMaxLength) throw new ArgumentOutOfRangeException(nameof(title), $"Title cannot exceed {MovieConst.TitleMaxLength} characters");
             Title = title.Trim();
         }
 
-        public void SetOriginalTitle(string? originalTitle)
+        public void SetOriginalTitle(string originalTitle)
         {
-            OriginalTitle = string.IsNullOrWhiteSpace(originalTitle) ? null : originalTitle.Trim();
+            if (string.IsNullOrWhiteSpace(originalTitle))
+                throw new ArgumentException("Original Title  cannot be empty", nameof(originalTitle));
+
+
+            if (originalTitle.Length > MovieConst.OriginalTitleMaxLength) throw new ArgumentOutOfRangeException(nameof(OriginalTitle), $"Original Title cannot exceed {MovieConst.OriginalTitleMaxLength} characters");
+
+            OriginalTitle = originalTitle.Trim();
+
         }
 
-        public string GetDisplayTitle()
-        {
-            return !string.IsNullOrEmpty(OriginalTitle) && OriginalTitle != Title
-                ? $"{Title} ({OriginalTitle})"
-                : Title;
-        }
+
 
         public bool HasOriginalTitle() => !string.IsNullOrWhiteSpace(OriginalTitle);
 
-        public void SetDescription(string? description)
+        public void SetDescription(string description)
         {
-            Description = string.IsNullOrWhiteSpace(description) ? null : description.Trim();
+            if (string.IsNullOrWhiteSpace(description))
+                throw new ArgumentException("Description cannot be empty", nameof(description));
+
+
+            if (description.Length > MovieConst.DescriptionMaxLength) throw new ArgumentOutOfRangeException(nameof(Description), $"Description cannot exceed {MovieConst.DescriptionMaxLength} characters");
+
+
+            Description = description.Trim();
         }
 
         public bool HasDescription() => !string.IsNullOrWhiteSpace(Description);

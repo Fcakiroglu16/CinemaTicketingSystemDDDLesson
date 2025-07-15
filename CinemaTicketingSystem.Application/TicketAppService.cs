@@ -4,4 +4,7 @@ namespace CinemaTicketingSystem.Application;
 
 public class TicketAppService : ITicketAppService
 {
+
+
+
 }
