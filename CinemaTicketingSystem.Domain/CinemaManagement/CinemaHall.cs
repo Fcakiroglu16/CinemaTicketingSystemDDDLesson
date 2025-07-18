@@ -18,7 +18,6 @@ public class CinemaHall : Entity<Guid>
     public bool IsOperational { get; private set; } = true;
 
 
-    public Guid? MovieId { get; set; }
 
     public int Capacity => Seats.Count;
 
@@ -38,12 +37,6 @@ public class CinemaHall : Entity<Guid>
     public virtual Cinema Cinema { get; set; } = null!;
 
 
-    public void AssignMovieToHall(Guid movieId)
-    {
-
-
-        MovieId = movieId;
-    }
 
 
     // Technology management methods

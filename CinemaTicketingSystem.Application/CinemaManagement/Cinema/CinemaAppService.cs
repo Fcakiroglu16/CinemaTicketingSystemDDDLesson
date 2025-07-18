@@ -215,12 +215,14 @@ namespace CinemaTicketingSystem.Application.CinemaManagement.Cinema
 
 
 
-            hall.AssignMovieToHall(movieId);
-            await cinemaRepository.UpdateAsync(cinema);
-            await unitOfWork.SaveChangesAsync();
+            //hall.AssignMovieToHall(movieId);
+            //await cinemaRepository.UpdateAsync(cinema);
+            //await unitOfWork.SaveChangesAsync();
+            //return AppResult.SuccessAsNoContent();
+
+
+
             return AppResult.SuccessAsNoContent();
-
-
 
 
 

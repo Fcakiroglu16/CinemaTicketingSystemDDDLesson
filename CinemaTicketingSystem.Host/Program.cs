@@ -20,6 +20,8 @@ builder.Services.AddWithConventions(typeof(ApplicationAssembly).Assembly,
     typeof(ApplicationAbstractionAssembly).Assembly);
 
 
+builder.Services.RegisterDomainServices(typeof(ApplicationAssembly).Assembly);
+
 
 builder.Services.AddMediatR(configuration =>
 {
