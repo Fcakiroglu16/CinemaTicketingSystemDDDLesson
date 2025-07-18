@@ -1,7 +1,7 @@
 ﻿using CinemaTicketingSystem.Domain.CinemaManagement.DomainEvents;
 using MediatR;
 
-namespace CinemaTicketingSystem.Application.CinemaManagement
+namespace CinemaTicketingSystem.Application.CinemaManagement.Movie
 {
     internal class MovieCreatedEventHandler : INotificationHandler<MovieCreatedEvent>
     {

@@ -2,7 +2,7 @@
 using CinemaTicketingSystem.Domain.Core;
 using FluentValidation;
 
-namespace CinemaTicketingSystem.API.Movie.Create;
+namespace CinemaTicketingSystem.API.CinemaManagement.Movie.Create;
 
 public class CreateMovieValidator : AbstractValidator<CreateMovieRequest>
 {

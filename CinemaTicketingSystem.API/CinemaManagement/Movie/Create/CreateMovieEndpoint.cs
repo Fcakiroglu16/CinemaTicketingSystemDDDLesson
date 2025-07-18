@@ -7,13 +7,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 
-namespace CinemaTicketingSystem.API.Movie.Create;
+namespace CinemaTicketingSystem.API.CinemaManagement.Movie.Create;
 
 public static class CreateMovieEndpoint
 {
     public static RouteGroupBuilder CreateMovieGroupItemEndpoint(this RouteGroupBuilder group)
     {
-        group.MapPost("/",
+        group.MapPost("/movie",
                 async (CreateMovieRequest request, [FromServices] IMovieAppService movieAppService) =>
                     (await movieAppService.CreateAsync(request)).ToGenericResult())
             .WithName("CreateMovie")

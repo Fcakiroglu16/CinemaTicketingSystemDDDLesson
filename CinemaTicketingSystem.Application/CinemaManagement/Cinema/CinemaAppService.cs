@@ -1,6 +1,6 @@
 ﻿using CinemaTicketingSystem.Application.Abstraction;
 using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Cinema;
-using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Movie.Hall;
+using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Cinema.Hall;
 using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
 using CinemaTicketingSystem.Domain.CinemaManagement;
 using CinemaTicketingSystem.Domain.Repositories;
@@ -8,7 +8,7 @@ using System.Net;
 
 namespace CinemaTicketingSystem.Application.CinemaManagement.Cinema
 {
-    internal class CinemaAppService(ICinemaRepository cinemaRepository, IUnitOfWork unitOfWork) : IScopedDependency
+    public class CinemaAppService(ICinemaRepository cinemaRepository, IUnitOfWork unitOfWork) : IScopedDependency, ICinemaAppService
     {
 
         public async Task<AppResult> CreateAsync(CreateCinemaRequest request)
@@ -130,5 +130,37 @@ namespace CinemaTicketingSystem.Application.CinemaManagement.Cinema
 
 
         }
+
+
+
+        public async Task<AppResult<CinemaDto>> GetAllAsync(Guid cinemaId)
+        {
+            var cinema = await cinemaRepository.GetByIdAsync(cinemaId);
+            if (cinema is null)
+                return AppResult<CinemaDto>.Error("Cinema not found. The specified cinema ID does not exist in the system.",
+                    HttpStatusCode.NotFound);
+
+
+
+            var cinemaDto = new CinemaDto(cinema.Id, cinema.Name,
+                new AddressDto(cinema.Address.Country, cinema.Address.City, cinema.Address.District,
+                    cinema.Address.Street, cinema.Address.PostalCode, cinema.Address.Description));
+
+            return AppResult<CinemaDto>.SuccessAsOk(cinemaDto);
+        }
+
+        public async Task<AppResult<List<CinemaDto>>> GetAllAsync()
+        {
+            var cinemas = (await cinemaRepository.GetAllAsync()).ToList();
+            if (!cinemas.Any()) return AppResult<List<CinemaDto>>.SuccessAsOk([]);
+
+            var cinemaDtos = cinemas.ToList().Select(x => new CinemaDto(x.Id, x.Name,
+                    new AddressDto(x.Address.Country, x.Address.City, x.Address.District, x.Address.Street,
+                        x.Address.PostalCode, x.Address.Description)))
+                .ToList();
+
+            return AppResult<List<CinemaDto>>.SuccessAsOk(cinemaDtos);
+        }
+
     }
 }

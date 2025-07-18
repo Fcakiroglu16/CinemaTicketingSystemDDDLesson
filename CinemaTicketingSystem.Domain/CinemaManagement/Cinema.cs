@@ -18,8 +18,8 @@ public class Cinema : AuditedAggregateRoot<Guid>
         Address = address;
     }
 
-    public string? Name { get; private set; }
-    public Address? Address { get; private set; }
+    public string Name { get; private set; }
+    public Address Address { get; private set; }
     public virtual IReadOnlyCollection<CinemaHall> Halls => cinemaHalls.AsReadOnly();
 
     // Business behavior methods

@@ -1,6 +1,5 @@
 ﻿namespace CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Cinema
 {
-    public record RemoveCinemaHallRequest(Guid CinemaId, Guid HallId)
-    {
-    }
+    public record CinemaDto(Guid Id, string Name, AddressDto Address);
+
 }
