@@ -8,14 +8,14 @@ using System.Net;
 
 namespace CinemaTicketingSystem.Application.CinemaManagement.Cinema
 {
-    public class CinemaAppService(ICinemaRepository cinemaRepository, IUnitOfWork unitOfWork) : ICinemaAppService, IScopedDependency
+    public class CinemaAppService(ICinemaRepository cinemaRepository, IMovieRepository movieRepository, CinemaMovieDomainService cinemaMovieDomainService, IUnitOfWork unitOfWork) : ICinemaAppService, IScopedDependency
     {
 
         public async Task<AppResult> CreateAsync(CreateCinemaRequest request)
         {
 
             // Check if a cinema with the same name already exists
-            var existCinema = await cinemaRepository.ExistsAsync(c => c.Name.Equals(request.Name, StringComparison.OrdinalIgnoreCase));
+            var existCinema = await cinemaRepository.ExistsAsync(c => c.Name.Equals(request.Name));
             if (existCinema)
                 return AppResult.Error($"Cinema with name '{request.Name}' already exists", HttpStatusCode.BadRequest);
 
@@ -59,6 +59,10 @@ namespace CinemaTicketingSystem.Application.CinemaManagement.Cinema
             if (existCinemaHall is not null)
                 return AppResult.Error($"Cinema hall with name '{request.Name}' already exists in this cinema",
                     HttpStatusCode.BadRequest);
+
+
+
+
 
 
 
@@ -174,6 +178,58 @@ namespace CinemaTicketingSystem.Application.CinemaManagement.Cinema
                 .ToList();
 
             return AppResult<List<CinemaDto>>.SuccessAsOk(cinemaDtos);
+        }
+
+
+        public async Task<AppResult> AssignMovieToHall(Guid cinemaId, Guid hallId, Guid movieId)
+        {
+
+            var cinema = await cinemaRepository.GetByIdAsync(cinemaId);
+
+            if (cinema is null)
+                return AppResult.Error("Cinema not found. The specified cinema ID does not exist in the system.",
+                    HttpStatusCode.NotFound);
+
+            var hall = cinema.GetHall(hallId);
+            if (hall is null)
+                return AppResult.Error("Hall not found. The specified hall ID does not exist in the system.",
+                    HttpStatusCode.NotFound);
+
+
+
+            var movie = await movieRepository.GetByIdAsync(movieId);
+            if (movie is null)
+                return AppResult.Error("Movie not found. The specified movie ID does not exist in the system.",
+                    HttpStatusCode.NotFound);
+
+
+
+
+
+            var isAssignable = cinemaMovieDomainService.CanMovieBeAssignedToHall(movie, hall);
+
+
+
+            if (!isAssignable.IsSuccess) return AppResult.Error(isAssignable.Error, HttpStatusCode.BadRequest);
+
+
+
+
+            hall.AssignMovieToHall(movieId);
+            await cinemaRepository.UpdateAsync(cinema);
+            await unitOfWork.SaveChangesAsync();
+            return AppResult.SuccessAsNoContent();
+
+
+
+
+
+
+
+
+
+
+
         }
 
     }

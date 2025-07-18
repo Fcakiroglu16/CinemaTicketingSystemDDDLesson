@@ -5,12 +5,13 @@ POST {{HostAddress}}/api/v1/cinema-management/movies
 Accept: application/json
 Content-Type: application/json
 {
-  "title": "Inception2",
+  "title": "Inception",
   "originalTitle": "Inception",
   "description": "A mind-bending thriller that delves into the world of dreams.",
   "EarliestShowingDate": "2026-07-16T00:00:00Z",
   "duration": "02:30:00",
-  "posterImageUrl":"http://wwww.abc.com"
+  "posterImageUrl":"http://wwww.abc.com",
+  "supportedTechnology":1
 }
 
 ###
@@ -34,8 +35,8 @@ POST {{HostAddress}}/api/v1/cinema-management/cinemas/hall/add
 Accept: application/json
 Content-Type: application/json
 {
-  "cinemaId": "c4c79d0a-96f7-4c7e-a50c-47a9aa2acac5",
-  "name": "Hall 1 - IMAX Premium",
+  "cinemaId": "f93795b0-e16f-4d00-9fbf-7657e9257945",
+  "name": "Hall 2 - Strandart Premium",
   "technologies": [2, 32],
   "seatList": [
     {

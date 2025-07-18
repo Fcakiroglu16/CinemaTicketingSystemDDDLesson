@@ -22,6 +22,7 @@ public class Movie : AggregateRoot<Guid>
     public string Title { get; private set; } = null!;
     public string? OriginalTitle { get; private set; }
 
+    public HallTechnology SupportedTechnology { get; private set; } = HallTechnology.Standard;
     public string PosterImageUrl { get; private set; } = null!;
     public string? Description { get; private set; }
     public Duration Duration { get; private set; } = null!;

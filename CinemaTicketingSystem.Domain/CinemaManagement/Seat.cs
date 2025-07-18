@@ -4,7 +4,7 @@ namespace CinemaTicketingSystem.Domain.CinemaManagement;
 
 public class Seat : Entity<Guid>
 {
-    private Seat()
+    protected Seat()
     {
     }
 

@@ -2,10 +2,10 @@
 
 public class Cinema : AuditedAggregateRoot<Guid>
 {
-    private readonly List<CinemaHall> cinemaHalls = [];
 
 
-    public Cinema()
+
+    protected Cinema()
     {
     }
 
@@ -20,6 +20,7 @@ public class Cinema : AuditedAggregateRoot<Guid>
 
     public string Name { get; private set; }
     public Address Address { get; private set; }
+    private readonly List<CinemaHall> cinemaHalls = [];
     public virtual IReadOnlyCollection<CinemaHall> Halls => cinemaHalls.AsReadOnly();
 
     // Business behavior methods
@@ -70,4 +71,6 @@ public class Cinema : AuditedAggregateRoot<Guid>
     {
         return cinemaHalls.Where(h => h.IsOperational);
     }
+
+
 }

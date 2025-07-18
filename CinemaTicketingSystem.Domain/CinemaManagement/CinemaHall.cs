@@ -7,6 +7,9 @@ namespace CinemaTicketingSystem.Domain.CinemaManagement;
 
 public class CinemaHall : Entity<Guid>
 {
+    protected CinemaHall()
+    {
+    }
 
     public string Name { get; private set; }
     public HallTechnology SupportedTechnologies { get; private set; } = HallTechnology.Standard;
@@ -27,14 +30,21 @@ public class CinemaHall : Entity<Guid>
         Name = name;
         SupportedTechnologies = supportedTechnologies;
     }
-    private CinemaHall()
-    {
-    }
+
 
 
 
 
     public virtual Cinema Cinema { get; set; } = null!;
+
+
+    public void AssignMovieToHall(Guid movieId)
+    {
+
+
+        MovieId = movieId;
+    }
+
 
     // Technology management methods
     public void AddTechnology(HallTechnology technology)
@@ -52,16 +62,7 @@ public class CinemaHall : Entity<Guid>
         SupportedTechnologies = technologies;
     }
 
-    // Technology query methods
-    public bool SupportsIMAX()
-    {
-        return SupportedTechnologies.HasFlag(HallTechnology.IMAX);
-    }
 
-    public bool Supports3D()
-    {
-        return SupportedTechnologies.HasFlag(HallTechnology.ThreeD);
-    }
 
     public bool SupportsTechnology(HallTechnology technology)
     {
@@ -78,28 +79,11 @@ public class CinemaHall : Entity<Guid>
         return technologies.All(tech => SupportedTechnologies.HasFlag(tech));
     }
 
-    public IEnumerable<HallTechnology> GetSupportedTechnologies()
-    {
-        return Enum.GetValues<HallTechnology>()
-            .Where(tech => tech != HallTechnology.None && SupportedTechnologies.HasFlag(tech));
-    }
 
-    public string GetTechnologyDescription()
-    {
-        var techs = GetSupportedTechnologies().ToList();
-        return techs.Any() ? string.Join(", ", techs) : "Standard";
-    }
 
-    // Compatibility check methods
-    public bool IsCompatibleWith(HallTechnology requiredTechnology)
-    {
-        return SupportedTechnologies.HasFlag(requiredTechnology);
-    }
 
     public bool CanShowMovie(HallTechnology movieRequiredTechnology)
     {
-        if (movieRequiredTechnology == HallTechnology.None || movieRequiredTechnology == HallTechnology.Standard)
-            return true;
 
         return SupportedTechnologies.HasFlag(movieRequiredTechnology);
     }
