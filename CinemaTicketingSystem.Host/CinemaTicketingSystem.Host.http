@@ -6,11 +6,12 @@ Accept: application/json
 Content-Type: application/json
 {
   
-  "title": "Inception",
+  "title": "Inception2",
   "originalTitle": "Inception",
   "description": "A mind-bending thriller that delves into the world of dreams.",
   "EarliestShowingDate": "2026-07-16T00:00:00Z",
-  "duration": "02:30:00"
+  "duration": "02:30:00",
+  "posterImageUrl":"http://wwww.abc.com"
 
 }
 ###

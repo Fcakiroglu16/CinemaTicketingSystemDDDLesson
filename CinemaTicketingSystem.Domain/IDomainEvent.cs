@@ -1,6 +1,5 @@
+using MediatR;
+
 namespace CinemaTicketingSystem.Domain;
 
-public interface IDomainEvent
-{
-    DateTime OccurredOn { get; }
-}
+public interface IDomainEvent : INotification;

@@ -2,6 +2,7 @@
 
 public record CreateMovieRequest(
     string Title,
+    string PosterImageUrl,
     string? OriginalTitle,
     string? Description,
     TimeSpan Duration,

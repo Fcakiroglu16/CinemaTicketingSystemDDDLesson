@@ -1,6 +1,6 @@
 namespace CinemaTicketingSystem.Domain;
 
-public class AggregateRoot<T> : Entity<T>
+public class AggregateRoot<T> : Entity<T>, IAggregateRoot
 {
     private readonly List<IDomainEvent> _domainEvents = [];
 
@@ -13,7 +13,7 @@ public class AggregateRoot<T> : Entity<T>
     }
 
 
-    protected virtual void AddDomainEvent(IDomainEvent eventData)
+    public void AddDomainEvent(IDomainEvent eventData)
     {
         _domainEvents.Add(eventData);
     }

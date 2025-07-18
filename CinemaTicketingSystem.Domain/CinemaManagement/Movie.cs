@@ -5,19 +5,24 @@ namespace CinemaTicketingSystem.Domain.CinemaManagement;
 
 public class Movie : AggregateRoot<Guid>
 {
-    private Movie()
-    {
-    }
 
-    public Movie(string title, Duration duration)
+
+    public Movie(string title, Duration duration, string posterImageUrl)
     {
         Id = Guid.CreateVersion7();
         SetTitle(title);
+        SetPosterImageUrl(posterImageUrl);
+
         Duration = duration ?? throw new ArgumentNullException(nameof(duration));
+
+        AddDomainEvent(new MovieCreatedEvent(Id));
     }
 
+    public Movie() { }
     public string Title { get; private set; } = null!;
     public string? OriginalTitle { get; private set; }
+
+    public string PosterImageUrl { get; private set; } = null!;
     public string? Description { get; private set; }
     public Duration Duration { get; private set; } = null!;
     public DateTime? EarliestShowingDate { get; private set; }
@@ -30,7 +35,6 @@ public class Movie : AggregateRoot<Guid>
     {
         EarliestShowingDate = earliestDate.Date;
 
-        // Eğer mevcut gösterim tarihi bu tarihten erken ise uyarı ver
         if (ShowingStartDate.HasValue && ShowingStartDate < EarliestShowingDate)
             throw new InvalidOperationException(
                 $"Current showing start date ({ShowingStartDate:yyyy-MM-dd}) cannot be earlier than earliest showing date ({EarliestShowingDate:yyyy-MM-dd})");
@@ -90,6 +94,22 @@ public class Movie : AggregateRoot<Guid>
         Title = title.Trim();
     }
 
+
+    public void SetPosterImageUrl(string posterImageUrl)
+    {
+        if (string.IsNullOrWhiteSpace(posterImageUrl))
+            throw new ArgumentException("Poster Image URL cannot be empty", nameof(posterImageUrl));
+        if (posterImageUrl.Length > MovieConst.PosterImageUrlMaxLength)
+            throw new ArgumentOutOfRangeException(nameof(posterImageUrl),
+                $"Poster Image URL cannot exceed {MovieConst.PosterImageUrlMaxLength} characters");
+
+
+        if (!Uri.TryCreate(posterImageUrl, UriKind.Absolute, out _))
+            throw new ArgumentException("Invalid poster image URL", nameof(posterImageUrl));
+
+
+        PosterImageUrl = posterImageUrl.Trim();
+    }
     public void SetOriginalTitle(string originalTitle)
     {
         if (string.IsNullOrWhiteSpace(originalTitle))
