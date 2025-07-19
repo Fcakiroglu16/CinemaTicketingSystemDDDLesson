@@ -1,4 +1,5 @@
 ﻿using CinemaTicketingSystem.Domain.CinemaManagement;
+using CinemaTicketingSystem.Domain.Scheduling;
 using CinemaTicketingSystem.Domain.Ticketing.Reservations;
 using CinemaTicketingSystem.Domain.Ticketing.Tickets;
 using CinemaTicketingSystem.Persistence.Accounts;
@@ -18,7 +19,20 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, IPublisher pub
     public DbSet<SeatReservation> SeatReservations { get; set; }
 
 
+
+
+    public DbSet<CinemaHallSchedule> CinemaHallSchedules { get; set; }
+
+    public DbSet<MovieSchedule> MovieSchedules { get; set; }
+
+
+
+
+
+    public DbSet<Cinema> Cinemas { get; set; }
     public DbSet<Movie> Movies { get; set; }
+
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

@@ -26,7 +26,5 @@ public class ShowTimeConfiguration : IEntityTypeConfiguration<ShowTime>
             .IsRequired()
             .HasColumnType("time");
 
-
-        builder.HasQueryFilter(h => EF.Property<bool>(h.MovieSchedule, "IsDeleted") == false);
     }
 }

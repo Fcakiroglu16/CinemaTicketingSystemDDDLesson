@@ -1,14 +1,28 @@
-﻿namespace CinemaTicketingSystem.Domain.Scheduling;
+﻿using CinemaTicketingSystem.Domain.CinemaManagement;
+using CinemaTicketingSystem.Domain.Core;
 
-public class MovieSchedule : AuditedAggregateRoot<Guid>
+namespace CinemaTicketingSystem.Domain.Scheduling;
+
+public class MovieSchedule : AggregateRoot<Guid>
 {
+
+    public Guid MovieId { get; set; }
+
+    public Duration Duration { get; set; }
+
+    public HallTechnology SupportedTechnology { get; private set; } = HallTechnology.Standard;
+
     private readonly List<ShowTime> showTimes = [];
 
-    private MovieSchedule()
+
+    private List<CinemaHallSchedule> _cinemaHallSchedules = [];
+
+    public virtual IReadOnlyList<CinemaHallSchedule> CinemaHallSchedules => _cinemaHallSchedules.AsReadOnly();
+
+    protected MovieSchedule()
     {
     }
 
-    public Guid MovieId { get; private set; }
     public virtual IReadOnlyCollection<ShowTime> ShowTimes => showTimes.AsReadOnly();
 
     public void AddShowTime(ShowTime showTime)

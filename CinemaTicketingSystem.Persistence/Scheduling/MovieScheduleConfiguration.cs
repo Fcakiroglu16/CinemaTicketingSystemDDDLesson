@@ -21,27 +21,27 @@ public class MovieScheduleConfiguration : IEntityTypeConfiguration<MovieSchedule
         builder.Property(ms => ms.MovieId)
             .IsRequired();
 
-        // Audit properties (inherited from AuditedAggregateRoot)
-        builder.Property(ms => ms.CreationTime)
-            .IsRequired();
+        // Owned type for Duration (Value Object)
+        builder.OwnsOne(m => m.Duration, duration =>
+        {
+            duration.Property(d => d.Minutes)
+                .IsRequired()
+                .HasColumnName("DurationMinutes");
 
-        builder.Property(ms => ms.CreatorId)
-            .IsRequired();
+            // Computed columns for convenience
+            duration.Ignore(d => d.Hours);
+            duration.Ignore(d => d.RemainingMinutes);
+        });
 
-        builder.Property(ms => ms.LastModificationTime);
-
-        builder.Property(ms => ms.LastModifierId);
-
-        builder.Property(ms => ms.IsDeleted)
-            .HasDefaultValue(false);
-
-        builder.Property(ms => ms.DeleterId);
-
-        builder.Property(ms => ms.DeletionTime);
+        builder.Property(ms => ms.SupportedTechnology);
 
         // Relationships
-        builder.HasMany(x => x.ShowTimes).WithOne(x => x.MovieSchedule);
+        builder.HasMany(ms => ms.ShowTimes).WithOne(st => st.MovieSchedule);
 
-        builder.HasQueryFilter(ms => !ms.IsDeleted);
+        builder.HasMany(x => x.CinemaHallSchedules).WithMany(x => x.MovieSchedules);
+
+        //  builder.Metadata.FindNavigation(nameof(MovieSchedule.CinemaHallSchedules))!.SetField("cinemaHallSchedules");
+
+
     }
 }

@@ -3,6 +3,7 @@ using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Cinema;
 using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Cinema.Hall;
 using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
 using CinemaTicketingSystem.Domain.CinemaManagement;
+using CinemaTicketingSystem.Domain.Core;
 using CinemaTicketingSystem.Domain.Repositories;
 using System.Net;
 

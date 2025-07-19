@@ -1,8 +1,9 @@
 ﻿using CinemaTicketingSystem.Domain.CinemaManagement;
+using CinemaTicketingSystem.Domain.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CinemaTicketingSystem.Persistence.CinemaManagment.Configurations;
+namespace CinemaTicketingSystem.Persistence.CinemaManagement.Configurations;
 
 public class CinemaHallConfiguration : IEntityTypeConfiguration<CinemaHall>
 {
