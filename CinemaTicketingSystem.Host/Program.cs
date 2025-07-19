@@ -3,9 +3,13 @@ using CinemaTicketingSystem.API.CinemaManagement;
 using CinemaTicketingSystem.API.Extensions;
 using CinemaTicketingSystem.Application;
 using CinemaTicketingSystem.Application.Abstraction;
+using CinemaTicketingSystem.Application.Contracts;
+using CinemaTicketingSystem.Application.Schedules.IntegrationEventHandlers;
 using CinemaTicketingSystem.Domain;
+using CinemaTicketingSystem.Domain.CinemaManagement.DomainEvents;
 using CinemaTicketingSystem.Host;
 using CinemaTicketingSystem.Persistence;
+using CinemaTicketingSystem.ServiceBus;
 using FluentValidation;
 using MassTransit;
 
@@ -34,10 +38,22 @@ builder.Services.AddMediatR(configuration =>
 
 builder.Services.AddValidatorsFromAssembly(typeof(ApiAssembly).Assembly);
 
+
+builder.Services.AddScoped<IEventHandler<CinemaHallCreatedEvent>, CinemaHallCreatedEventHandler>();
+builder.Services.AddScoped<IEventHandler<MovieCreatedEvent>, MovieCreatedEventHandler>();
+
+builder.Services.AddScoped<IIntegrationEventBus, IntegrationEventBus>();
+
 builder.Services.AddMassTransit(configure =>
 {
 
-    configure.UsingInMemory();
+
+    configure.AddConsumer<MassTransitConsumerAdapter<CinemaHallCreatedEvent>>();
+    configure.AddConsumer<MassTransitConsumerAdapter<MovieCreatedEvent>>();
+    configure.UsingInMemory((context, cfg) =>
+    {
+        cfg.ConfigureEndpoints(context);
+    });
 });
 
 

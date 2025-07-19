@@ -70,7 +70,7 @@ namespace CinemaTicketingSystem.Application.CinemaManagement.Cinema
 
 
             var cinemaHall = new CinemaHall(request.Name,
-                request.Technologies.Cast<HallTechnology>().Aggregate((x, y) => x | y));
+                request.Technologies.Cast<ScreeningTechnology>().Aggregate((x, y) => x | y));
 
 
 
@@ -135,7 +135,7 @@ namespace CinemaTicketingSystem.Application.CinemaManagement.Cinema
 
 
             var cinemaHalls = cinema.Halls.Select(x => new CinemaHallDto(x.Name,
-                    Enum.GetValues<HallTechnology>()
+                    Enum.GetValues<ScreeningTechnology>()
                         .Where(tech => x.SupportedTechnologies.HasFlag(tech))
                         .Select(tech => (int)tech)
                         .ToArray(),

@@ -1,4 +1,6 @@
-﻿namespace CinemaTicketingSystem.Domain.CinemaManagement;
+﻿using CinemaTicketingSystem.Domain.CinemaManagement.DomainEvents;
+
+namespace CinemaTicketingSystem.Domain.CinemaManagement;
 
 public class Cinema : AuditedAggregateRoot<Guid>
 {
@@ -45,7 +47,10 @@ public class Cinema : AuditedAggregateRoot<Guid>
         if (cinemaHalls.Any(h => h.Name == hall.Name))
             throw new InvalidOperationException($"Hall with name '{hall.Name}' already exists");
 
+
         cinemaHalls.Add(hall);
+
+        AddDomainEvent(new CinemaHallCreatedEvent(hall.Id, hall.SupportedTechnologies, hall.Capacity));
     }
 
     public void RemoveHall(Guid hallId)

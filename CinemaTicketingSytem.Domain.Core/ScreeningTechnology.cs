@@ -1,7 +1,7 @@
 namespace CinemaTicketingSystem.Domain.Core;
 
 [Flags]
-public enum HallTechnology
+public enum ScreeningTechnology
 {
 
     Standard = 1,

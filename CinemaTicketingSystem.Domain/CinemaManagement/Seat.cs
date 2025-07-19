@@ -17,13 +17,13 @@ public class Seat : Entity<Guid>
             throw new ArgumentException("Seat number must be positive");
 
         Row = row.ToUpper();
-        Number = number;
+        Number = (short)number;
         Type = type;
         Id = Guid.CreateVersion7();
     }
 
     public string Row { get; } = null!;
-    public int Number { get; }
+    public short Number { get; }
     public SeatType Type { get; private set; }
     public bool IsAvailable { get; private set; } = true;
 

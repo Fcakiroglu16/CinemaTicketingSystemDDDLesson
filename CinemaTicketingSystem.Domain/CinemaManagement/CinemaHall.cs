@@ -12,18 +12,18 @@ public class CinemaHall : Entity<Guid>
     }
 
     public string Name { get; private set; }
-    public HallTechnology SupportedTechnologies { get; private set; } = HallTechnology.Standard;
+    public ScreeningTechnology SupportedTechnologies { get; private set; } = ScreeningTechnology.Standard;
     private readonly List<Seat> seats = [];
     public virtual IReadOnlyList<Seat> Seats => seats.AsReadOnly();
     public bool IsOperational { get; private set; } = true;
 
 
 
-    public int Capacity => Seats.Count;
+    public short Capacity => (short)Seats.Count;
 
 
     // Constructor
-    public CinemaHall(string name, HallTechnology supportedTechnologies = HallTechnology.Standard)
+    public CinemaHall(string name, ScreeningTechnology supportedTechnologies = ScreeningTechnology.Standard)
     {
         Id = Guid.CreateVersion7();
         Name = name;
@@ -40,34 +40,34 @@ public class CinemaHall : Entity<Guid>
 
 
     // Technology management methods
-    public void AddTechnology(HallTechnology technology)
+    public void AddTechnology(ScreeningTechnology technology)
     {
         SupportedTechnologies |= technology;
     }
 
-    public void RemoveTechnology(HallTechnology technology)
+    public void RemoveTechnology(ScreeningTechnology technology)
     {
         SupportedTechnologies &= ~technology;
     }
 
-    public void SetTechnologies(HallTechnology technologies)
+    public void SetTechnologies(ScreeningTechnology technologies)
     {
         SupportedTechnologies = technologies;
     }
 
 
 
-    public bool SupportsTechnology(HallTechnology technology)
+    public bool SupportsTechnology(ScreeningTechnology technology)
     {
         return SupportedTechnologies.HasFlag(technology);
     }
 
-    public bool SupportsAnyOf(params HallTechnology[] technologies)
+    public bool SupportsAnyOf(params ScreeningTechnology[] technologies)
     {
         return technologies.Any(tech => SupportedTechnologies.HasFlag(tech));
     }
 
-    public bool SupportsAllOf(params HallTechnology[] technologies)
+    public bool SupportsAllOf(params ScreeningTechnology[] technologies)
     {
         return technologies.All(tech => SupportedTechnologies.HasFlag(tech));
     }
@@ -75,7 +75,7 @@ public class CinemaHall : Entity<Guid>
 
 
 
-    public bool CanShowMovie(HallTechnology movieRequiredTechnology)
+    public bool CanShowMovie(ScreeningTechnology movieRequiredTechnology)
     {
 
         return SupportedTechnologies.HasFlag(movieRequiredTechnology);

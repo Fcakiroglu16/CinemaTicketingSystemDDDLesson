@@ -10,7 +10,7 @@ public class MovieSchedule : AggregateRoot<Guid>
 
     public Duration Duration { get; set; }
 
-    public HallTechnology SupportedTechnology { get; private set; } = HallTechnology.Standard;
+    public ScreeningTechnology SupportedTechnology { get; private set; } = ScreeningTechnology.Standard;
 
     private readonly List<ShowTime> showTimes = [];
 
@@ -21,6 +21,14 @@ public class MovieSchedule : AggregateRoot<Guid>
 
     protected MovieSchedule()
     {
+    }
+
+    public MovieSchedule(Guid movieId, Duration duration, ScreeningTechnology supportedTechnology)
+    {
+        Id = Guid.CreateVersion7();
+        MovieId = movieId;
+        Duration = duration;
+        SupportedTechnology = supportedTechnology;
     }
 
     public virtual IReadOnlyCollection<ShowTime> ShowTimes => showTimes.AsReadOnly();

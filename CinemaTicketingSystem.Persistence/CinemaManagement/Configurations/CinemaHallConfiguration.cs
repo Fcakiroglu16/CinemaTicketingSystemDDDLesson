@@ -30,7 +30,7 @@ public class CinemaHallConfiguration : IEntityTypeConfiguration<CinemaHall>
         // Enum configuration for HallTechnology (Flags enum)
         builder.Property(h => h.SupportedTechnologies)
             .HasConversion<int>()
-            .HasDefaultValue(HallTechnology.Standard);
+            .HasDefaultValue(ScreeningTechnology.Standard);
 
         // Foreign key to Cinema
         builder.Property<Guid>("CinemaId")

@@ -11,4 +11,8 @@
         <ProjectReference Include="..\CinemaTicketingSystem.Domain\CinemaTicketingSystem.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Schedules\EventHandlers\" />
+    </ItemGroup>
+
 </Project>
