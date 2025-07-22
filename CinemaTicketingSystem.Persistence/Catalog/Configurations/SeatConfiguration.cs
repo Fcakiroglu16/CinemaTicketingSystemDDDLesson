@@ -10,7 +10,7 @@ public class SeatConfiguration : IEntityTypeConfiguration<Seat>
     public void Configure(EntityTypeBuilder<Seat> builder)
     {
         // Table configuration
-        builder.ToTable("Seats", "cinema_mgmt");
+        builder.ToTable("Seats", "catalogs");
 
         // Primary key
         builder.HasKey(s => s.Id);

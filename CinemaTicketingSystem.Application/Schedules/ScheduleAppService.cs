@@ -8,7 +8,7 @@ using System.Net;
 
 namespace CinemaTicketingSystem.Application.Schedules;
 
-internal class ScheduleAppService(
+public class ScheduleAppService(
     IGenericRepository<Guid, CinemaHallSnapshot> cinemaHallScheduleRepository,
     IGenericRepository<Guid, MovieSnapshot> movieScheduleRepository, MovieHallCompatibilityService movieHallCompatibilityService, IScheduleRepository scheduleRepository, IUnitOfWork unitOfWork) : IScopedDependency, IScheduleAppService
 {
@@ -20,6 +20,7 @@ internal class ScheduleAppService(
         if (movie is null) return AppResult.Error("Movie not found", HttpStatusCode.NotFound);
 
 
+
         var hallSchedule = await cinemaHallScheduleRepository.GetByIdAsync(hallId);
 
         if (hallSchedule is null) return AppResult.Error("Hall not found", HttpStatusCode.NotFound);
@@ -29,12 +30,37 @@ internal class ScheduleAppService(
 
         var compatibilityResult = movieHallCompatibilityService.IsCompatible(movie, hallSchedule);
 
+
+
+
         if (!compatibilityResult.IsSuccess)
             return AppResult.Error(compatibilityResult.Error, HttpStatusCode.BadRequest);
 
 
 
-        var showTime = ShowTime.Create(request.StartTime, request.EndTime);
+        ShowTime showTime;
+
+
+        if (request.EndTime.HasValue)
+        {
+
+
+            if (!movie.IsValidDuration(request.StartTime, request.EndTime.Value))
+            {
+
+                return AppResult.Error("Movie duration is invalid for the given start and end times.",
+                    HttpStatusCode.BadRequest);
+            }
+
+
+            showTime = ShowTime.Create(request.StartTime, request.EndTime.Value);
+        }
+        else
+        {
+            showTime = ShowTime.Create(request.StartTime, movie.Duration);
+        }
+
+
 
         var schedules = (await scheduleRepository.WhereAsync(x => x.HallId == hallId)).ToList();
 

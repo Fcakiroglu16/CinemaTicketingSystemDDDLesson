@@ -1,5 +1,5 @@
 ﻿namespace CinemaTicketingSystem.Application.Abstraction.Schedule
 {
-    public class GetMoviesByHallId(Guid MovieId, TimeOnly Start, TimeOnly End);
+    public record GetMoviesByHallId(Guid MovieId, TimeOnly Start, TimeOnly End);
 
 }

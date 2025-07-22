@@ -9,6 +9,7 @@ internal class ScheduleConfiguration :
 {
     public void Configure(EntityTypeBuilder<Schedule> builder)
     {
+        builder.ToTable("Schedules", "scheduling");
         builder.HasKey(ms => ms.Id);
         builder.Property(ms => ms.Id)
             .ValueGeneratedNever();

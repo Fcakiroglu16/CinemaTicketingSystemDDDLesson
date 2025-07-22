@@ -4,6 +4,7 @@ using CinemaTicketingSystem.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaTicketingSystem.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250722205941_xxxv3")]
+    partial class xxxv3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -211,7 +214,7 @@ namespace CinemaTicketingSystem.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Schedules", "scheduling");
+                    b.ToTable("Schedules");
                 });
 
             modelBuilder.Entity("CinemaTicketingSystem.Domain.Ticketing.Reservations.ReservedSeat", b =>
@@ -590,8 +593,8 @@ namespace CinemaTicketingSystem.Persistence.Migrations
                             b1.Property<Guid>("MovieId")
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<double>("Minutes")
-                                .HasColumnType("float")
+                            b1.Property<int>("Minutes")
+                                .HasColumnType("int")
                                 .HasColumnName("DurationMinutes");
 
                             b1.HasKey("MovieId");
@@ -624,8 +627,8 @@ namespace CinemaTicketingSystem.Persistence.Migrations
                             b1.Property<Guid>("MovieSnapshotId")
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<double>("Minutes")
-                                .HasColumnType("float")
+                            b1.Property<int>("Minutes")
+                                .HasColumnType("int")
                                 .HasColumnName("DurationMinutes");
 
                             b1.HasKey("MovieSnapshotId");
@@ -657,7 +660,7 @@ namespace CinemaTicketingSystem.Persistence.Migrations
 
                             b1.HasKey("ScheduleId");
 
-                            b1.ToTable("Schedules", "scheduling");
+                            b1.ToTable("Schedules");
 
                             b1.WithOwner()
                                 .HasForeignKey("ScheduleId");

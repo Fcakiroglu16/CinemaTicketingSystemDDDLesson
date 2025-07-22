@@ -13,6 +13,7 @@ using CinemaTicketingSystem.Persistence;
 using CinemaTicketingSystem.ServiceBus;
 using FluentValidation;
 using MassTransit;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,7 +55,11 @@ builder.Services.AddMassTransit(configure =>
 builder.Services.AddVersioningExt();
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment()) app.MapOpenApi();
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    app.MapScalarApiReference();
+}
 
 app.AddCatalogGroupEndpointExt(app.AddVersionSetExt());
 app.AddScheduleGroupEndpointExt(app.AddVersionSetExt());

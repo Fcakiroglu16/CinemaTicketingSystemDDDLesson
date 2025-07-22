@@ -2,7 +2,7 @@
 
 public class Duration : ValueObject
 {
-    public Duration(int minutes)
+    public Duration(double minutes)
     {
         if (minutes <= 0)
             throw new ArgumentException("Duration must be positive", nameof(minutes));
@@ -12,9 +12,9 @@ public class Duration : ValueObject
         Minutes = minutes;
     }
 
-    public int Minutes { get; }
-    public int Hours => Minutes / 60;
-    public int RemainingMinutes => Minutes % 60;
+    public double Minutes { get; }
+    public double Hours => Minutes / 60;
+    public double RemainingMinutes => Minutes % 60;
 
     public TimeSpan ToTimeSpan()
     {
@@ -58,7 +58,7 @@ public class Duration : ValueObject
 
     public static Duration FromHoursAndMinutes(int hours, int minutes)
     {
-        return new Duration(hours * 60 + minutes);
+        return new Duration((hours * 60) + minutes);
     }
 
     public override string ToString()

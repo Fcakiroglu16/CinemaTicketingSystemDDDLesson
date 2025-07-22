@@ -2,7 +2,7 @@
 
 public class ShowTime : ValueObject
 {
-    private ShowTime()
+    protected ShowTime()
     {
     }
 
@@ -19,15 +19,11 @@ public class ShowTime : ValueObject
         };
     }
 
-    public static ShowTime Create(TimeOnly startTime, TimeSpan duration)
+    public static ShowTime Create(TimeOnly startTime, Duration duration)
     {
-        if (duration <= TimeSpan.Zero)
-            throw new ArgumentException("Duration must be positive", nameof(duration));
 
-        if (duration.TotalHours > 8)
-            throw new ArgumentException("Duration cannot exceed 8 hours", nameof(duration));
-
-        var endTime = startTime.Add(duration);
+        if (duration.Minutes <= 0) throw new ArgumentException("Duration must be positive", nameof(duration));
+        var endTime = startTime.Add(duration.ToTimeSpan());
 
         return new ShowTime
         {
@@ -35,6 +31,7 @@ public class ShowTime : ValueObject
             EndTime = endTime
         };
     }
+
 
     public TimeOnly StartTime { get; private set; }
     public TimeOnly EndTime { get; private set; }
@@ -50,9 +47,8 @@ public class ShowTime : ValueObject
 
 
         var thisEndTimeWithCleaning = EndTime.AddMinutes(cleaningTime);
-        var otherStartTimeWithCleaning = other.StartTime.AddMinutes(-cleaningTime);
 
-        return thisEndTimeWithCleaning > otherStartTimeWithCleaning;
+        return thisEndTimeWithCleaning > other.StartTime;
 
 
     }

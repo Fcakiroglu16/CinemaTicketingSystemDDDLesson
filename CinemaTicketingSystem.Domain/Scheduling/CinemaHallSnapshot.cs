@@ -15,13 +15,12 @@ public class CinemaHallSnapshot : AggregateRoot<Guid>
             throw new ArgumentException("Cinema hall ID cannot be empty", nameof(cinemaHallId));
         if (seatCount <= 0) throw new ArgumentOutOfRangeException(nameof(seatCount), "Seat count must be positive");
 
-        Id = Guid.CreateVersion7();
-        CinemaHallId = cinemaHallId;
+
+        Id = cinemaHallId;
         SeatCount = seatCount;
         SupportedTechnologies = supportedTechnologies;
     }
 
-    public Guid CinemaHallId { get; set; }
 
     public ScreeningTechnology SupportedTechnologies { get; private set; } = ScreeningTechnology.Standard;
 

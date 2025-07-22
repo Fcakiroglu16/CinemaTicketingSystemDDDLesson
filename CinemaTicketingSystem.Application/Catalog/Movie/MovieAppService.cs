@@ -1,11 +1,12 @@
-﻿using System.Net;
-using CinemaTicketingSystem.Application.Abstraction;
-using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Movie;
+﻿using CinemaTicketingSystem.Application.Abstraction;
+using CinemaTicketingSystem.Application.Abstraction.Catalog.Movie;
+using CinemaTicketingSystem.Application.Abstraction.Catalog.Movie.Create;
 using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Movie.Create;
 using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
 using CinemaTicketingSystem.Domain;
 using CinemaTicketingSystem.Domain.Catalog.Repositories;
 using CinemaTicketingSystem.Domain.Repositories;
+using System.Net;
 
 namespace CinemaTicketingSystem.Application.Catalog.Movie;
 
@@ -18,7 +19,7 @@ public class MovieAppService(IMovieRepository movieRepository, IUnitOfWork unitO
 
         if (existMovie) return AppResult<CreateMovieResponse>.Error("Movie already exists", HttpStatusCode.BadRequest);
 
-        var newMovie = new Domain.Catalog.Movie(request.Title, new Duration(request.Duration.Minutes),
+        var newMovie = new Domain.Catalog.Movie(request.Title, new Duration(request.Duration.TotalMinutes),
             request.PosterImageUrl);
 
 
@@ -30,5 +31,16 @@ public class MovieAppService(IMovieRepository movieRepository, IUnitOfWork unitO
         await movieRepository.AddAsync(newMovie);
         await unitOfWork.SaveChangesAsync();
         return AppResult<CreateMovieResponse>.SuccessAsCreated(new CreateMovieResponse(newMovie.Id), "");
+    }
+
+    public async Task<AppResult<GetAllMovieResponse>> GetAllAsync()
+    {
+
+        var movies = await movieRepository.GetAllAsync();
+        return AppResult<GetAllMovieResponse>.SuccessAsOk(new GetAllMovieResponse(movies.Select(movie => new MovieDto(
+                movie.Id, movie.Title, movie.OriginalTitle, movie.PosterImageUrl, movie.Description,
+                movie.Duration.Minutes,
+                movie.Duration.GetFormattedDuration(), movie.SupportedTechnology))
+            .ToList()));
     }
 }

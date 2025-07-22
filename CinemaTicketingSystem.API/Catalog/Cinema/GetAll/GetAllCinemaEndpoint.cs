@@ -1,5 +1,5 @@
 ﻿using CinemaTicketingSystem.API.Extensions;
-using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Cinema;
+using CinemaTicketingSystem.Application.Abstraction.Catalog.Cinema;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;

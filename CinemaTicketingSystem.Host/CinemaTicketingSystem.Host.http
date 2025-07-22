@@ -1,21 +1,24 @@
 ﻿@HostAddress = http://localhost:5094
 
 ###
-POST {{HostAddress}}/api/v1/cinema-management/movies
+POST {{HostAddress}}/api/v1/catalogs/movies
 Accept: application/json
 Content-Type: application/json
 {
-  "title": "Inception 4",
+  "title": "Inception 1",
   "originalTitle": "Inception",
   "description": "A mind-bending thriller that delves into the world of dreams.",
   "EarliestShowingDate": "2026-07-16T00:00:00Z",
-  "duration": "02:30:00",
+  "duration": "01:30:00",
   "posterImageUrl":"http://wwww.abc.com",
   "supportedTechnology":1
 }
+###
+GET {{HostAddress}}/api/v1/catalogs/movies
+Accept: application/json
 
 ###
-POST {{HostAddress}}/api/v1/cinema-management/cinemas
+POST {{HostAddress}}/api/v1/catalogs/cinemas
 Accept: application/json
 Content-Type: application/json
 {
@@ -29,15 +32,18 @@ Content-Type: application/json
     "description": "Located in the heart of Beyoğlu, next to Galatasaray High School"
   }
 }
+###
+GET {{HostAddress}}/api/v1/catalogs/cinemas
+Accept: application/json
 
 ###
-POST {{HostAddress}}/api/v1/cinema-management/cinemas/hall/add
+POST {{HostAddress}}/api/v1/catalogs/cinemas/{8524f77d-ac60-4609-9719-9cf9cca722ce}/hall
 Accept: application/json
 Content-Type: application/json
 {
   "cinemaId": "f93795b0-e16f-4d00-9fbf-7657e9257945",
   "name": "Hall 5 - Strandart Premium",
-  "technologies": [2, 32],
+  "technologies": [1, 2],
   "seatList": [
     {
       "row": "A",
@@ -76,9 +82,20 @@ Content-Type: application/json
     }
   ]
 }
-
 ###
-GET {{HostAddress}}/api/v1/cinema-management/cinemas
+GET {{HostAddress}}/api/v1/catalogs/cinemas/8524f77d-ac60-4609-9719-9cf9cca722ce/hall
 Accept: application/json
-
 ###
+GET {{HostAddress}}/api/v1/schedules/halls/01983410-e9bd-7e1c-b6ab-509f63942506/movies
+Accept: application/json
+###
+
+POST {{HostAddress}}/api/v1/schedules/halls/01983410-e9bd-7e1c-b6ab-509f63942506/movies
+Accept: application/json
+Content-Type: application/json
+{
+  "movieId": "0198342a-d189-7272-b221-8ca8767a16ad",
+  "startTime": "17:05:00"
+}
+###
+

@@ -11,8 +11,8 @@ public class MovieCreatedEventHandler(
 {
     public async Task HandleAsync(MovieCreatedEvent message, CancellationToken cancellationToken = default)
     {
-        var movieSchedule = new MovieSnapshot(message.MovieId, message.Duration, message.Technology);
-        await movieScheduleRepository.AddAsync(movieSchedule, cancellationToken);
+        var movieSnapshot = new MovieSnapshot(message.MovieId, message.Duration, message.Technology);
+        await movieScheduleRepository.AddAsync(movieSnapshot, cancellationToken);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }

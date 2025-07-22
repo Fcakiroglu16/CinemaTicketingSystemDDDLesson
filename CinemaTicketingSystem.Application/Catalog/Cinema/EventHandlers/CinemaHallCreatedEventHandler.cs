@@ -9,7 +9,7 @@ internal class CinemaHallCreatedEventHandler(IIntegrationEventBus integrationEve
 {
     public async Task Handle(CinemaHallCreatedEvent notification, CancellationToken cancellationToken)
     {
-        Console.WriteLine("CinemaHallCreatedEventHandler çalıştı");
+
 
         await integrationEventBus.PublishAsync(notification, cancellationToken);
     }

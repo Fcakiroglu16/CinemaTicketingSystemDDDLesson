@@ -1,4 +1,6 @@
 ﻿using CinemaTicketingSystem.Application.Abstraction;
+using CinemaTicketingSystem.Application.Abstraction.Catalog.Cinema;
+using CinemaTicketingSystem.Application.Abstraction.Catalog.Cinema.Hall;
 using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Cinema;
 using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Cinema.Hall;
 using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
@@ -44,9 +46,9 @@ public class CinemaAppService(
     }
 
 
-    public async Task<AppResult> AddHallAsync(AddCinemaHallRequest request)
+    public async Task<AppResult> AddHallAsync(Guid cinemaId, AddCinemaHallRequest request)
     {
-        var cinema = await cinemaRepository.GetByIdAsync(request.CinemaId);
+        var cinema = await cinemaRepository.GetByIdAsync(cinemaId);
 
         if (cinema is null)
             return AppResult.Error("Cinema not found. The specified cinema ID does not exist in the system.",
@@ -112,7 +114,7 @@ public class CinemaAppService(
         if (!cinema.Halls.Any()) return AppResult<List<CinemaHallDto>>.SuccessAsOk([]);
 
 
-        var cinemaHalls = cinema.Halls.Select(x => new CinemaHallDto(x.Name,
+        var cinemaHalls = cinema.Halls.Select(x => new CinemaHallDto(x.Id, x.Name,
                 Enum.GetValues<ScreeningTechnology>()
                     .Where(tech => x.SupportedTechnologies.HasFlag(tech))
                     .Select(tech => (int)tech)

@@ -7,8 +7,9 @@ namespace CinemaTicketingSystem.Application.Catalog.Movie.EventHandlers;
 internal class MovieCreatedEventHandler(IIntegrationEventBus integrationEventBus)
     : INotificationHandler<MovieCreatedEvent>
 {
-    public Task Handle(MovieCreatedEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(MovieCreatedEvent notification, CancellationToken cancellationToken)
     {
-        return Task.CompletedTask;
+
+        await integrationEventBus.PublishAsync(notification, cancellationToken);
     }
 }

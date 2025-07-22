@@ -10,7 +10,7 @@ public class CinemaConfiguration : IEntityTypeConfiguration<Cinema>
     public void Configure(EntityTypeBuilder<Cinema> builder)
     {
         // Table configuration
-        builder.ToTable("Cinemas", "cinema_mgmt");
+        builder.ToTable("Cinemas", "catalogs");
 
         // Primary key
         builder.HasKey(c => c.Id);

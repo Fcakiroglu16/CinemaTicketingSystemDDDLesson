@@ -11,14 +11,30 @@ public class MovieSnapshot : AggregateRoot<Guid>
     public MovieSnapshot(Guid movieId, Duration duration,
         ScreeningTechnology supportedTechnology)
     {
-        MovieId = movieId;
+
+        Id = movieId;
         Duration = duration;
         SupportedTechnology = supportedTechnology;
     }
 
-    public Guid MovieId { get; set; }
+
 
     public Duration Duration { get; set; }
 
     public ScreeningTechnology SupportedTechnology { get; private set; } = ScreeningTechnology.Standard;
+
+
+    public bool IsValidDuration(TimeOnly startTime, TimeOnly endTime, int toleranceMinutes = 0)
+    {
+        if (startTime >= endTime)
+            throw new ArgumentException("Start time must be before end time");
+
+        var showDuration = endTime - startTime;
+        var movieDurationTimeSpan = Duration.ToTimeSpan();
+
+        var difference = Math.Abs((showDuration - movieDurationTimeSpan).TotalMinutes);
+
+        return difference <= toleranceMinutes;
+    }
+
 }

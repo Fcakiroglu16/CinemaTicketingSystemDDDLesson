@@ -1,4 +1,4 @@
-﻿using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Cinema.Hall;
+﻿using CinemaTicketingSystem.Application.Abstraction.Catalog.Cinema.Hall;
 using FluentValidation;
 
 namespace CinemaTicketingSystem.API.Catalog.Cinema.Hall.Add;
@@ -7,7 +7,7 @@ public class AddCinemaHallValidator : AbstractValidator<AddCinemaHallRequest>
 {
     public AddCinemaHallValidator()
     {
-        RuleFor(x => x.CinemaId).NotEmpty();
+
         RuleFor(x => x.Name).NotEmpty().MaximumLength(255);
         RuleFor(x => x.Technologies).NotEmpty();
         RuleFor(x => x.SeatList).NotEmpty().Must(x => x.Count > 0);

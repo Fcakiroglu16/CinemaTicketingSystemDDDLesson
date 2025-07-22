@@ -1,7 +1,9 @@
 ﻿using Asp.Versioning.Builder;
 using CinemaTicketingSystem.API.Catalog.Cinema.Create;
 using CinemaTicketingSystem.API.Catalog.Cinema.GetAll;
+using CinemaTicketingSystem.API.Catalog.Cinema.Hall;
 using CinemaTicketingSystem.API.Catalog.Cinema.Hall.Add;
+using CinemaTicketingSystem.API.Catalog.Movie;
 using CinemaTicketingSystem.API.Catalog.Movie.Create;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -17,6 +19,8 @@ public static class CatalogEndpointExt
             .CreateMovieGroupItemEndpoint()
             .CreateCinemaGroupItemEndpoint()
             .GetAllCinemaGroupItemEndpoint()
+            .GetAllMovieGroupItemEndpoint()
+            .GetAllCinemaHallGroupItemEndpoint()
             .AddCinemaHallGroupItemEndpoint();
     }
 }
