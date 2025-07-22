@@ -17,8 +17,6 @@ public static class GetAllCinemaEndpoint
             .MapToApiVersion(1, 0);
 
 
-
-
         return group;
     }
 }

@@ -1,6 +1,5 @@
-﻿namespace CinemaTicketingSystem.Domain
+﻿namespace CinemaTicketingSystem.Domain;
+
+public class DomainAssembly
 {
-    public class DomainAssembly
-    {
-    }
 }

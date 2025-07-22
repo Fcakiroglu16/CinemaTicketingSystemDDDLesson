@@ -1,10 +1,10 @@
-﻿using CinemaTicketingSystem.Application.Abstraction;
+﻿using System.Reflection;
+using CinemaTicketingSystem.Application.Abstraction;
 using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
 using CinemaTicketingSystem.Domain.Repositories;
 using CinemaTicketingSystem.Persistence;
 using CinemaTicketingSystem.Persistence.Accounts;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 namespace CinemaTicketingSystem.Host;
 
@@ -72,7 +72,8 @@ public static class ServiceCollectionExtensions
     }
 
 
-    public static IServiceCollection RegisterDomainServices(this IServiceCollection services, params Assembly[] assemblies)
+    public static IServiceCollection RegisterDomainServices(this IServiceCollection services,
+        params Assembly[] assemblies)
     {
         var domainServiceTypes = assemblies
             .SelectMany(a => a.GetTypes())
@@ -80,11 +81,7 @@ public static class ServiceCollectionExtensions
                            typeof(IDomainService).IsAssignableFrom(type))
             .ToList();
 
-        foreach (var domainServiceType in domainServiceTypes)
-        {
-
-            services.AddTransient(domainServiceType);
-        }
+        foreach (var domainServiceType in domainServiceTypes) services.AddTransient(domainServiceType);
 
         return services;
     }

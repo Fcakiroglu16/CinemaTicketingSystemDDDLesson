@@ -2,18 +2,15 @@
 using CinemaTicketingSystem.Domain.Catalog.DomainEvents;
 using MediatR;
 
-namespace CinemaTicketingSystem.Application.Catalog.Cinema.EventHandlers
+namespace CinemaTicketingSystem.Application.Catalog.Cinema.EventHandlers;
+
+internal class CinemaHallCreatedEventHandler(IIntegrationEventBus integrationEventBus)
+    : INotificationHandler<CinemaHallCreatedEvent>
 {
-    internal class CinemaHallCreatedEventHandler(IIntegrationEventBus integrationEventBus) : INotificationHandler<CinemaHallCreatedEvent>
+    public async Task Handle(CinemaHallCreatedEvent notification, CancellationToken cancellationToken)
     {
-        public async Task Handle(CinemaHallCreatedEvent notification, CancellationToken cancellationToken)
-        {
+        Console.WriteLine("CinemaHallCreatedEventHandler çalıştı");
 
-            Console.WriteLine("CinemaHallCreatedEventHandler çalıştı");
-
-            await integrationEventBus.PublishAsync(notification, cancellationToken);
-
-
-        }
+        await integrationEventBus.PublishAsync(notification, cancellationToken);
     }
 }

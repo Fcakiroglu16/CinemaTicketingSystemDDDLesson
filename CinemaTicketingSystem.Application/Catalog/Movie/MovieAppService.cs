@@ -1,10 +1,10 @@
-﻿using CinemaTicketingSystem.Application.Abstraction;
+﻿using System.Net;
+using CinemaTicketingSystem.Application.Abstraction;
 using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Movie;
 using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Movie.Create;
 using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
-using CinemaTicketingSystem.Domain.Repositories;
-using System.Net;
 using CinemaTicketingSystem.Domain;
+using CinemaTicketingSystem.Domain.Repositories;
 
 namespace CinemaTicketingSystem.Application.Catalog.Movie;
 
@@ -13,12 +13,12 @@ public class MovieAppService(IMovieRepository movieRepository, IUnitOfWork unitO
 {
     public async Task<AppResult<CreateMovieResponse>> CreateAsync(CreateMovieRequest request)
     {
-
         var existMovie = await movieRepository.CheckIfMovieExists(request.Title);
 
         if (existMovie) return AppResult<CreateMovieResponse>.Error("Movie already exists", HttpStatusCode.BadRequest);
 
-        var newMovie = new Domain.Catalog.Movie(request.Title, new Duration(request.Duration.Minutes), request.PosterImageUrl);
+        var newMovie = new Domain.Catalog.Movie(request.Title, new Duration(request.Duration.Minutes),
+            request.PosterImageUrl);
 
 
         if (request.OriginalTitle is not null) newMovie.SetOriginalTitle(request.OriginalTitle);

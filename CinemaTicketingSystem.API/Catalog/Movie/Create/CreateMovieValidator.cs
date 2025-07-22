@@ -15,12 +15,9 @@ public class CreateMovieValidator : AbstractValidator<CreateMovieRequest>
         RuleFor(x => x.EarliestShowingDate).GreaterThanOrEqualTo(DateTime.UtcNow);
 
 
-        RuleFor(x => x.PosterImageUrl).
-            NotEmpty()
+        RuleFor(x => x.PosterImageUrl).NotEmpty()
             .Must(BeAValidUrl)
             .WithMessage("Poster image URL must be a valid URL.");
-
-
     }
 
     private bool BeAValidUrl(string url)

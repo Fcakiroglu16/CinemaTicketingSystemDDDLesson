@@ -1,6 +1,5 @@
-﻿namespace CinemaTicketingSystem.API
+﻿namespace CinemaTicketingSystem.API;
+
+public class ApiAssembly
 {
-    public class ApiAssembly
-    {
-    }
 }

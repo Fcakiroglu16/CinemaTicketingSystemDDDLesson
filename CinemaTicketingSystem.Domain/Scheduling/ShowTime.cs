@@ -14,7 +14,6 @@ public class ShowTime : ValueObject
 
     protected override IEnumerable<object?> GetEqualityComponents()
     {
-
         yield return StartTime;
         yield return EndTime;
     }

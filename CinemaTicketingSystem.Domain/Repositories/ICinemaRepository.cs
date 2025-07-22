@@ -1,8 +1,7 @@
 ﻿using CinemaTicketingSystem.Domain.Catalog;
 
-namespace CinemaTicketingSystem.Domain.Repositories
+namespace CinemaTicketingSystem.Domain.Repositories;
+
+public interface ICinemaRepository : IGenericRepository<Guid, Cinema>
 {
-    public interface ICinemaRepository : IGenericRepository<Guid, Cinema>
-    {
-    }
 }

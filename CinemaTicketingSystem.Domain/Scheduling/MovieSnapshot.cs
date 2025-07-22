@@ -4,14 +4,6 @@ namespace CinemaTicketingSystem.Domain.Scheduling;
 
 public class MovieSnapshot : AggregateRoot<Guid>
 {
-
-    public Guid MovieId { get; set; }
-
-    public Duration Duration { get; set; }
-
-    public ScreeningTechnology SupportedTechnology { get; private set; } = ScreeningTechnology.Standard;
-
-
     protected MovieSnapshot()
     {
     }
@@ -24,9 +16,9 @@ public class MovieSnapshot : AggregateRoot<Guid>
         SupportedTechnology = supportedTechnology;
     }
 
+    public Guid MovieId { get; set; }
 
+    public Duration Duration { get; set; }
 
-
-
+    public ScreeningTechnology SupportedTechnology { get; private set; } = ScreeningTechnology.Standard;
 }
-

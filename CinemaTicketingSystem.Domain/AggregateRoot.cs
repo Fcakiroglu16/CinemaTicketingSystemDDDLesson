@@ -17,8 +17,6 @@ public class AggregateRoot<T> : Entity<T>, IAggregateRoot
     {
         _domainEvents.Add(eventData);
     }
-
-
 }
 
 public class AggregateRoot : Entity, IAggregateRoot
@@ -38,7 +36,4 @@ public class AggregateRoot : Entity, IAggregateRoot
     {
         _domainEvents.Add(eventData);
     }
-
-
-
 }

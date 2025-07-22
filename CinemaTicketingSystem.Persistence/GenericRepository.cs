@@ -1,7 +1,7 @@
-﻿using CinemaTicketingSystem.Domain;
+﻿using System.Linq.Expressions;
+using CinemaTicketingSystem.Domain;
 using CinemaTicketingSystem.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace CinemaTicketingSystem.Persistence;
 

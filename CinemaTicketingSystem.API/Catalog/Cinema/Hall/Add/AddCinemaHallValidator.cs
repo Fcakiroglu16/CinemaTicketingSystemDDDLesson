@@ -5,7 +5,6 @@ namespace CinemaTicketingSystem.API.Catalog.Cinema.Hall.Add;
 
 public class AddCinemaHallValidator : AbstractValidator<AddCinemaHallRequest>
 {
-
     public AddCinemaHallValidator()
     {
         RuleFor(x => x.CinemaId).NotEmpty();
@@ -21,4 +20,3 @@ public class AddCinemaHallValidator : AbstractValidator<AddCinemaHallRequest>
             });
     }
 }
-

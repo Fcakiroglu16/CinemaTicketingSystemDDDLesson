@@ -8,13 +8,7 @@ internal class MovieRepository(AppDbContext context) : GenericRepository<Guid, M
 {
     public Task<bool> CheckIfMovieExists(string title)
     {
-
-
         return _context.Movies.AnyAsync(m =>
-             m.Title.Equals(title));
-
-
+            m.Title.Equals(title));
     }
-
-
 }

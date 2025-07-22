@@ -15,7 +15,7 @@ public static class AddCinemaHallEndpoint
     {
         group.MapPost("/cinemas/hall/add",
                 async (AddCinemaHallRequest request, [FromServices] ICinemaAppService cinemaAppService) =>
-                    (await cinemaAppService.AddHallAsync(request)).ToGenericResult())
+                (await cinemaAppService.AddHallAsync(request)).ToGenericResult())
             .WithName("AddCinemaHall")
             .MapToApiVersion(1, 0)
             .AddEndpointFilter<ValidationFilter<AddCinemaHallValidator>>();

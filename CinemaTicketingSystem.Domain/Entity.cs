@@ -39,11 +39,4 @@ public abstract class Entity<TKey>
 
 public abstract class Entity
 {
-
 }
-
-
-
-
-
-

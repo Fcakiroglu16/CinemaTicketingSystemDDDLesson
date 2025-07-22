@@ -39,4 +39,3 @@ public class CreateCinemaValidator : AbstractValidator<CreateCinemaRequest>
             .MaximumLength(CinemaConst.AddressDescriptionMaxLength);
     }
 }
-

@@ -1,15 +1,13 @@
-﻿namespace CinemaTicketingSystem.Domain.Scheduling
+﻿namespace CinemaTicketingSystem.Domain.Scheduling;
+
+public class Schedule : AggregateRoot<Guid>
 {
-    public class Schedule : AggregateRoot<Guid>
+    protected Schedule()
     {
-        protected Schedule()
-        {
-        }
-
-        public Guid MovieId { get; set; }
-        public Guid HallId { get; set; }
-
-        public virtual ShowTime ShowTime { get; set; }
-
     }
+
+    public Guid MovieId { get; set; }
+    public Guid HallId { get; set; }
+
+    public virtual ShowTime ShowTime { get; set; }
 }

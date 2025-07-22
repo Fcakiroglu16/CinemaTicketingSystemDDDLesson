@@ -1,6 +1,5 @@
-﻿namespace CinemaTicketingSystem.Application.Abstraction
+﻿namespace CinemaTicketingSystem.Application.Abstraction;
+
+public interface IDomainService
 {
-    public interface IDomainService
-    {
-    }
 }

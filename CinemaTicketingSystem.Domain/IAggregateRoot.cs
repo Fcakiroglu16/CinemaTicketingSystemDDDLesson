@@ -1,12 +1,9 @@
-﻿namespace CinemaTicketingSystem.Domain
+﻿namespace CinemaTicketingSystem.Domain;
+
+public interface IAggregateRoot
 {
-    public interface IAggregateRoot
-    {
+    IReadOnlyCollection<IDomainEvent> DomainEvents { get; }
 
-        IReadOnlyCollection<IDomainEvent> DomainEvents { get; }
-
-        void ClearDomainEvents();
-        void AddDomainEvent(IDomainEvent eventData);
-
-    }
+    void ClearDomainEvents();
+    void AddDomainEvent(IDomainEvent eventData);
 }

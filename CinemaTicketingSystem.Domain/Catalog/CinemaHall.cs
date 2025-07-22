@@ -2,24 +2,13 @@
 
 namespace CinemaTicketingSystem.Domain.Catalog;
 
-
-
-
 public class CinemaHall : Entity<Guid>
 {
+    private readonly List<Seat> seats = [];
+
     protected CinemaHall()
     {
     }
-
-    public string Name { get; private set; }
-    public ScreeningTechnology SupportedTechnologies { get; private set; } = ScreeningTechnology.Standard;
-    private readonly List<Seat> seats = [];
-    public virtual IReadOnlyList<Seat> Seats => seats.AsReadOnly();
-    public bool IsOperational { get; private set; } = true;
-
-
-
-    public short Capacity => (short)Seats.Count;
 
 
     // Constructor
@@ -30,13 +19,16 @@ public class CinemaHall : Entity<Guid>
         SupportedTechnologies = supportedTechnologies;
     }
 
+    public string Name { get; private set; }
+    public ScreeningTechnology SupportedTechnologies { get; private set; } = ScreeningTechnology.Standard;
+    public virtual IReadOnlyList<Seat> Seats => seats.AsReadOnly();
+    public bool IsOperational { get; private set; } = true;
 
 
+    public short Capacity => (short)Seats.Count;
 
 
     public virtual Cinema Cinema { get; set; } = null!;
-
-
 
 
     // Technology management methods
@@ -56,7 +48,6 @@ public class CinemaHall : Entity<Guid>
     }
 
 
-
     public bool SupportsTechnology(ScreeningTechnology technology)
     {
         return SupportedTechnologies.HasFlag(technology);
@@ -73,11 +64,8 @@ public class CinemaHall : Entity<Guid>
     }
 
 
-
-
     public bool CanShowMovie(ScreeningTechnology movieRequiredTechnology)
     {
-
         return SupportedTechnologies.HasFlag(movieRequiredTechnology);
     }
 

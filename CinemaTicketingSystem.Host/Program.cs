@@ -34,8 +34,6 @@ builder.Services.AddMediatR(configuration =>
 });
 
 
-
-
 builder.Services.AddValidatorsFromAssembly(typeof(ApiAssembly).Assembly);
 
 
@@ -46,14 +44,9 @@ builder.Services.AddScoped<IIntegrationEventBus, IntegrationEventBus>();
 
 builder.Services.AddMassTransit(configure =>
 {
-
-
     configure.AddConsumer<MassTransitConsumerAdapter<CinemaHallCreatedEvent>>();
     configure.AddConsumer<MassTransitConsumerAdapter<MovieCreatedEvent>>();
-    configure.UsingInMemory((context, cfg) =>
-    {
-        cfg.ConfigureEndpoints(context);
-    });
+    configure.UsingInMemory((context, cfg) => { cfg.ConfigureEndpoints(context); });
 });
 
 

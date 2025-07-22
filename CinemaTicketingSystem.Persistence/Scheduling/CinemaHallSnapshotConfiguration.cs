@@ -20,7 +20,5 @@ public class CinemaHallSnapshotConfiguration : IEntityTypeConfiguration<CinemaHa
 
 
         builder.Property(ms => ms.SupportedTechnologies);
-
-
     }
 }

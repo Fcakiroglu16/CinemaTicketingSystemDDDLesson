@@ -5,17 +5,13 @@ namespace CinemaTicketingSystem.Domain.Catalog;
 
 public class Movie : AggregateRoot<Guid>
 {
-
-
-    public Movie(string title, Duration duration, string posterImageUrl) : this(title, duration, posterImageUrl, ScreeningTechnology.Standard)
+    public Movie(string title, Duration duration, string posterImageUrl) : this(title, duration, posterImageUrl,
+        ScreeningTechnology.Standard)
     {
-
-
     }
 
     public Movie(string title, Duration duration, string posterImageUrl, ScreeningTechnology supportedTechnology)
     {
-
         Id = Guid.CreateVersion7();
         SetTitle(title);
         SetPosterImageUrl(posterImageUrl);
@@ -27,7 +23,10 @@ public class Movie : AggregateRoot<Guid>
         AddDomainEvent(new MovieCreatedEvent(Id, duration, supportedTechnology));
     }
 
-    public Movie() { }
+    public Movie()
+    {
+    }
+
     public string Title { get; private set; } = null!;
     public string? OriginalTitle { get; private set; }
 
@@ -120,6 +119,7 @@ public class Movie : AggregateRoot<Guid>
 
         PosterImageUrl = posterImageUrl.Trim();
     }
+
     public void SetOriginalTitle(string originalTitle)
     {
         if (string.IsNullOrWhiteSpace(originalTitle))

@@ -31,9 +31,5 @@ public class MovieSnapshotConfiguration : IEntityTypeConfiguration<MovieSnapshot
         });
 
         builder.Property(ms => ms.SupportedTechnology);
-
-
-
-
     }
 }

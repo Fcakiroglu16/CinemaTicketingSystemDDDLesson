@@ -15,7 +15,7 @@ public static class CreateCinemaEndpoint
     {
         group.MapPost("/cinemas",
                 async (CreateCinemaRequest request, [FromServices] ICinemaAppService cinemaAppService) =>
-                    (await cinemaAppService.CreateAsync(request)).ToGenericResult())
+                (await cinemaAppService.CreateAsync(request)).ToGenericResult())
             .WithName("CreateCinema")
             .MapToApiVersion(1, 0)
             .AddEndpointFilter<ValidationFilter<CreateMovieRequest>>();

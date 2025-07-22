@@ -15,7 +15,7 @@ public static class CreateMovieEndpoint
     {
         group.MapPost("/movies",
                 async (CreateMovieRequest request, [FromServices] IMovieAppService movieAppService) =>
-                    (await movieAppService.CreateAsync(request)).ToGenericResult())
+                (await movieAppService.CreateAsync(request)).ToGenericResult())
             .WithName("CreateMovie")
             .MapToApiVersion(1, 0)
             .AddEndpointFilter<ValidationFilter<CreateMovieRequest>>();
