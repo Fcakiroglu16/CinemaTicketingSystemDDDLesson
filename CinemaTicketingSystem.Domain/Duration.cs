@@ -1,4 +1,4 @@
-﻿namespace CinemaTicketingSystem.Domain.CinemaManagement;
+﻿namespace CinemaTicketingSystem.Domain;
 
 public class Duration : ValueObject
 {
@@ -58,7 +58,7 @@ public class Duration : ValueObject
 
     public static Duration FromHoursAndMinutes(int hours, int minutes)
     {
-        return new Duration(hours * 60 + minutes);
+        return new Duration((hours * 60) + minutes);
     }
 
     public override string ToString()

@@ -1,5 +1,4 @@
 ﻿using CinemaTicketingSystem.Domain.Catalog;
-using CinemaTicketingSystem.Domain.CinemaManagement;
 using CinemaTicketingSystem.Domain.Scheduling;
 using CinemaTicketingSystem.Domain.Ticketing.Reservations;
 using CinemaTicketingSystem.Domain.Ticketing.Tickets;
@@ -22,11 +21,11 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, IPublisher pub
 
 
 
-    public DbSet<CinemaHallSchedule> CinemaHallSchedules { get; set; }
+    public DbSet<CinemaHallSnapshot> CinemaHallSchedules { get; set; }
 
-    public DbSet<MovieSchedule> MovieSchedules { get; set; }
+    public DbSet<MovieSnapshot> MovieSchedules { get; set; }
 
-
+    public DbSet<Schedule> Schedules { get; set; }
 
 
 

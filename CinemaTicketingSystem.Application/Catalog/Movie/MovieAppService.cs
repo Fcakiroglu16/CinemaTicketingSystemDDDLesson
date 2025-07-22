@@ -2,9 +2,9 @@
 using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Movie;
 using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Movie.Create;
 using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
-using CinemaTicketingSystem.Domain.CinemaManagement;
 using CinemaTicketingSystem.Domain.Repositories;
 using System.Net;
+using CinemaTicketingSystem.Domain;
 
 namespace CinemaTicketingSystem.Application.Catalog.Movie;
 

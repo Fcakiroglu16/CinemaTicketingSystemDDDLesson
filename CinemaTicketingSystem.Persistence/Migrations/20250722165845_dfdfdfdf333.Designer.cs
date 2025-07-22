@@ -4,6 +4,7 @@ using CinemaTicketingSystem.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaTicketingSystem.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250722165845_dfdfdfdf333")]
+    partial class dfdfdfdf333
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -207,6 +210,7 @@ namespace CinemaTicketingSystem.Persistence.Migrations
             modelBuilder.Entity("CinemaTicketingSystem.Domain.Scheduling.Schedule", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("HallId")
@@ -215,9 +219,30 @@ namespace CinemaTicketingSystem.Persistence.Migrations
                     b.Property<Guid>("MovieId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("ShowTimeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("ShowTimeId");
+
                     b.ToTable("Schedules");
+                });
+
+            modelBuilder.Entity("CinemaTicketingSystem.Domain.Scheduling.ShowTime", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<TimeOnly>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeOnly>("StartTime")
+                        .HasColumnType("time");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ShowTimes", "scheduling");
                 });
 
             modelBuilder.Entity("CinemaTicketingSystem.Domain.Ticketing.Reservations.ReservedSeat", b =>
@@ -648,29 +673,13 @@ namespace CinemaTicketingSystem.Persistence.Migrations
 
             modelBuilder.Entity("CinemaTicketingSystem.Domain.Scheduling.Schedule", b =>
                 {
-                    b.OwnsOne("CinemaTicketingSystem.Domain.Scheduling.ShowTime", "ShowTime", b1 =>
-                        {
-                            b1.Property<Guid>("ScheduleId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<TimeOnly>("EndTime")
-                                .HasColumnType("time")
-                                .HasColumnName("ShowTime_EndTime");
-
-                            b1.Property<TimeOnly>("StartTime")
-                                .HasColumnType("time")
-                                .HasColumnName("ShowTime_StartTime");
-
-                            b1.HasKey("ScheduleId");
-
-                            b1.ToTable("Schedules");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ScheduleId");
-                        });
-
-                    b.Navigation("ShowTime")
+                    b.HasOne("CinemaTicketingSystem.Domain.Scheduling.ShowTime", "ShowTime")
+                        .WithMany()
+                        .HasForeignKey("ShowTimeId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ShowTime");
                 });
 
             modelBuilder.Entity("CinemaTicketingSystem.Domain.Ticketing.Reservations.ReservedSeat", b =>

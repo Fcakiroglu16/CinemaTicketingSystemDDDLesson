@@ -1,5 +1,4 @@
-﻿using CinemaTicketingSystem.Domain.CinemaManagement;
-using CinemaTicketingSystem.Domain.Core;
+﻿using CinemaTicketingSystem.Domain.Core;
 
 namespace CinemaTicketingSystem.Domain.Catalog.DomainEvents
 {

@@ -5,7 +5,7 @@ using CinemaTicketingSystem.Domain.Scheduling;
 
 namespace CinemaTicketingSystem.Application.Schedules
 {
-    internal class ScheduleAppService(IGenericRepository<Guid, CinemaHallSchedule> cinemeHallScheduleRepository, IGenericRepository<Guid, MovieSchedule> movieScheduleRepository) : IScopedDependency
+    internal class ScheduleAppService(IGenericRepository<Guid, CinemaHallSnapshot> cinemeHallScheduleRepository, IGenericRepository<Guid, MovieSnapshot> movieScheduleRepository) : IScopedDependency
     {
 
 
@@ -17,15 +17,15 @@ namespace CinemaTicketingSystem.Application.Schedules
             var hallSchedule = await cinemeHallScheduleRepository.GetByIdAsync(HallId);
 
 
-            if (movieSchedule == null || hallSchedule == null)
-            {
-                return AppResult.ErrorAsNotFound();
-            }
+            //if (movieSchedule == null || hallSchedule == null)
+            //{
+            //    return AppResult.ErrorAsNotFound();
+            //}
 
 
-            var showTime = new ShowTime(startTime, endTime);
+            //var showTime = new ShowTime(startTime, endTime);
 
-            movieSchedule.AddShowTime(showTime);
+            //movieSchedule.AddShowTime(showTime);
 
 
 

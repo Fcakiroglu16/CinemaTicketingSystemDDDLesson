@@ -41,6 +41,5 @@ public class CinemaHallConfiguration : IEntityTypeConfiguration<CinemaHall>
         builder.HasMany(x => x.Seats).WithOne(x => x.CinemaHall);
 
         builder.Metadata.FindNavigation(nameof(CinemaHall.Seats))!.SetField("seats");
-        builder.HasQueryFilter(h => EF.Property<bool>(h.Cinema, "IsDeleted") == false);
     }
 }

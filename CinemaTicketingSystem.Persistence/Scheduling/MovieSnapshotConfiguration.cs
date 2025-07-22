@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CinemaTicketingSystem.Persistence.Scheduling;
 
-public class MovieScheduleConfiguration : IEntityTypeConfiguration<MovieSchedule>
+public class MovieSnapshotConfiguration : IEntityTypeConfiguration<MovieSnapshot>
 {
-    public void Configure(EntityTypeBuilder<MovieSchedule> builder)
+    public void Configure(EntityTypeBuilder<MovieSnapshot> builder)
     {
         // Table configuration
-        builder.ToTable("MovieSchedules", "scheduling");
+        builder.ToTable("MovieSnapshot", "scheduling");
 
         // Primary key
         builder.HasKey(ms => ms.Id);
@@ -32,12 +32,7 @@ public class MovieScheduleConfiguration : IEntityTypeConfiguration<MovieSchedule
 
         builder.Property(ms => ms.SupportedTechnology);
 
-        // Relationships
-        builder.HasMany(ms => ms.ShowTimes).WithOne(st => st.MovieSchedule);
 
-        builder.HasOne(x => x.CinemaHallSchedule).WithMany(x => x.MovieSchedules);
-
-        //  builder.Metadata.FindNavigation(nameof(MovieSchedule.CinemaHallSchedules))!.SetField("cinemaHallSchedules");
 
 
     }
