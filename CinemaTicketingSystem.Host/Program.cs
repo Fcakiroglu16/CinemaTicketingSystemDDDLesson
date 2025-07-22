@@ -1,6 +1,7 @@
 using CinemaTicketingSystem.API;
 using CinemaTicketingSystem.API.Catalog;
 using CinemaTicketingSystem.API.Extensions;
+using CinemaTicketingSystem.API.Schedule;
 using CinemaTicketingSystem.Application;
 using CinemaTicketingSystem.Application.Abstraction;
 using CinemaTicketingSystem.Application.Contracts;
@@ -55,6 +56,7 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment()) app.MapOpenApi();
 
-app.AddCinemaManagementGroupEndpointExt(app.AddVersionSetExt());
+app.AddCatalogGroupEndpointExt(app.AddVersionSetExt());
+app.AddScheduleGroupEndpointExt(app.AddVersionSetExt());
 
 app.Run();

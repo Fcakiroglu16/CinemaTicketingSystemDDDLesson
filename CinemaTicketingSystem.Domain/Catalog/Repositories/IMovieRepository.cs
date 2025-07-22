@@ -1,6 +1,7 @@
 ﻿using CinemaTicketingSystem.Domain.Catalog;
+using CinemaTicketingSystem.Domain.Repositories;
 
-namespace CinemaTicketingSystem.Domain.Repositories;
+namespace CinemaTicketingSystem.Domain.Catalog.Repositories;
 
 public interface IMovieRepository : IGenericRepository<Guid, Movie>
 {

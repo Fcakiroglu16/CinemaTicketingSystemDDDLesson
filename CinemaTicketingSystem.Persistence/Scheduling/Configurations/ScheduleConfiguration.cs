@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CinemaTicketingSystem.Persistence.Scheduling;
+namespace CinemaTicketingSystem.Persistence.Scheduling.Configurations;
 
 internal class ScheduleConfiguration :
     IEntityTypeConfiguration<Schedule>

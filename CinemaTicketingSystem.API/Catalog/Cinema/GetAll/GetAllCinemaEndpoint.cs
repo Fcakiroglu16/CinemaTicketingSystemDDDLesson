@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 
-namespace CinemaTicketingSystem.API.CinemaManagement.Cinema.GetAll;
+namespace CinemaTicketingSystem.API.Catalog.Cinema.GetAll;
 
 public static class GetAllCinemaEndpoint
 {

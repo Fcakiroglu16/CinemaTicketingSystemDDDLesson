@@ -1,7 +1,7 @@
-﻿using System.Linq.Expressions;
-using CinemaTicketingSystem.Domain;
+﻿using CinemaTicketingSystem.Domain;
 using CinemaTicketingSystem.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace CinemaTicketingSystem.Persistence;
 
@@ -37,7 +37,7 @@ public class GenericRepository<TId, TEntity> : IGenericRepository<TId, TEntity> 
         return await _dbSet.ToListAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate,
+    public async Task<IEnumerable<TEntity>> WhereAsync(Expression<Func<TEntity, bool>> predicate,
         CancellationToken cancellationToken = default)
     {
         return await _dbSet.Where(predicate).ToListAsync(cancellationToken);

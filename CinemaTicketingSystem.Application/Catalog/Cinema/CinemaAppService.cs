@@ -1,11 +1,13 @@
-﻿using System.Net;
-using CinemaTicketingSystem.Application.Abstraction;
+﻿using CinemaTicketingSystem.Application.Abstraction;
 using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Cinema;
 using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Cinema.Hall;
 using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
+using CinemaTicketingSystem.Application.Abstraction.Schedule;
 using CinemaTicketingSystem.Domain.Catalog;
+using CinemaTicketingSystem.Domain.Catalog.Repositories;
 using CinemaTicketingSystem.Domain.Core;
 using CinemaTicketingSystem.Domain.Repositories;
+using System.Net;
 
 namespace CinemaTicketingSystem.Application.Catalog.Cinema;
 
@@ -185,5 +187,10 @@ public class CinemaAppService(
 
 
         return AppResult.SuccessAsNoContent();
+    }
+
+    public Task<AppResult> AddMovieToHall(AddMovieToHallRequest request)
+    {
+        throw new NotImplementedException();
     }
 }

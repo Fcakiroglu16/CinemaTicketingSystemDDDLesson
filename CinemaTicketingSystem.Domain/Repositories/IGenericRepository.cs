@@ -13,7 +13,7 @@ public interface IGenericRepository<in TId, TEntity> where TEntity : Entity<TId>
 
     Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default);
 
-    Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate,
+    Task<IEnumerable<TEntity>> WhereAsync(Expression<Func<TEntity, bool>> predicate,
         CancellationToken cancellationToken = default);
 
     Task<bool> ExistsAsync(TId id, CancellationToken cancellationToken = default);

@@ -1,31 +1,70 @@
 ﻿using CinemaTicketingSystem.Application.Abstraction;
 using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
+using CinemaTicketingSystem.Application.Abstraction.Schedule;
 using CinemaTicketingSystem.Domain.Repositories;
 using CinemaTicketingSystem.Domain.Scheduling;
+using CinemaTicketingSystem.Domain.Scheduling.Repositories;
+using System.Net;
 
 namespace CinemaTicketingSystem.Application.Schedules;
 
 internal class ScheduleAppService(
-    IGenericRepository<Guid, CinemaHallSnapshot> cinemeHallScheduleRepository,
-    IGenericRepository<Guid, MovieSnapshot> movieScheduleRepository) : IScopedDependency
+    IGenericRepository<Guid, CinemaHallSnapshot> cinemaHallScheduleRepository,
+    IGenericRepository<Guid, MovieSnapshot> movieScheduleRepository, MovieHallCompatibilityService movieHallCompatibilityService, IScheduleRepository scheduleRepository, IUnitOfWork unitOfWork) : IScopedDependency, IScheduleAppService
 {
-    public async Task<AppResult> AddMovieToHall(Guid HallId, Guid MovieId, TimeSpan startTime, TimeSpan endTime)
+    public async Task<AppResult> AddMovieToHall(Guid hallId, AddMovieToHallRequest request)
     {
-        var movieSchedule = await movieScheduleRepository.GetByIdAsync(MovieId);
-        var hallSchedule = await cinemeHallScheduleRepository.GetByIdAsync(HallId);
+        var movie = await movieScheduleRepository.GetByIdAsync(request.MovieId);
 
 
-        //if (movieSchedule == null || hallSchedule == null)
-        //{
-        //    return AppResult.ErrorAsNotFound();
-        //}
+        if (movie is null) return AppResult.Error("Movie not found", HttpStatusCode.NotFound);
 
 
-        //var showTime = new ShowTime(startTime, endTime);
+        var hallSchedule = await cinemaHallScheduleRepository.GetByIdAsync(hallId);
 
-        //movieSchedule.AddShowTime(showTime);
+        if (hallSchedule is null) return AppResult.Error("Hall not found", HttpStatusCode.NotFound);
 
+
+
+
+        var compatibilityResult = movieHallCompatibilityService.IsCompatible(movie, hallSchedule);
+
+        if (!compatibilityResult.IsSuccess)
+            return AppResult.Error(compatibilityResult.Error, HttpStatusCode.BadRequest);
+
+
+
+        var showTime = ShowTime.Create(request.StartTime, request.EndTime);
+
+        var schedules = (await scheduleRepository.WhereAsync(x => x.HallId == hallId)).ToList();
+
+
+        if (schedules.Any(x => x.ShowTime.ConflictsWith(showTime)))
+
+        {
+            return AppResult.Error(
+                $"Show time conflicts with existing schedule. Conflicting showtimes: {string.Join(", ", schedules.Where(x => x.ShowTime.ConflictsWith(showTime)).Select(x => x.ShowTime.GetDisplayInfo()))}",
+                HttpStatusCode.Conflict);
+
+        }
+
+        var schedule = new Schedule(request.MovieId, hallId, showTime);
+        await scheduleRepository.AddAsync(schedule);
+
+        await unitOfWork.SaveChangesAsync();
 
         return AppResult.SuccessAsNoContent();
     }
+
+    public async Task<AppResult<List<GetMoviesByHallId>>> GetMoviesByHallId(Guid hallId)
+    {
+
+        var schedules = await scheduleRepository.GetMoviesByHallIdAsync(hallId);
+
+
+        var response = schedules.Select(x => new GetMoviesByHallId(x.MovieId, x.ShowTime.StartTime, x.ShowTime.EndTime)).ToList();
+
+        return AppResult<List<GetMoviesByHallId>>.SuccessAsOk(response);
+    }
+
 }

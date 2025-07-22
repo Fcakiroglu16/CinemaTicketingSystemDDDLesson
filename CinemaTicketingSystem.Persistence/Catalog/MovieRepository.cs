@@ -1,5 +1,5 @@
 ﻿using CinemaTicketingSystem.Domain.Catalog;
-using CinemaTicketingSystem.Domain.Repositories;
+using CinemaTicketingSystem.Domain.Catalog.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaTicketingSystem.Persistence.Catalog;
