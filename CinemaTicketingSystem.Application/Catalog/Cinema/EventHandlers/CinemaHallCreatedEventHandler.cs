@@ -1,4 +1,4 @@
-﻿using CinemaTicketingSystem.Application.Contracts;
+﻿using CinemaTicketingSystem.Application.Abstraction.Contracts;
 using CinemaTicketingSystem.Domain.Catalog.DomainEvents;
 using MediatR;
 

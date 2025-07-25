@@ -1,5 +1,4 @@
 using CinemaTicketingSystem.Domain.Ticketing.Reservations.DomainEvents;
-using CinemaTicketingSystem.Domain.Ticketing.Reservations.Exceptions;
 using CinemaTicketingSystem.Domain.Ticketing.ValueObjects;
 
 namespace CinemaTicketingSystem.Domain.Ticketing.Reservations;
@@ -40,15 +39,15 @@ public class SeatReservation : AggregateRoot<Guid>
     public void AddSeat(ReservedSeat seat)
     {
         if (reservedSeats.Count >= MaxSeatsPerReservation)
-            throw new MaxSeatLimitExceededException(MaxSeatsPerReservation);
+            //throw new MaxSeatLimitExceededException(MaxSeatsPerReservation);
 
-        if (reservedSeats.Any(s => s.SeatNumber == seat.SeatNumber))
-            throw new DuplicateReservedSeatException(seat.SeatNumber);
+            if (reservedSeats.Any(s => s.SeatNumber == seat.SeatNumber))
+                //throw new DuplicateReservedSeatException(seat.SeatNumber);
 
-        if (Status != ReservationStatus.Pending)
-            throw new InvalidReservationStateException(Status, "add seats");
+                if (Status != ReservationStatus.Pending)
+                    //throw new InvalidReservationStateException(Status, "add seats");
 
-        reservedSeats.Add(seat);
+                    reservedSeats.Add(seat);
         AddDomainEvent(new SeatReservedEvent(Id, seat.SeatNumber, CustomerId));
     }
 
@@ -56,12 +55,12 @@ public class SeatReservation : AggregateRoot<Guid>
     {
         var seat = reservedSeats.FirstOrDefault(s => s.SeatNumber == seatNumber);
         if (seat == null)
-            throw new ReservedSeatNotFoundException(seatNumber);
+            //throw new ReservedSeatNotFoundException(seatNumber);
 
-        if (Status != ReservationStatus.Pending)
-            throw new InvalidReservationStateException(Status, "remove seats");
+            if (Status != ReservationStatus.Pending)
+                //throw new InvalidReservationStateException(Status, "remove seats");
 
-        reservedSeats.Remove(seat);
+                reservedSeats.Remove(seat);
         AddDomainEvent(new SeatReservationReleasedEvent(Id, seatNumber));
     }
 
@@ -78,15 +77,15 @@ public class SeatReservation : AggregateRoot<Guid>
     public void Confirm()
     {
         if (Status != ReservationStatus.Pending)
-            throw new InvalidReservationStateException(Status, "confirm");
+            //throw new InvalidReservationStateException(Status, "confirm");
 
-        if (!reservedSeats.Any())
-            throw new EmptyReservationException();
+            if (!reservedSeats.Any())
+                //throw new EmptyReservationException();
 
-        if (DateTime.UtcNow > ExpirationTime)
-            throw new ReservationExpiredException(ExpirationTime);
+                if (DateTime.UtcNow > ExpirationTime)
+                    //throw new ReservationExpiredException(ExpirationTime);
 
-        Status = ReservationStatus.Confirmed;
+                    Status = ReservationStatus.Confirmed;
         AddDomainEvent(new ReservationConfirmedEvent(Id, CustomerId, MovieSessionId));
     }
 
@@ -96,9 +95,9 @@ public class SeatReservation : AggregateRoot<Guid>
             return;
 
         if (Status == ReservationStatus.Expired)
-            throw new InvalidReservationStateException(Status, "cancel");
+            //throw new InvalidReservationStateException(Status, "cancel");
 
-        Status = ReservationStatus.Canceled;
+            Status = ReservationStatus.Canceled;
         AddDomainEvent(new ReservationCanceledEvent(Id, CustomerId, MovieSessionId));
     }
 

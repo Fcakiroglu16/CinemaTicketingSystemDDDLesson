@@ -1,0 +1,9 @@
+{
+  "Catalog:CinemaHallAlreadyExists": "Hall with name {0} already exists",
+  "Catalog:CinemaHallNotFound": "Cinema hall was not found",
+  "Catalog:SeatAlreadyExists": "Seat {0}{1} already exists",
+  "Catalog:CinemaAlreadyExists": "Cinema with name '{0}' already exists",
+  "Catalog:CinemaNotFound": "Cinema not found.",
+  "Catalog:MovieNotFound": "Movie not found.",
+  "Catalog:MovieAlreadyExists":  "Movie with title '{0}' already exists"
+}

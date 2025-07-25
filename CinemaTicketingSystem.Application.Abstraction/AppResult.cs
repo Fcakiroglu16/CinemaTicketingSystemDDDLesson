@@ -72,6 +72,20 @@ public class AppResult
         };
     }
 
+    public static AppResult Error(string errorCodeAsTitle, object[]? data = null,
+        HttpStatusCode statusCode = HttpStatusCode.BadRequest)
+    {
+        return new AppResult
+        {
+            Status = statusCode,
+            ProblemDetails = new AppProblemDetails
+            {
+                Title = data is not null ? string.Format(errorCodeAsTitle, data) : errorCodeAsTitle,
+                Status = statusCode.GetHashCode()
+            }
+        };
+
+    }
 
     public static AppResult ErrorFromValidation(IDictionary<string, object?> errors)
     {
@@ -147,6 +161,19 @@ public class AppResult<T> : AppResult
             {
                 Title = title,
                 Status = status.GetHashCode()
+            }
+        };
+    }
+
+    public static new AppResult<T> Error(string errorCodeAsTitle, object[]? data = null, HttpStatusCode statusCode = HttpStatusCode.BadRequest)
+    {
+        return new AppResult<T>
+        {
+            Status = statusCode,
+            ProblemDetails = new AppProblemDetails
+            {
+                Title = data is not null ? string.Format(errorCodeAsTitle, data) : errorCodeAsTitle,
+                Status = statusCode.GetHashCode()
             }
         };
     }

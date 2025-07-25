@@ -1,4 +1,6 @@
-﻿using CinemaTicketingSystem.Domain.Core;
+﻿using Ardalis.GuardClauses;
+using CinemaTicketingSystem.Domain.Core;
+using CinemaTicketingSystem.Domain.Core.Exceptions;
 
 namespace CinemaTicketingSystem.Domain.Catalog;
 
@@ -10,12 +12,11 @@ public class CinemaHall : Entity<Guid>
     {
     }
 
-
     // Constructor
     public CinemaHall(string name, ScreeningTechnology supportedTechnologies = ScreeningTechnology.Standard)
     {
         Id = Guid.CreateVersion7();
-        Name = name;
+        Name = Guard.Against.NullOrWhiteSpace(name, nameof(name), "Hall name cannot be empty");
         SupportedTechnologies = supportedTechnologies;
     }
 
@@ -24,12 +25,9 @@ public class CinemaHall : Entity<Guid>
     public virtual IReadOnlyList<Seat> Seats => seats.AsReadOnly();
     public bool IsOperational { get; private set; } = true;
 
-
     public short Capacity => (short)Seats.Count;
 
-
     public virtual Cinema Cinema { get; set; } = null!;
-
 
     // Technology management methods
     public void AddTechnology(ScreeningTechnology technology)
@@ -47,7 +45,6 @@ public class CinemaHall : Entity<Guid>
         SupportedTechnologies = technologies;
     }
 
-
     public bool SupportsTechnology(ScreeningTechnology technology)
     {
         return SupportedTechnologies.HasFlag(technology);
@@ -63,28 +60,22 @@ public class CinemaHall : Entity<Guid>
         return technologies.All(tech => SupportedTechnologies.HasFlag(tech));
     }
 
-
     public bool CanShowMovie(ScreeningTechnology movieRequiredTechnology)
     {
         return SupportedTechnologies.HasFlag(movieRequiredTechnology);
     }
 
-
     public void UpdateName(string newName)
     {
-        if (string.IsNullOrWhiteSpace(newName))
-            throw new ArgumentException("Hall name cannot be empty");
-
-        Name = newName;
+        Name = Guard.Against.NullOrWhiteSpace(newName, nameof(newName), "Hall name cannot be empty");
     }
 
     public void AddSeat(Seat seat)
     {
-        if (seat == null)
-            throw new ArgumentNullException(nameof(seat));
+        Guard.Against.Null(seat, nameof(seat));
 
         if (seats.Any(s => s.Row == seat.Row && s.Number == seat.Number))
-            throw new InvalidOperationException($"Seat {seat.Row}{seat.Number} already exists");
+            throw new SeatAlreadyExistsException(seat.Row, seat.Number);
 
         seats.Add(seat);
     }
@@ -92,8 +83,7 @@ public class CinemaHall : Entity<Guid>
     public void RemoveSeat(string row, int number)
     {
         var seat = seats.FirstOrDefault(s => s.Row == row && s.Number == number);
-        if (seat == null)
-            throw new InvalidOperationException($"Seat {row}{number} not found");
+        Guard.Against.Null(seat, nameof(seat), $"Seat {row}{number} not found");
 
         seats.Remove(seat);
     }
@@ -115,8 +105,8 @@ public class CinemaHall : Entity<Guid>
 
     public Seat GetSeat(string row, int number)
     {
-        return seats.FirstOrDefault(s => s.Row == row && s.Number == number)
-               ?? throw new InvalidOperationException($"Seat {row}{number} not found");
+        var seat = seats.FirstOrDefault(s => s.Row == row && s.Number == number);
+        return Guard.Against.Null(seat, nameof(seat), $"Seat {row}{number} not found");
     }
 
     public bool HasSeat(string row, int number)

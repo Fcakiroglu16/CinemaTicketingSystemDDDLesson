@@ -1,4 +1,6 @@
-﻿using CinemaTicketingSystem.Domain.Catalog.DomainEvents;
+﻿using Ardalis.GuardClauses;
+using CinemaTicketingSystem.Domain.Catalog.DomainEvents;
+using CinemaTicketingSystem.Domain.Core.Exceptions;
 
 namespace CinemaTicketingSystem.Domain.Catalog;
 
@@ -15,9 +17,9 @@ public class Cinema : AuditedAggregateRoot<Guid>
     // Constructor
     public Cinema(string name, Address address)
     {
-        Id = Guid.NewGuid();
-        Name = name;
-        Address = address;
+        Id = Guid.CreateVersion7();
+        Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
+        Address = Guard.Against.Null(address, nameof(address));
     }
 
     public string Name { get; private set; }
@@ -27,24 +29,22 @@ public class Cinema : AuditedAggregateRoot<Guid>
     // Business behavior methods
     public void UpdateName(string newName)
     {
-        if (string.IsNullOrWhiteSpace(newName))
-            throw new ArgumentException("Cinema name cannot be empty");
-
-        Name = newName;
+        Name = Guard.Against.NullOrWhiteSpace(newName, nameof(newName));
     }
 
     public void UpdateAddress(Address newAddress)
     {
-        Address = newAddress ?? throw new ArgumentNullException(nameof(newAddress));
+        Address = Guard.Against.Null(newAddress, nameof(newAddress));
     }
 
     public void AddHall(CinemaHall hall)
     {
-        if (hall == null)
-            throw new ArgumentNullException(nameof(hall));
+        Guard.Against.Null(hall, nameof(hall));
 
         if (cinemaHalls.Any(h => h.Name == hall.Name))
-            throw new InvalidOperationException($"Hall with name '{hall.Name}' already exists");
+        {
+            throw new CinemaHallAlreadyExistsException(hall.Name);
+        }
 
 
         cinemaHalls.Add(hall);
@@ -55,8 +55,9 @@ public class Cinema : AuditedAggregateRoot<Guid>
     public void RemoveHall(Guid hallId)
     {
         var hall = cinemaHalls.FirstOrDefault(h => h.Id == hallId);
-        if (hall == null)
-            throw new InvalidOperationException($"Hall with ID '{hallId}' not found");
+
+        if (hall is null)
+            throw new CinemaHallNotFoundException(hallId);
 
         cinemaHalls.Remove(hall);
     }

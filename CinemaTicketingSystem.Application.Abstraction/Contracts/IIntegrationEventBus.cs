@@ -1,4 +1,4 @@
-﻿namespace CinemaTicketingSystem.Application.Contracts;
+﻿namespace CinemaTicketingSystem.Application.Abstraction.Contracts;
 
 public interface IIntegrationEventBus
 {

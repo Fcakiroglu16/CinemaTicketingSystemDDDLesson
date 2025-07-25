@@ -37,6 +37,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistence", "Persistence"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaTicketingSystem.ServiceBus", "CinemaTicketingSystem.ServiceBus\CinemaTicketingSystem.ServiceBus.csproj", "{2300BEC5-F014-4EB8-921E-688F04041551}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaTicketingSystem.Caching", "CinemaTicketingSystem.Caching\CinemaTicketingSystem.Caching.csproj", "{2B471098-BA97-412E-A80B-F11CB8BA219A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{2300BEC5-F014-4EB8-921E-688F04041551}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2300BEC5-F014-4EB8-921E-688F04041551}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2300BEC5-F014-4EB8-921E-688F04041551}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B471098-BA97-412E-A80B-F11CB8BA219A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B471098-BA97-412E-A80B-F11CB8BA219A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B471098-BA97-412E-A80B-F11CB8BA219A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B471098-BA97-412E-A80B-F11CB8BA219A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,7 +104,8 @@ Global
 		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {ABB2EFFB-59C6-4171-A44A-7AA652BCB4FD}
 		{61CFCBD1-F1C2-4239-ABFA-73DC6698D975} = {F2B89BA6-2F87-48BF-8D5E-D40CB2D2FCE2}
 		{F2B89BA6-2F87-48BF-8D5E-D40CB2D2FCE2} = {5ED7C5E2-3A60-42D4-BFBE-76DA6F30C852}
-		{2300BEC5-F014-4EB8-921E-688F04041551} = {F2B89BA6-2F87-48BF-8D5E-D40CB2D2FCE2}
+		{2300BEC5-F014-4EB8-921E-688F04041551} = {5ED7C5E2-3A60-42D4-BFBE-76DA6F30C852}
+		{2B471098-BA97-412E-A80B-F11CB8BA219A} = {5ED7C5E2-3A60-42D4-BFBE-76DA6F30C852}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {33A146BF-7180-48A4-A876-A974CC5B5015}

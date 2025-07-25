@@ -35,7 +35,7 @@ Content-Type: application/json
 ###
 GET {{HostAddress}}/api/v1/catalogs/cinemas
 Accept: application/json
-
+Accept-Language: tr
 ###
 POST {{HostAddress}}/api/v1/catalogs/cinemas/{8524f77d-ac60-4609-9719-9cf9cca722ce}/hall
 Accept: application/json

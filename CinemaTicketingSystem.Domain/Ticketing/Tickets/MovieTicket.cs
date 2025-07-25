@@ -1,5 +1,4 @@
 ﻿using CinemaTicketingSystem.Domain.Ticketing.Tickets.DomainEvents;
-using CinemaTicketingSystem.Domain.Ticketing.Tickets.Exceptions;
 using CinemaTicketingSystem.Domain.Ticketing.ValueObjects;
 
 namespace CinemaTicketingSystem.Domain.Ticketing.Tickets;
@@ -31,12 +30,12 @@ public class MovieTicket : AggregateRoot<Guid>
     public void AddTicket(TicketSale ticket)
     {
         if (ticketSales.Count >= MaxTicketsPerPurchase)
-            throw new MaxTicketLimitExceededException(MaxTicketsPerPurchase);
+            // throw new MaxTicketLimitExceededException(MaxTicketsPerPurchase);
 
-        if (ticketSales.Any(t => t.SeatNumber == ticket.SeatNumber))
-            throw new DuplicateSeatException(ticket.SeatNumber);
+            if (ticketSales.Any(t => t.SeatNumber == ticket.SeatNumber))
+                // throw new DuplicateSeatException(ticket.SeatNumber);
 
-        ticketSales.Add(ticket);
+                ticketSales.Add(ticket);
         ApplyBulkDiscountIfEligible();
         AddDomainEvent(new TicketPurchasedEvent(ticket.Id, CustomerId!.Value, ticket.Price));
     }
@@ -45,9 +44,9 @@ public class MovieTicket : AggregateRoot<Guid>
     {
         var ticket = ticketSales.FirstOrDefault(t => t.SeatNumber == seatNumber);
         if (ticket is null)
-            throw new TicketNotFoundException(seatNumber);
+            // throw new TicketNotFoundException(seatNumber);
 
-        ticketSales.Remove(ticket);
+            ticketSales.Remove(ticket);
         AddDomainEvent(new TicketReleasedEvent(ticket.Id));
 
         ApplyBulkDiscountIfEligible();

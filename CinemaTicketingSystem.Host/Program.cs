@@ -1,10 +1,11 @@
 using CinemaTicketingSystem.API;
 using CinemaTicketingSystem.API.Catalog;
 using CinemaTicketingSystem.API.Extensions;
+using CinemaTicketingSystem.API.Localization;
 using CinemaTicketingSystem.API.Schedule;
 using CinemaTicketingSystem.Application;
 using CinemaTicketingSystem.Application.Abstraction;
-using CinemaTicketingSystem.Application.Contracts;
+using CinemaTicketingSystem.Application.Abstraction.Contracts;
 using CinemaTicketingSystem.Application.Schedules.IntegrationEventHandlers;
 using CinemaTicketingSystem.Domain;
 using CinemaTicketingSystem.Domain.Catalog.DomainEvents;
@@ -13,6 +14,8 @@ using CinemaTicketingSystem.Persistence;
 using CinemaTicketingSystem.ServiceBus;
 using FluentValidation;
 using MassTransit;
+using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +23,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 
+builder.Services.AddSingleton<IStringLocalizerFactory, JsonStringLocalizerFactory>();
+builder.Services.AddLocalization();
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[] { "en", "tr" };
+    options.SetDefaultCulture("en");
+    options.AddSupportedCultures(supportedCultures);
+    options.AddSupportedUICultures(supportedCultures);
+});
 
 builder.Services.RegisterPersistenceServices(builder.Configuration);
 builder.Services.AddWithConventions(typeof(ApplicationAssembly).Assembly,
@@ -53,8 +66,16 @@ builder.Services.AddMassTransit(configure =>
 
 
 builder.Services.AddVersioningExt();
+
+
+
+
+
+
 var app = builder.Build();
 
+var locOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>();
+app.UseRequestLocalization(locOptions.Value);
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();

@@ -1,4 +1,4 @@
-﻿using CinemaTicketingSystem.Application.Contracts;
+﻿using CinemaTicketingSystem.Application.Abstraction.Contracts;
 using MassTransit;
 
 namespace CinemaTicketingSystem.ServiceBus;

@@ -36,11 +36,8 @@ public class Schedule : AggregateRoot<Guid>
         if (newShowTime == null)
             throw new ArgumentNullException(nameof(newShowTime));
 
-        var oldShowTime = ShowTime;
         ShowTime = newShowTime;
 
-        // Domain event can be added here when needed
-        // AddDomainEvent(new ScheduleShowTimeUpdatedEvent(Id, oldShowTime, newShowTime));
     }
 
 

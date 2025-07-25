@@ -1,5 +1,4 @@
-﻿using CinemaTicketingSystem.Domain.Ticketing.Tickets.Exceptions;
-using CinemaTicketingSystem.Domain.Ticketing.ValueObjects;
+﻿using CinemaTicketingSystem.Domain.Ticketing.ValueObjects;
 
 namespace CinemaTicketingSystem.Domain.Ticketing.Tickets;
 
@@ -54,9 +53,9 @@ public class TicketSale : Entity<Guid>
     public void MarkAsUsed()
     {
         if (IsUsed)
-            throw new TicketAlreadyUsedException(TicketCode);
+            // throw new TicketAlreadyUsedException(TicketCode);
 
-        IsUsed = true;
+            IsUsed = true;
         UsedAt = DateTime.UtcNow;
     }
 }
