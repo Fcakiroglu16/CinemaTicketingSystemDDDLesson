@@ -1,4 +1,5 @@
-﻿using CinemaTicketingSystem.Domain.Core;
+﻿using Ardalis.GuardClauses;
+using CinemaTicketingSystem.Domain.Core;
 
 namespace CinemaTicketingSystem.Domain.Scheduling;
 
@@ -11,23 +12,20 @@ public class MovieSnapshot : AggregateRoot<Guid>
     public MovieSnapshot(Guid movieId, Duration duration,
         ScreeningTechnology supportedTechnology)
     {
-
-        Id = movieId;
-        Duration = duration;
+        Id = Guard.Against.Default(movieId, nameof(movieId));
+        Duration = Guard.Against.Null(duration, nameof(duration));
         SupportedTechnology = supportedTechnology;
     }
-
-
 
     public Duration Duration { get; set; }
 
     public ScreeningTechnology SupportedTechnology { get; private set; } = ScreeningTechnology.Standard;
 
-
     public bool IsValidDuration(TimeOnly startTime, TimeOnly endTime, int toleranceMinutes = 0)
     {
-        if (startTime >= endTime)
-            throw new ArgumentException("Start time must be before end time");
+        Guard.Against.InvalidInput(startTime, nameof(startTime), x => x >= endTime, "Start time must be before end time");
+
+        Guard.Against.Negative(toleranceMinutes, nameof(toleranceMinutes));
 
         var showDuration = endTime - startTime;
         var movieDurationTimeSpan = Duration.ToTimeSpan();
@@ -36,5 +34,4 @@ public class MovieSnapshot : AggregateRoot<Guid>
 
         return difference <= toleranceMinutes;
     }
-
 }

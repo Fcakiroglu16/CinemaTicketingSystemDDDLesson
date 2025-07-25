@@ -1,4 +1,6 @@
-﻿namespace CinemaTicketingSystem.Domain.Scheduling;
+﻿using Ardalis.GuardClauses;
+
+namespace CinemaTicketingSystem.Domain.Scheduling;
 
 public class ShowTime : ValueObject
 {
@@ -8,9 +10,7 @@ public class ShowTime : ValueObject
 
     public static ShowTime Create(TimeOnly startTime, TimeOnly endTime)
     {
-        if (startTime >= endTime)
-            throw new ArgumentException("Start time must be before end time", nameof(startTime));
-
+        Guard.Against.InvalidInput(startTime, nameof(startTime), x => x >= endTime, "Start time must be before end time");
 
         return new ShowTime
         {
@@ -21,8 +21,9 @@ public class ShowTime : ValueObject
 
     public static ShowTime Create(TimeOnly startTime, Duration duration)
     {
+        duration = Guard.Against.Null(duration, nameof(duration));
+        Guard.Against.NegativeOrZero(duration.Minutes, nameof(duration), "Duration must be positive");
 
-        if (duration.Minutes <= 0) throw new ArgumentException("Duration must be positive", nameof(duration));
         var endTime = startTime.Add(duration.ToTimeSpan());
 
         return new ShowTime
@@ -31,7 +32,6 @@ public class ShowTime : ValueObject
             EndTime = endTime
         };
     }
-
 
     public TimeOnly StartTime { get; private set; }
     public TimeOnly EndTime { get; private set; }
@@ -44,31 +44,20 @@ public class ShowTime : ValueObject
     /// </summary>
     public bool ConflictsWith(ShowTime other, int cleaningTime = 30)
     {
-
+        other = Guard.Against.Null(other, nameof(other));
+        Guard.Against.Negative(cleaningTime, nameof(cleaningTime));
 
         var thisEndTimeWithCleaning = EndTime.AddMinutes(cleaningTime);
-
         return thisEndTimeWithCleaning > other.StartTime;
-
-
     }
-
-
-
-
 
     /// <summary>
     /// Checks if this is a morning showtime
     /// </summary>
     public bool IsMorningShow()
     {
-        return StartTime.Hour >= 9 && StartTime.Hour < 12;
+        return StartTime.Hour is >= 9 and < 12;
     }
-
-
-
-
-
 
     /// <summary>
     /// Checks if this showtime is suitable for children's movies
@@ -76,14 +65,8 @@ public class ShowTime : ValueObject
     public bool IsSuitableForChildren()
     {
         // Children's movies are usually before 8 PM
-        return StartTime.Hour >= 10 && StartTime.Hour <= 20;
+        return StartTime.Hour is >= 10 and <= 20;
     }
-
-
-
-
-
-
 
     /// <summary>
     /// Checks if the showtime has started
@@ -101,8 +84,6 @@ public class ShowTime : ValueObject
         return currentTime >= EndTime;
     }
 
-
-
     /// <summary>
     /// Checks if the showtime duration is in the short film category
     /// </summary>
@@ -118,8 +99,6 @@ public class ShowTime : ValueObject
     {
         return Duration.TotalMinutes >= 180;
     }
-
-
 
     /// <summary>
     /// Returns showtime information as a formatted string

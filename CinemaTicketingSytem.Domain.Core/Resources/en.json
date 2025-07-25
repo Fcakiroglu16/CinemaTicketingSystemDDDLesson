@@ -5,5 +5,9 @@
   "Catalog:CinemaAlreadyExists": "Cinema with name '{0}' already exists",
   "Catalog:CinemaNotFound": "Cinema not found.",
   "Catalog:MovieNotFound": "Movie not found.",
-  "Catalog:MovieAlreadyExists":  "Movie with title '{0}' already exists"
+  "Catalog:MovieAlreadyExists": "Movie with title '{0}' already exists",
+  "Schedule:HallTechnologyNotSupported": "Hall does not support the movie's required technology.",
+  "Schedule:IMAXRequiresMinimumSeats": "IMAX movies require at least {0} seats.",
+  "Schedule:MovieDurationMismatch": "The specified showtime duration does not match the movie's duration.",
+  "Schedule:ShowTimeConflict": "Show time conflicts with existing schedule. Conflicting showtimes: {0}"
 }

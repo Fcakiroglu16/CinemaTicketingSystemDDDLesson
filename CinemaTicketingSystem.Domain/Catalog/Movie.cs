@@ -1,4 +1,5 @@
-﻿using CinemaTicketingSystem.Domain.Catalog.DomainEvents;
+﻿using Ardalis.GuardClauses;
+using CinemaTicketingSystem.Domain.Catalog.DomainEvents;
 using CinemaTicketingSystem.Domain.Core;
 
 namespace CinemaTicketingSystem.Domain.Catalog;
@@ -16,7 +17,7 @@ public class Movie : AggregateRoot<Guid>
         SetTitle(title);
         SetPosterImageUrl(posterImageUrl);
 
-        Duration = duration ?? throw new ArgumentNullException(nameof(duration));
+        Duration = Guard.Against.Null(duration, nameof(duration));
 
         SupportedTechnology = supportedTechnology;
 
@@ -42,11 +43,15 @@ public class Movie : AggregateRoot<Guid>
     // Earliest Showing Date Management
     public void SetEarliestShowingDate(DateTime earliestDate)
     {
+
+        Guard.Against.InvalidInput(earliestDate,
+            nameof(ShowingStartDate), x => ShowingStartDate.HasValue && ShowingStartDate < EarliestShowingDate,
+            $"Current showing start date ({ShowingStartDate:yyyy-MM-dd}) cannot be earlier than earliest showing date ({EarliestShowingDate:yyyy-MM-dd})");
+
         EarliestShowingDate = earliestDate.Date;
 
-        if (ShowingStartDate.HasValue && ShowingStartDate < EarliestShowingDate)
-            throw new InvalidOperationException(
-                $"Current showing start date ({ShowingStartDate:yyyy-MM-dd}) cannot be earlier than earliest showing date ({EarliestShowingDate:yyyy-MM-dd})");
+
+
     }
 
     public void ClearEarliestShowingDate()
@@ -93,46 +98,36 @@ public class Movie : AggregateRoot<Guid>
     // Title Management Helper Methods
     public void SetTitle(string title)
     {
-        if (string.IsNullOrWhiteSpace(title))
-            throw new ArgumentException("Title cannot be empty", nameof(title));
-
-
-        if (title.Length > MovieConst.TitleMaxLength)
-            throw new ArgumentOutOfRangeException(nameof(title),
-                $"Title cannot exceed {MovieConst.TitleMaxLength} characters");
+        title = Guard.Against.NullOrWhiteSpace(title, nameof(title));
+        Guard.Against.InvalidInput(title, nameof(title), x => title.Length > MovieConst.TitleMaxLength, $"Title cannot exceed {MovieConst.TitleMaxLength} characters");
         Title = title.Trim();
     }
 
-
     public void SetPosterImageUrl(string posterImageUrl)
     {
-        if (string.IsNullOrWhiteSpace(posterImageUrl))
-            throw new ArgumentException("Poster Image URL cannot be empty", nameof(posterImageUrl));
-        if (posterImageUrl.Length > MovieConst.PosterImageUrlMaxLength)
-            throw new ArgumentOutOfRangeException(nameof(posterImageUrl),
-                $"Poster Image URL cannot exceed {MovieConst.PosterImageUrlMaxLength} characters");
+        posterImageUrl = Guard.Against.NullOrWhiteSpace(posterImageUrl, nameof(posterImageUrl));
+
+        Guard.Against.InvalidInput(posterImageUrl, nameof(posterImageUrl), x => posterImageUrl.Length > MovieConst.PosterImageUrlMaxLength,
+            $"Poster Image URL cannot exceed {MovieConst.PosterImageUrlMaxLength} characters");
 
 
-        if (!Uri.TryCreate(posterImageUrl, UriKind.Absolute, out _))
-            throw new ArgumentException("Invalid poster image URL", nameof(posterImageUrl));
 
+
+
+        Guard.Against.InvalidInput(posterImageUrl, nameof(posterImageUrl), x => !Uri.TryCreate(posterImageUrl, UriKind.Absolute, out _),
+            "Invalid poster image URL");
 
         PosterImageUrl = posterImageUrl.Trim();
     }
 
     public void SetOriginalTitle(string originalTitle)
     {
-        if (string.IsNullOrWhiteSpace(originalTitle))
-            throw new ArgumentException("Original Title  cannot be empty", nameof(originalTitle));
-
-
-        if (originalTitle.Length > MovieConst.OriginalTitleMaxLength)
-            throw new ArgumentOutOfRangeException(nameof(OriginalTitle),
-                $"Original Title cannot exceed {MovieConst.OriginalTitleMaxLength} characters");
+        originalTitle = Guard.Against.NullOrWhiteSpace(originalTitle, nameof(originalTitle));
+        Guard.Against.InvalidInput(originalTitle, nameof(originalTitle), x => originalTitle.Length > MovieConst.OriginalTitleMaxLength,
+            $"Original Title cannot exceed {MovieConst.OriginalTitleMaxLength} characters");
 
         OriginalTitle = originalTitle.Trim();
     }
-
 
     public bool HasOriginalTitle()
     {
@@ -141,14 +136,9 @@ public class Movie : AggregateRoot<Guid>
 
     public void SetDescription(string description)
     {
-        if (string.IsNullOrWhiteSpace(description))
-            throw new ArgumentException("Description cannot be empty", nameof(description));
-
-
-        if (description.Length > MovieConst.DescriptionMaxLength)
-            throw new ArgumentOutOfRangeException(nameof(Description),
-                $"Description cannot exceed {MovieConst.DescriptionMaxLength} characters");
-
+        description = Guard.Against.NullOrWhiteSpace(description, nameof(description));
+        Guard.Against.InvalidInput(description, nameof(description), x => description.Length > MovieConst.DescriptionMaxLength,
+            $"Description cannot exceed {MovieConst.DescriptionMaxLength} characters");
 
         Description = description.Trim();
     }
@@ -163,6 +153,7 @@ public class Movie : AggregateRoot<Guid>
         if (string.IsNullOrWhiteSpace(Description))
             return "No description available";
 
+        Guard.Against.NullOrWhiteSpace(Description, nameof(Description));
         return Description.Length <= maxLength
             ? Description
             : Description[..maxLength] + "...";
@@ -171,7 +162,7 @@ public class Movie : AggregateRoot<Guid>
     // Duration Helper Methods
     public void UpdateDuration(Duration newDuration)
     {
-        Duration = newDuration ?? throw new ArgumentNullException(nameof(newDuration));
+        Duration = Guard.Against.Null(newDuration, nameof(newDuration));
     }
 
     public void UpdateDuration(int minutes)
@@ -201,10 +192,9 @@ public class Movie : AggregateRoot<Guid>
     {
         var proposedStartDate = startDate ?? DateTime.UtcNow;
 
-        // En erken gösterim tarihini kontrol et
-        if (!CanStartShowingOn(proposedStartDate))
-            throw new InvalidOperationException(
-                $"Movie cannot start showing on {proposedStartDate:yyyy-MM-dd}. Earliest allowed date is {EarliestShowingDate:yyyy-MM-dd}");
+
+        Guard.Against.InvalidInput(proposedStartDate, nameof(startDate), x => !CanStartShowingOn(proposedStartDate),
+            $"Movie cannot start showing on {proposedStartDate:yyyy-MM-dd}. Earliest allowed date is {EarliestShowingDate:yyyy-MM-dd}");
 
         ShowingStartDate = proposedStartDate;
         AddDomainEvent(new MovieShowingStartedEvent(Id, Title, ShowingStartDate.Value));
@@ -216,22 +206,7 @@ public class Movie : AggregateRoot<Guid>
         AddDomainEvent(new MovieShowingEndedEvent(Id, Title, ShowingEndDate.Value));
     }
 
-    public void SetShowingPeriod(DateTime startDate, DateTime? endDate = null)
-    {
-        if (startDate > DateTime.Today.AddYears(1))
-            throw new ArgumentException("Start date cannot be more than 1 year in the future", nameof(startDate));
 
-        if (endDate.HasValue && endDate <= startDate)
-            throw new ArgumentException("End date must be after start date", nameof(endDate));
-
-        // En erken gösterim tarihini kontrol et
-        if (!CanStartShowingOn(startDate))
-            throw new InvalidOperationException(
-                $"Showing cannot start on {startDate:yyyy-MM-dd}. Earliest allowed date is {EarliestShowingDate:yyyy-MM-dd}");
-
-        ShowingStartDate = startDate.Date;
-        ShowingEndDate = endDate?.Date;
-    }
 
     // Query Methods
     public string GetShowingAvailabilityStatus()

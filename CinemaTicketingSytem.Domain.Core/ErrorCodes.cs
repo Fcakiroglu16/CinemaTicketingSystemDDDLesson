@@ -11,4 +11,8 @@ public static class ErrorCodes
     public const string CinemaNotFound = "Catalog:CinemaNotFound";
     public const string MovieNotFound = "Catalog:MovieNotFound";
     public const string MovieAlreadyExists = "Catalog:MovieAlreadyExists";
+    public const string HallTechnologyNotSupported = "Schedule:HallTechnologyNotSupported";
+    public const string IMAXRequiresMinimumSeats = "Schedule:IMAXRequiresMinimumSeats";
+    public const string MovieDurationMismatch = "Schedule:MovieDurationMismatch";
+    public const string ShowTimeConflict = "Schedule:ShowTimeConflict";
 }

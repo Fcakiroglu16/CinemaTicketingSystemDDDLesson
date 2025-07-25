@@ -1,4 +1,6 @@
-﻿namespace CinemaTicketingSystem.Domain.Scheduling;
+﻿using Ardalis.GuardClauses;
+
+namespace CinemaTicketingSystem.Domain.Scheduling;
 
 public class Schedule : AggregateRoot<Guid>
 {
@@ -8,19 +10,12 @@ public class Schedule : AggregateRoot<Guid>
 
     public Schedule(Guid movieId, Guid hallId, ShowTime showTime)
     {
-        if (movieId == Guid.Empty)
-            throw new ArgumentException("Movie ID cannot be empty", nameof(movieId));
-
-        if (hallId == Guid.Empty)
-            throw new ArgumentException("Hall ID cannot be empty", nameof(hallId));
-
-        if (showTime == null)
-            throw new ArgumentNullException(nameof(showTime));
-
+        Guard.Against.Default(movieId, nameof(movieId));
+        Guard.Against.Default(hallId, nameof(hallId));
+        ShowTime = Guard.Against.Null(showTime, nameof(showTime));
 
         MovieId = movieId;
         HallId = hallId;
-        ShowTime = showTime;
         Id = Guid.CreateVersion7();
     }
 
@@ -33,14 +28,8 @@ public class Schedule : AggregateRoot<Guid>
     /// </summary>
     public void UpdateShowTime(ShowTime newShowTime)
     {
-        if (newShowTime == null)
-            throw new ArgumentNullException(nameof(newShowTime));
-
-        ShowTime = newShowTime;
-
+        ShowTime = Guard.Against.Null(newShowTime, nameof(newShowTime));
     }
-
-
 
     /// <summary>
     /// Checks if the scheduled movie has started
@@ -60,13 +49,6 @@ public class Schedule : AggregateRoot<Guid>
         return ShowTime.HasEnded(currentTime);
     }
 
-
-
-
-
-
-
-
     /// <summary>
     /// Gets schedule information as a formatted string
     /// </summary>
@@ -84,10 +66,6 @@ public class Schedule : AggregateRoot<Guid>
         return scheduleDate >= DateOnly.FromDateTime(DateTime.Today);
     }
 
-
-
-
-
     /// <summary>
     /// Checks if this schedule can be cancelled (not started yet)
     /// </summary>
@@ -95,6 +73,4 @@ public class Schedule : AggregateRoot<Guid>
     {
         return !HasStarted();
     }
-
-
 }
