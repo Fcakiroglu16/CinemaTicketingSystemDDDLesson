@@ -42,8 +42,6 @@ public class CinemaAppService(
 
     public async Task<AppResult> AddHallAsync(Guid cinemaId, AddCinemaHallRequest request)
     {
-
-
         var cinema = await cinemaRepository.GetByIdAsync(cinemaId);
 
         if (cinema is null)

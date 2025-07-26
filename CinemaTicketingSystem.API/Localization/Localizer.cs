@@ -14,7 +14,4 @@ public class Localizer(IStringLocalizer<SharedResource> stringLocalizer) : ILoca
     {
         return string.Format(stringLocalizer[key], data);
     }
-
-
-
 }

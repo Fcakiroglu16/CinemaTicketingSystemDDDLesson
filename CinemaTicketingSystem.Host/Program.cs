@@ -21,7 +21,8 @@ builder.Services.RegisterCaching();
 builder.Services.RegisterServiceBus(builder.Configuration);
 builder.Services.RegisterDomainServices(typeof(ApplicationAssembly).Assembly);
 builder.Services.RegisterPersistenceServices(builder.Configuration);
-builder.Services.RegisterConventions(typeof(ApplicationAssembly).Assembly, typeof(ApplicationAbstractionAssembly).Assembly);
+builder.Services.RegisterConventions(typeof(ApplicationAssembly).Assembly,
+    typeof(ApplicationAbstractionAssembly).Assembly);
 
 
 builder.Services.AddMediatR(configuration =>
@@ -33,7 +34,8 @@ builder.Services.AddValidatorsFromAssembly(typeof(ApiAssembly).Assembly);
 builder.Services.AddScoped<AppDependencyService>();
 builder.Services.AddVersioningExt();
 builder.Services.AddProblemDetails();
-builder.Services.AddExceptionHandler<BusinessExceptionHandler>().AddExceptionHandler<UserFriendlyExceptionHandler>().AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddExceptionHandler<BusinessExceptionHandler>().AddExceptionHandler<UserFriendlyExceptionHandler>()
+    .AddExceptionHandler<GlobalExceptionHandler>();
 
 var app = builder.Build();
 app.UseExceptionHandler();
@@ -42,6 +44,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
+
 var locOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>();
 app.UseRequestLocalization(locOptions.Value);
 //app.UseAuthentication();

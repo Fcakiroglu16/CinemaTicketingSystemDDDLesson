@@ -1,4 +1,5 @@
-﻿using CinemaTicketingSystem.API.Localization;
+﻿using System.Reflection;
+using CinemaTicketingSystem.API.Localization;
 using CinemaTicketingSystem.Application.Abstraction.Contracts;
 using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
 using CinemaTicketingSystem.Application.Schedules.IntegrationEventHandlers;
@@ -11,13 +12,11 @@ using CinemaTicketingSystem.ServiceBus;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
-using System.Reflection;
 
 namespace CinemaTicketingSystem.Host;
 
 public static class ServiceCollectionExtensions
 {
-
     public static IServiceCollection RegisterServiceBus(this IServiceCollection services,
         IConfiguration configuration)
     {

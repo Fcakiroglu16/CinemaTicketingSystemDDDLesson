@@ -1,7 +1,7 @@
-﻿using CinemaTicketingSystem.Application.Abstraction;
+﻿using System.Net;
+using CinemaTicketingSystem.Application.Abstraction;
 using CinemaTicketingSystem.Application.Abstraction.Contracts;
 using CinemaTicketingSystem.Domain.Repositories;
-using System.Net;
 
 namespace CinemaTicketingSystem.Application;
 
