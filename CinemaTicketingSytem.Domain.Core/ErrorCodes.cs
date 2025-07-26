@@ -2,7 +2,6 @@
 
 public static class ErrorCodes
 {
-
     public const string CinemaAlreadyExists = "Catalog:CinemaAlreadyExists";
     public const string CinemaHallAlreadyExists = "Catalog:CinemaHallAlreadyExists";
     public const string CinemaHallNotFound = "Catalog:CinemaHallNotFound";

@@ -7,7 +7,6 @@ public class AddCinemaHallValidator : AbstractValidator<AddCinemaHallRequest>
 {
     public AddCinemaHallValidator()
     {
-
         RuleFor(x => x.Name).NotEmpty().MaximumLength(255);
         RuleFor(x => x.Technologies).NotEmpty();
         RuleFor(x => x.SeatList).NotEmpty().Must(x => x.Count > 0);

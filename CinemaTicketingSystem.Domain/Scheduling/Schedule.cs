@@ -20,11 +20,11 @@ public class Schedule : AggregateRoot<Guid>
     }
 
     public Guid MovieId { get; private set; }
-    public Guid HallId { get; private set; }
+    public Guid HallId { get; }
     public virtual ShowTime ShowTime { get; private set; } = null!;
 
     /// <summary>
-    /// Updates the showtime for this schedule
+    ///     Updates the showtime for this schedule
     /// </summary>
     public void UpdateShowTime(ShowTime newShowTime)
     {
@@ -32,7 +32,7 @@ public class Schedule : AggregateRoot<Guid>
     }
 
     /// <summary>
-    /// Checks if the scheduled movie has started
+    ///     Checks if the scheduled movie has started
     /// </summary>
     public bool HasStarted()
     {
@@ -41,7 +41,7 @@ public class Schedule : AggregateRoot<Guid>
     }
 
     /// <summary>
-    /// Checks if the scheduled movie has ended
+    ///     Checks if the scheduled movie has ended
     /// </summary>
     public bool HasEnded()
     {
@@ -50,7 +50,7 @@ public class Schedule : AggregateRoot<Guid>
     }
 
     /// <summary>
-    /// Gets schedule information as a formatted string
+    ///     Gets schedule information as a formatted string
     /// </summary>
     public string GetDisplayInfo()
     {
@@ -58,7 +58,7 @@ public class Schedule : AggregateRoot<Guid>
     }
 
     /// <summary>
-    /// Validates if the schedule can be created for the given date
+    ///     Validates if the schedule can be created for the given date
     /// </summary>
     public bool CanScheduleForDate(DateOnly scheduleDate)
     {
@@ -67,7 +67,7 @@ public class Schedule : AggregateRoot<Guid>
     }
 
     /// <summary>
-    /// Checks if this schedule can be cancelled (not started yet)
+    ///     Checks if this schedule can be cancelled (not started yet)
     /// </summary>
     public bool CanBeCancelled()
     {

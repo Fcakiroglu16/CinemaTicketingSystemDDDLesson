@@ -1,6 +1,5 @@
-﻿namespace CinemaTicketingSystem.API.Localization
+﻿namespace CinemaTicketingSystem.API.Localization;
+
+public class SharedResource
 {
-    public class SharedResource
-    {
-    }
 }

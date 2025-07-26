@@ -23,7 +23,8 @@ public class MovieSnapshot : AggregateRoot<Guid>
 
     public bool IsValidDuration(TimeOnly startTime, TimeOnly endTime, int toleranceMinutes = 0)
     {
-        Guard.Against.InvalidInput(startTime, nameof(startTime), x => x >= endTime, "Start time must be before end time");
+        Guard.Against.InvalidInput(startTime, nameof(startTime), x => x >= endTime,
+            "Start time must be before end time");
 
         Guard.Against.Negative(toleranceMinutes, nameof(toleranceMinutes));
 

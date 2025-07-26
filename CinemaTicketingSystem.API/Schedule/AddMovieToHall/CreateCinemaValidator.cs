@@ -5,7 +5,6 @@ namespace CinemaTicketingSystem.API.Schedule.AddMovieToHall;
 
 public class AddMovieToHallValidator : AbstractValidator<AddMovieToHallRequest>
 {
-
     public AddMovieToHallValidator()
     {
         RuleFor(x => x.MovieId).NotEmpty();

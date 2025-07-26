@@ -9,6 +9,4 @@ public class SeatAlreadyExistsException : DomainException
 
         AddData(number.ToString());
     }
-
-
 }

@@ -12,15 +12,12 @@ public static class GetAllCinemaEndpoint
     public static RouteGroupBuilder GetAllCinemaGroupItemEndpoint(this RouteGroupBuilder group)
     {
         group.MapGet("/cinemas",
-                ([FromServices] ICinemaAppService cinemaAppService, [FromServices] IStringLocalizer<SharedResource> stringLocalizer) =>
+                ([FromServices] ICinemaAppService cinemaAppService,
+                    [FromServices] IStringLocalizer<SharedResource> stringLocalizer) =>
                 {
-
                     // var result = (await cinemaAppService.GetAllAsync()).ToGenericResult();
 
                     var x = stringLocalizer["Hello"];
-
-
-
                 })
             .WithName("GetAllCinema")
             .MapToApiVersion(1, 0);

@@ -14,8 +14,9 @@ public static class AddCinemaHallEndpoint
     public static RouteGroupBuilder AddCinemaHallGroupItemEndpoint(this RouteGroupBuilder group)
     {
         group.MapPost("/cinemas/{cinemaId:guid}/hall",
-                async (AddCinemaHallRequest request, Guid cinemaId, [FromServices] ICinemaAppService cinemaAppService) =>
-                (await cinemaAppService.AddHallAsync(cinemaId, request)).ToGenericResult())
+                async (AddCinemaHallRequest request, Guid cinemaId,
+                        [FromServices] ICinemaAppService cinemaAppService) =>
+                    (await cinemaAppService.AddHallAsync(cinemaId, request)).ToGenericResult())
             .WithName("AddCinemaHall")
             .MapToApiVersion(1, 0)
             .AddEndpointFilter<ValidationFilter<AddCinemaHallValidator>>();

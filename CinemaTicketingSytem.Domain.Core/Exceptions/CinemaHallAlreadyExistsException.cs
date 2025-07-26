@@ -1,11 +1,9 @@
-﻿namespace CinemaTicketingSystem.Domain.Core.Exceptions
-{
-    public class CinemaHallAlreadyExistsException : DomainException
-    {
+﻿namespace CinemaTicketingSystem.Domain.Core.Exceptions;
 
-        public CinemaHallAlreadyExistsException(string cinemaHallName) : base(ErrorCodes.CinemaHallAlreadyExists)
-        {
-            AddData(cinemaHallName);
-        }
+public class CinemaHallAlreadyExistsException : DomainException
+{
+    public CinemaHallAlreadyExistsException(string cinemaHallName) : base(ErrorCodes.CinemaHallAlreadyExists)
+    {
+        AddData(cinemaHallName);
     }
 }

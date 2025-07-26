@@ -41,10 +41,7 @@ public class Cinema : AuditedAggregateRoot<Guid>
     {
         Guard.Against.Null(hall, nameof(hall));
 
-        if (cinemaHalls.Any(h => h.Name == hall.Name))
-        {
-            throw new CinemaHallAlreadyExistsException(hall.Name);
-        }
+        if (cinemaHalls.Any(h => h.Name == hall.Name)) throw new CinemaHallAlreadyExistsException(hall.Name);
 
 
         cinemaHalls.Add(hall);

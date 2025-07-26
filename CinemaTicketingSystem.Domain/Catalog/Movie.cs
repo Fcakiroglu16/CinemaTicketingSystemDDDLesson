@@ -43,15 +43,11 @@ public class Movie : AggregateRoot<Guid>
     // Earliest Showing Date Management
     public void SetEarliestShowingDate(DateTime earliestDate)
     {
-
         Guard.Against.InvalidInput(earliestDate,
             nameof(ShowingStartDate), x => ShowingStartDate.HasValue && ShowingStartDate < EarliestShowingDate,
             $"Current showing start date ({ShowingStartDate:yyyy-MM-dd}) cannot be earlier than earliest showing date ({EarliestShowingDate:yyyy-MM-dd})");
 
         EarliestShowingDate = earliestDate.Date;
-
-
-
     }
 
     public void ClearEarliestShowingDate()
@@ -99,7 +95,8 @@ public class Movie : AggregateRoot<Guid>
     public void SetTitle(string title)
     {
         title = Guard.Against.NullOrWhiteSpace(title, nameof(title));
-        Guard.Against.InvalidInput(title, nameof(title), x => title.Length > MovieConst.TitleMaxLength, $"Title cannot exceed {MovieConst.TitleMaxLength} characters");
+        Guard.Against.InvalidInput(title, nameof(title), x => title.Length > MovieConst.TitleMaxLength,
+            $"Title cannot exceed {MovieConst.TitleMaxLength} characters");
         Title = title.Trim();
     }
 
@@ -107,14 +104,13 @@ public class Movie : AggregateRoot<Guid>
     {
         posterImageUrl = Guard.Against.NullOrWhiteSpace(posterImageUrl, nameof(posterImageUrl));
 
-        Guard.Against.InvalidInput(posterImageUrl, nameof(posterImageUrl), x => posterImageUrl.Length > MovieConst.PosterImageUrlMaxLength,
+        Guard.Against.InvalidInput(posterImageUrl, nameof(posterImageUrl),
+            x => posterImageUrl.Length > MovieConst.PosterImageUrlMaxLength,
             $"Poster Image URL cannot exceed {MovieConst.PosterImageUrlMaxLength} characters");
 
 
-
-
-
-        Guard.Against.InvalidInput(posterImageUrl, nameof(posterImageUrl), x => !Uri.TryCreate(posterImageUrl, UriKind.Absolute, out _),
+        Guard.Against.InvalidInput(posterImageUrl, nameof(posterImageUrl),
+            x => !Uri.TryCreate(posterImageUrl, UriKind.Absolute, out _),
             "Invalid poster image URL");
 
         PosterImageUrl = posterImageUrl.Trim();
@@ -123,7 +119,8 @@ public class Movie : AggregateRoot<Guid>
     public void SetOriginalTitle(string originalTitle)
     {
         originalTitle = Guard.Against.NullOrWhiteSpace(originalTitle, nameof(originalTitle));
-        Guard.Against.InvalidInput(originalTitle, nameof(originalTitle), x => originalTitle.Length > MovieConst.OriginalTitleMaxLength,
+        Guard.Against.InvalidInput(originalTitle, nameof(originalTitle),
+            x => originalTitle.Length > MovieConst.OriginalTitleMaxLength,
             $"Original Title cannot exceed {MovieConst.OriginalTitleMaxLength} characters");
 
         OriginalTitle = originalTitle.Trim();
@@ -137,7 +134,8 @@ public class Movie : AggregateRoot<Guid>
     public void SetDescription(string description)
     {
         description = Guard.Against.NullOrWhiteSpace(description, nameof(description));
-        Guard.Against.InvalidInput(description, nameof(description), x => description.Length > MovieConst.DescriptionMaxLength,
+        Guard.Against.InvalidInput(description, nameof(description),
+            x => description.Length > MovieConst.DescriptionMaxLength,
             $"Description cannot exceed {MovieConst.DescriptionMaxLength} characters");
 
         Description = description.Trim();
@@ -205,7 +203,6 @@ public class Movie : AggregateRoot<Guid>
         ShowingEndDate = endDate ?? DateTime.UtcNow;
         AddDomainEvent(new MovieShowingEndedEvent(Id, Title, ShowingEndDate.Value));
     }
-
 
 
     // Query Methods

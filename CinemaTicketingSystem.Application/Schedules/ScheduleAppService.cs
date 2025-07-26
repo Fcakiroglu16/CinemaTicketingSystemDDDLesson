@@ -1,17 +1,20 @@
-﻿using CinemaTicketingSystem.Application.Abstraction;
+﻿using System.Net;
+using CinemaTicketingSystem.Application.Abstraction;
 using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
 using CinemaTicketingSystem.Application.Abstraction.Schedule;
 using CinemaTicketingSystem.Domain.Core;
 using CinemaTicketingSystem.Domain.Repositories;
 using CinemaTicketingSystem.Domain.Scheduling;
 using CinemaTicketingSystem.Domain.Scheduling.Repositories;
-using System.Net;
 
 namespace CinemaTicketingSystem.Application.Schedules;
 
 public class ScheduleAppService(
     IGenericRepository<Guid, CinemaHallSnapshot> CinemaHallSnapshotRepository,
-    IGenericRepository<Guid, MovieSnapshot> movieShotRepository, MovieHallCompatibilityService movieHallCompatibilityService, IScheduleRepository scheduleRepository, AppDependencyService appDependencyService) : IScopedDependency, IScheduleAppService
+    IGenericRepository<Guid, MovieSnapshot> movieShotRepository,
+    MovieHallCompatibilityService movieHallCompatibilityService,
+    IScheduleRepository scheduleRepository,
+    AppDependencyService appDependencyService) : IScopedDependency, IScheduleAppService
 {
     public async Task<AppResult> AddMovieToHall(Guid hallId, AddMovieToHallRequest request)
     {
@@ -50,10 +53,11 @@ public class ScheduleAppService(
         {
             var conflictingShowTimes = string.Join(", ",
                 schedules.Where(x => x.ShowTime.ConflictsWith(showTime))
-                         .Select(x => x.ShowTime.GetDisplayInfo()));
+                    .Select(x => x.ShowTime.GetDisplayInfo()));
 
 
-            return appDependencyService.Error(ErrorCodes.ShowTimeConflict, [conflictingShowTimes], HttpStatusCode.Conflict);
+            return appDependencyService.Error(ErrorCodes.ShowTimeConflict, [conflictingShowTimes],
+                HttpStatusCode.Conflict);
         }
 
         var schedule = new Schedule(request.MovieId, hallId, showTime);
@@ -68,7 +72,8 @@ public class ScheduleAppService(
     {
         var schedules = await scheduleRepository.GetMoviesByHallIdAsync(hallId);
 
-        var response = schedules.Select(x => new GetMoviesByHallIdRequest(x.MovieId, x.ShowTime.StartTime, x.ShowTime.EndTime)).ToList();
+        var response = schedules
+            .Select(x => new GetMoviesByHallIdRequest(x.MovieId, x.ShowTime.StartTime, x.ShowTime.EndTime)).ToList();
 
         return AppResult<List<GetMoviesByHallIdRequest>>.SuccessAsOk(response);
     }

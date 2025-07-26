@@ -8,9 +8,14 @@ public class ShowTime : ValueObject
     {
     }
 
+    public TimeOnly StartTime { get; private set; }
+    public TimeOnly EndTime { get; private set; }
+    public TimeSpan Duration => EndTime - StartTime;
+
     public static ShowTime Create(TimeOnly startTime, TimeOnly endTime)
     {
-        Guard.Against.InvalidInput(startTime, nameof(startTime), x => x >= endTime, "Start time must be before end time");
+        Guard.Against.InvalidInput(startTime, nameof(startTime), x => x >= endTime,
+            "Start time must be before end time");
 
         return new ShowTime
         {
@@ -33,14 +38,10 @@ public class ShowTime : ValueObject
         };
     }
 
-    public TimeOnly StartTime { get; private set; }
-    public TimeOnly EndTime { get; private set; }
-    public TimeSpan Duration => EndTime - StartTime;
-
     // Cinema Management Helper Methods
 
     /// <summary>
-    /// Checks if this showtime conflicts with another showtime (including cleaning time)
+    ///     Checks if this showtime conflicts with another showtime (including cleaning time)
     /// </summary>
     public bool ConflictsWith(ShowTime other, int cleaningTime = 30)
     {
@@ -52,7 +53,7 @@ public class ShowTime : ValueObject
     }
 
     /// <summary>
-    /// Checks if this is a morning showtime
+    ///     Checks if this is a morning showtime
     /// </summary>
     public bool IsMorningShow()
     {
@@ -60,7 +61,7 @@ public class ShowTime : ValueObject
     }
 
     /// <summary>
-    /// Checks if this showtime is suitable for children's movies
+    ///     Checks if this showtime is suitable for children's movies
     /// </summary>
     public bool IsSuitableForChildren()
     {
@@ -69,7 +70,7 @@ public class ShowTime : ValueObject
     }
 
     /// <summary>
-    /// Checks if the showtime has started
+    ///     Checks if the showtime has started
     /// </summary>
     public bool HasStarted(TimeOnly currentTime)
     {
@@ -77,7 +78,7 @@ public class ShowTime : ValueObject
     }
 
     /// <summary>
-    /// Checks if the showtime has ended
+    ///     Checks if the showtime has ended
     /// </summary>
     public bool HasEnded(TimeOnly currentTime)
     {
@@ -85,7 +86,7 @@ public class ShowTime : ValueObject
     }
 
     /// <summary>
-    /// Checks if the showtime duration is in the short film category
+    ///     Checks if the showtime duration is in the short film category
     /// </summary>
     public bool IsShortShow()
     {
@@ -93,7 +94,7 @@ public class ShowTime : ValueObject
     }
 
     /// <summary>
-    /// Checks if the showtime duration is in the long film category
+    ///     Checks if the showtime duration is in the long film category
     /// </summary>
     public bool IsLongShow()
     {
@@ -101,7 +102,7 @@ public class ShowTime : ValueObject
     }
 
     /// <summary>
-    /// Returns showtime information as a formatted string
+    ///     Returns showtime information as a formatted string
     /// </summary>
     public string GetDisplayInfo()
     {

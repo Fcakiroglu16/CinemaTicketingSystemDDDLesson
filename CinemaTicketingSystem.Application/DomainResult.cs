@@ -2,12 +2,9 @@
 
 public class DomainResult
 {
-    public bool IsSuccess { get; private set; }
-    public string? Error { get; private set; }
-    public object[]? ErrorData { get; private set; }
-
-    private DomainResult() { }
-
+    private DomainResult()
+    {
+    }
 
 
     private DomainResult(bool isSuccess, string error)
@@ -22,6 +19,11 @@ public class DomainResult
         Error = error;
         ErrorData = errorData;
     }
+
+    public bool IsSuccess { get; private set; }
+    public string? Error { get; private set; }
+    public object[]? ErrorData { get; private set; }
+
     public static DomainResult Success()
     {
         return new DomainResult(true, string.Empty);

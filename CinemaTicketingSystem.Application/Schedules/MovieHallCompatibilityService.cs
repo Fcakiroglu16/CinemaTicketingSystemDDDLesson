@@ -9,11 +9,10 @@ public class MovieHallCompatibilityService : IDomainService
     private const int MinimumIMAXSeatCount = 100;
 
     /// <summary>
-    /// Checks if the given movie is compatible with the specified cinema hall.
+    ///     Checks if the given movie is compatible with the specified cinema hall.
     /// </summary>
     public DomainResult IsCompatible(MovieSnapshot movie, CinemaHallSnapshot hall)
     {
-
         //    •	hall.SupportedTechnologies = 3(Standard ve IMAX)
         //    •	movie.SupportedTechnology = 2(IMAX)
         //hall.SupportedTechnologies & movie.SupportedTechnology işlemi:
@@ -21,21 +20,15 @@ public class MovieHallCompatibilityService : IDomainService
 
 
         // Check if the hall supports the movie's required technology
-        bool technologySupported = (hall.SupportedTechnologies & movie.SupportedTechnology) == movie.SupportedTechnology;
-
-
+        var technologySupported = (hall.SupportedTechnologies & movie.SupportedTechnology) == movie.SupportedTechnology;
 
 
         if (movie.SupportedTechnology.HasFlag(ScreeningTechnology.IMAX))
-        {
             if (hall.SeatCount < MinimumIMAXSeatCount)
-            {
-
                 return DomainResult.Failure(ErrorCodes.IMAXRequiresMinimumSeats, MinimumIMAXSeatCount);
-            }
 
-        }
-
-        return !technologySupported ? DomainResult.Failure(ErrorCodes.HallTechnologyNotSupported) : DomainResult.Success();
+        return !technologySupported
+            ? DomainResult.Failure(ErrorCodes.HallTechnologyNotSupported)
+            : DomainResult.Success();
     }
 }

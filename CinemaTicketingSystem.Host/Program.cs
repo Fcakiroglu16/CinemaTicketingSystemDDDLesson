@@ -74,10 +74,6 @@ builder.Services.AddMassTransit(configure =>
 builder.Services.AddVersioningExt();
 
 
-
-
-
-
 var app = builder.Build();
 
 var locOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>();

@@ -16,7 +16,8 @@ public class MovieAppService(IMovieRepository movieRepository, AppDependencyServ
     {
         var existMovie = await movieRepository.CheckIfMovieExists(request.Title);
 
-        if (existMovie) return appDependencyService.Error<CreateMovieResponse>(ErrorCodes.MovieAlreadyExists, [request.Title]);
+        if (existMovie)
+            return appDependencyService.Error<CreateMovieResponse>(ErrorCodes.MovieAlreadyExists, [request.Title]);
 
         var newMovie = new Domain.Catalog.Movie(request.Title, new Duration(request.Duration.TotalMinutes),
             request.PosterImageUrl);
@@ -34,7 +35,6 @@ public class MovieAppService(IMovieRepository movieRepository, AppDependencyServ
 
     public async Task<AppResult<GetAllMovieResponse>> GetAllAsync()
     {
-
         var movies = await movieRepository.GetAllAsync();
         return AppResult<GetAllMovieResponse>.SuccessAsOk(new GetAllMovieResponse(movies.Select(movie => new MovieDto(
                 movie.Id, movie.Title, movie.OriginalTitle, movie.PosterImageUrl, movie.Description,

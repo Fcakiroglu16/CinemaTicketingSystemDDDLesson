@@ -1,8 +1,5 @@
-﻿namespace CinemaTicketingSystem.Domain.Core.Exceptions
+﻿namespace CinemaTicketingSystem.Domain.Core.Exceptions;
+
+public class UserFriendlyException : Exception
 {
-    public class UserFriendlyException : Exception
-    {
-
-
-    }
 }

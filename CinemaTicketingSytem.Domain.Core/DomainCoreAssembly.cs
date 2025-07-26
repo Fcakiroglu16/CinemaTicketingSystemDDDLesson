@@ -1,6 +1,5 @@
-﻿namespace CinemaTicketingSystem.Domain.Core
+﻿namespace CinemaTicketingSystem.Domain.Core;
+
+public struct DomainCoreAssembly
 {
-    public struct DomainCoreAssembly
-    {
-    }
 }

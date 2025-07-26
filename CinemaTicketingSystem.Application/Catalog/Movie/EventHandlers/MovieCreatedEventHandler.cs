@@ -9,7 +9,6 @@ internal class MovieCreatedEventHandler(IIntegrationEventBus integrationEventBus
 {
     public async Task Handle(MovieCreatedEvent notification, CancellationToken cancellationToken)
     {
-
         await integrationEventBus.PublishAsync(notification, cancellationToken);
     }
 }

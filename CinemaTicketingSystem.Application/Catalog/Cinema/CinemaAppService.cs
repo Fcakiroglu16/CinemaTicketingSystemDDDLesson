@@ -1,4 +1,5 @@
-﻿using CinemaTicketingSystem.Application.Abstraction;
+﻿using System.Net;
+using CinemaTicketingSystem.Application.Abstraction;
 using CinemaTicketingSystem.Application.Abstraction.Catalog.Cinema;
 using CinemaTicketingSystem.Application.Abstraction.Catalog.Cinema.Hall;
 using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Cinema;
@@ -7,12 +8,12 @@ using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
 using CinemaTicketingSystem.Domain.Catalog;
 using CinemaTicketingSystem.Domain.Catalog.Repositories;
 using CinemaTicketingSystem.Domain.Core;
-using System.Net;
 
 namespace CinemaTicketingSystem.Application.Catalog.Cinema;
 
 public class CinemaAppService(
-    ICinemaRepository cinemaRepository, AppDependencyService appDependencyService) : IScopedDependency, ICinemaAppService
+    ICinemaRepository cinemaRepository,
+    AppDependencyService appDependencyService) : IScopedDependency, ICinemaAppService
 {
     public async Task<AppResult> CreateAsync(CreateCinemaRequest request)
     {
@@ -52,8 +53,6 @@ public class CinemaAppService(
 
         if (existCinemaHall is not null)
             return appDependencyService.Error(ErrorCodes.CinemaHallAlreadyExists, [request.Name]);
-
-
 
 
         var cinemaHall = new CinemaHall(request.Name,
@@ -139,7 +138,4 @@ public class CinemaAppService(
 
         return AppResult<List<CinemaDto>>.SuccessAsOk(cinemaDtos);
     }
-
-
-
 }

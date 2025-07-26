@@ -7,6 +7,4 @@ public class CinemaHallNotFoundException : DomainException
     {
         AddData(hallId.ToString());
     }
-
-
 }

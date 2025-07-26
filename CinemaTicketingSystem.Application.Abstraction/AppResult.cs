@@ -73,7 +73,6 @@ public class AppResult
     }
 
 
-
     public static AppResult ErrorFromValidation(IDictionary<string, object?> errors)
     {
         return new AppResult
@@ -116,7 +115,8 @@ public class AppResult<T> : AppResult
         };
     }
 
-    public new static AppResult<T> Error(AppProblemDetails problemDetails, HttpStatusCode status = HttpStatusCode.BadRequest)
+    public new static AppResult<T> Error(AppProblemDetails problemDetails,
+        HttpStatusCode status = HttpStatusCode.BadRequest)
     {
         return new AppResult<T>
         {
@@ -125,7 +125,8 @@ public class AppResult<T> : AppResult
         };
     }
 
-    public new static AppResult<T> Error(string title, string description, HttpStatusCode status = HttpStatusCode.BadRequest)
+    public new static AppResult<T> Error(string title, string description,
+        HttpStatusCode status = HttpStatusCode.BadRequest)
     {
         return new AppResult<T>
         {
@@ -151,7 +152,6 @@ public class AppResult<T> : AppResult
             }
         };
     }
-
 
 
     public new static AppResult<T> ErrorFromValidation(IDictionary<string, object?> errors)

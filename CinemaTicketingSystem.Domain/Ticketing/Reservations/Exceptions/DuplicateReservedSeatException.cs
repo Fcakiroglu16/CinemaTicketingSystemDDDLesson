@@ -7,14 +7,9 @@ namespace CinemaTicketingSystem.Domain.Ticketing.Reservations.Exceptions;
 public class DuplicateReservedSeatException
     : DomainException
 {
-
-
     public DuplicateReservedSeatException(SeatNumber seatNumber) : base(TicketingErrorCodes.DuplicateReservedSeat)
     {
-
         AddData(seatNumber.Row);
         AddData(seatNumber.Number.ToString());
     }
-
-
 }
