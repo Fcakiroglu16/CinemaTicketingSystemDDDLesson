@@ -40,7 +40,7 @@ Accept-Language: tr
 POST {{HostAddress}}/api/v1/catalogs/cinemas/{8524f77d-ac60-4609-9719-9cf9cca722ce}/hall
 Accept: application/json
 Content-Type: application/json
-Accept-Language: tr
+Accept-Language: en
 {
   "cinemaId": "f93795b0-e16f-4d00-9fbf-7657e9257945",
   "name": "Hall 5 - Strandart Premium",

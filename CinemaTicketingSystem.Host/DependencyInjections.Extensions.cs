@@ -1,15 +1,65 @@
-﻿using System.Reflection;
+﻿using CinemaTicketingSystem.API.Localization;
 using CinemaTicketingSystem.Application.Abstraction.Contracts;
 using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
+using CinemaTicketingSystem.Application.Schedules.IntegrationEventHandlers;
+using CinemaTicketingSystem.Caching;
+using CinemaTicketingSystem.Domain.Catalog.DomainEvents;
 using CinemaTicketingSystem.Domain.Repositories;
 using CinemaTicketingSystem.Persistence;
 using CinemaTicketingSystem.Persistence.Accounts;
+using CinemaTicketingSystem.ServiceBus;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+using System.Reflection;
 
 namespace CinemaTicketingSystem.Host;
 
 public static class ServiceCollectionExtensions
 {
+
+    public static IServiceCollection RegisterServiceBus(this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services.AddScoped<IEventHandler<CinemaHallCreatedEvent>, CinemaHallCreatedEventHandler>();
+        services.AddScoped<IEventHandler<MovieCreatedEvent>, MovieCreatedEventHandler>();
+
+        services.AddScoped<IIntegrationEventBus, IntegrationEventBus>();
+
+        services.AddMassTransit(configure =>
+        {
+            configure.AddConsumer<MassTransitConsumerAdapter<CinemaHallCreatedEvent>>();
+            configure.AddConsumer<MassTransitConsumerAdapter<MovieCreatedEvent>>();
+            configure.UsingInMemory((context, cfg) => { cfg.ConfigureEndpoints(context); });
+        });
+
+        return services;
+    }
+
+    public static IServiceCollection RegisterCaching(this IServiceCollection services)
+    {
+        services.AddMemoryCache();
+        services.AddSingleton<ICacheService, CacheService>();
+        return services;
+    }
+
+
+    public static IServiceCollection RegisterLocalization(this IServiceCollection services)
+    {
+        services.AddSingleton<IStringLocalizerFactory, JsonStringLocalizerFactory>();
+        services.AddLocalization();
+        services.Configure<RequestLocalizationOptions>(options =>
+        {
+            var supportedCultures = new[] { "en", "tr" };
+            options.SetDefaultCulture("en");
+            options.AddSupportedCultures(supportedCultures);
+            options.AddSupportedUICultures(supportedCultures);
+        });
+        services.AddScoped<ILocalizer, Localizer>();
+        return services;
+    }
+
+
     public static IServiceCollection RegisterPersistenceServices(this IServiceCollection services,
         IConfiguration configuration)
     {
@@ -87,7 +137,7 @@ public static class ServiceCollectionExtensions
     }
 
 
-    public static IServiceCollection AddWithConventions(this IServiceCollection services, params Assembly[] assemblies)
+    public static IServiceCollection RegisterConventions(this IServiceCollection services, params Assembly[] assemblies)
     {
         var allTypes = assemblies
             .SelectMany(a => a.DefinedTypes)
