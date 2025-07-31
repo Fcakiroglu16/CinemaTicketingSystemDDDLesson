@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 using CinemaTicketingSystem.Domain.Catalog;
 using CinemaTicketingSystem.Domain.Scheduling;
+using CinemaTicketingSystem.Domain.Ticketing;
 using CinemaTicketingSystem.Domain.Ticketing.Reservations;
-using CinemaTicketingSystem.Domain.Ticketing.Tickets;
 using CinemaTicketingSystem.Persistence.Accounts;
 using CinemaTicketingSystem.Persistence.Interceptors;
 using MediatR;

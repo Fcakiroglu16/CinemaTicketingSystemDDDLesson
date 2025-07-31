@@ -1,6 +1,6 @@
 ﻿using CinemaTicketingSystem.Domain.ValueObjects;
 
-namespace CinemaTicketingSystem.Domain.Ticketing.Tickets.DomainEvents;
+namespace CinemaTicketingSystem.Domain.Ticketing.DomainEvents;
 
 public record TicketPurchasedEvent(Guid TicketId, Guid CustomerId, Price Price) : IDomainEvent
 {

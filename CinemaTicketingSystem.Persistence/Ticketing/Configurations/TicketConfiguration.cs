@@ -1,10 +1,10 @@
-﻿using CinemaTicketingSystem.Domain.Ticketing.Tickets;
+﻿using CinemaTicketingSystem.Domain.Ticketing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CinemaTicketingSystem.Persistence.Ticketing.Configurations;
 
-internal class TicketSaleConfiguration : IEntityTypeConfiguration<Ticket>
+internal class TicketConfiguration : IEntityTypeConfiguration<Ticket>
 {
     public void Configure(EntityTypeBuilder<Ticket> builder)
     {

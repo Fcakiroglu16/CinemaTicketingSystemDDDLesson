@@ -1,4 +1,5 @@
 using CinemaTicketingSystem.Application.Abstraction;
+using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
 using CinemaTicketingSystem.Domain.Core;
 using CinemaTicketingSystem.Domain.Scheduling.Repositories;
 using Microsoft.Extensions.Logging;
@@ -9,7 +10,7 @@ namespace CinemaTicketingSystem.Application.Schedules.ICL;
 public class ScheduleQueryService(
     IScheduleRepository scheduleRepository,
     AppDependencyService appDependencyService,
-    ILogger<ScheduleQueryService> logger) : IScheduleQueryService
+    ILogger<ScheduleQueryService> logger) : IScheduleQueryService, IScopedDependency
 {
     public async Task<AppResult<GetScheduleInfoResponse>> GetScheduleInfo(Guid scheduleId)
     {

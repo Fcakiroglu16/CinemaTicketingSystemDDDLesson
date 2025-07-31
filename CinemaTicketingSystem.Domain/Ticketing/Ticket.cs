@@ -2,7 +2,7 @@
 using CinemaTicketingSystem.Domain.Core.Exceptions;
 using CinemaTicketingSystem.Domain.ValueObjects;
 
-namespace CinemaTicketingSystem.Domain.Ticketing.Tickets;
+namespace CinemaTicketingSystem.Domain.Ticketing;
 
 public class Ticket : Entity<Guid>
 {

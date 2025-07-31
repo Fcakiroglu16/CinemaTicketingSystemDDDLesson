@@ -7,15 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\CinemaTicketingSystem.Application.Abstraction\CinemaTicketingSystem.Application.Abstraction.csproj"/>
-        <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+        <ProjectReference Include="..\CinemaTicketingSystem.Application.Abstraction\CinemaTicketingSystem.Application.Abstraction.csproj" />
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Asp.Versioning.Http" Version="8.1.0"/>
-        <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0"/>
-        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0"/>
-        <PackageReference Include="Scalar.AspNetCore" Version="2.6.4"/>
+        <PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
+        <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
+        <PackageReference Include="Scalar.AspNetCore" Version="2.6.4" />
     </ItemGroup>
 
 </Project>

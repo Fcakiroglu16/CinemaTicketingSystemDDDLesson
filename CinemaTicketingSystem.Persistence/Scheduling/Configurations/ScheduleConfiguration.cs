@@ -28,5 +28,19 @@ internal class ScheduleConfiguration :
                 .HasColumnName("ShowTime_EndTime")
                 .HasColumnType("time");
         });
+
+        // Configure Price as owned type
+        builder.OwnsOne(x => x.TicketPrice, priceBuilder =>
+        {
+            priceBuilder.Property(p => p.Amount)
+                .HasColumnName("Amount")
+                .HasPrecision(9, 2)
+                .IsRequired();
+
+            priceBuilder.Property(p => p.Currency)
+                .HasColumnName("Currency")
+                .HasMaxLength(3)
+                .IsRequired();
+        });
     }
 }

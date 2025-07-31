@@ -1,4 +1,5 @@
 using CinemaTicketingSystem.Application.Abstraction;
+using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
 using CinemaTicketingSystem.Application.Catalog.ICL.Dto;
 using CinemaTicketingSystem.Domain.Catalog.Repositories;
 using CinemaTicketingSystem.Domain.Core;
@@ -11,7 +12,7 @@ public class CatalogQueryService(
     ICinemaRepository cinemaRepository,
     IMovieRepository movieRepository,
     AppDependencyService appDependencyService,
-    ILogger<CatalogQueryService> logger) : ICatalogQueryService
+    ILogger<CatalogQueryService> logger) : ICatalogQueryService, IScopedDependency
 {
     public async Task<AppResult<GetCatalogInfoResponse>> GetCinemaInfo(Guid hallId, Guid movieId)
     {

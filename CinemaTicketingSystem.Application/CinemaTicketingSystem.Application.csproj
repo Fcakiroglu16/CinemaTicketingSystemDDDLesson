@@ -9,12 +9,6 @@
     <ItemGroup>
         <ProjectReference Include="..\CinemaTicketingSystem.Application.Abstraction\CinemaTicketingSystem.Application.Abstraction.csproj" />
         <ProjectReference Include="..\CinemaTicketingSystem.Domain\CinemaTicketingSystem.Domain.csproj" />
-        <ProjectReference Include="..\CinemaTicketingSystem.SharedKernel\CinemaTicketingSystem.SharedKernel.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Schedules\EventHandlers\" />
-        <Folder Include="Schedules\Implementations\" />
     </ItemGroup>
 
 </Project>

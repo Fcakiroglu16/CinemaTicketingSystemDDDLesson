@@ -1,5 +1,5 @@
-﻿using CinemaTicketingSystem.Domain.Ticketing.Repositories;
-using CinemaTicketingSystem.Domain.Ticketing.Tickets;
+﻿using CinemaTicketingSystem.Domain.Ticketing;
+using CinemaTicketingSystem.Domain.Ticketing.Repositories;
 
 namespace CinemaTicketingSystem.Persistence.Ticketing;
 

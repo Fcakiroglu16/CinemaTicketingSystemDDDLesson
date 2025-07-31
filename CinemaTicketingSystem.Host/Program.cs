@@ -5,7 +5,7 @@ using CinemaTicketingSystem.API.Schedule;
 using CinemaTicketingSystem.Application;
 using CinemaTicketingSystem.Application.Abstraction;
 using CinemaTicketingSystem.Domain;
-using CinemaTicketingSystem.Host;
+using CinemaTicketingSystem.Host.Extensions;
 using CinemaTicketingSystem.Persistence;
 using FluentValidation;
 using Microsoft.Extensions.Options;
@@ -16,11 +16,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 
+builder.Services.RegisterIdentity(builder.Configuration);
 builder.Services.RegisterLocalization();
 builder.Services.RegisterCaching();
 builder.Services.RegisterServiceBus(builder.Configuration);
 builder.Services.RegisterDomainServices(typeof(ApplicationAssembly).Assembly);
-builder.Services.RegisterPersistenceServices(builder.Configuration);
+builder.Services.RegisterPersistence(builder.Configuration);
 builder.Services.RegisterConventions(typeof(ApplicationAssembly).Assembly,
     typeof(ApplicationAbstractionAssembly).Assembly);
 

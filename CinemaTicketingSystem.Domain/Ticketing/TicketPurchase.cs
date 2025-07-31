@@ -1,9 +1,9 @@
 ﻿using CinemaTicketingSystem.Domain.Core;
 using CinemaTicketingSystem.Domain.Core.Exceptions;
-using CinemaTicketingSystem.Domain.Ticketing.Tickets.DomainEvents;
+using CinemaTicketingSystem.Domain.Ticketing.DomainEvents;
 using CinemaTicketingSystem.Domain.ValueObjects;
 
-namespace CinemaTicketingSystem.Domain.Ticketing.Tickets;
+namespace CinemaTicketingSystem.Domain.Ticketing;
 
 public class TicketPurchase : AggregateRoot<Guid>
 {

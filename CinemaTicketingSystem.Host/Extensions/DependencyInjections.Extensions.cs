@@ -1,22 +1,36 @@
-﻿using System.Reflection;
-using CinemaTicketingSystem.API.Localization;
+﻿using CinemaTicketingSystem.API.Localization;
 using CinemaTicketingSystem.Application.Abstraction.Contracts;
 using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
 using CinemaTicketingSystem.Application.Schedules.IntegrationEventHandlers;
 using CinemaTicketingSystem.Caching;
 using CinemaTicketingSystem.Domain.Catalog.DomainEvents;
 using CinemaTicketingSystem.Domain.Repositories;
+using CinemaTicketingSystem.Host.Identities;
 using CinemaTicketingSystem.Persistence;
 using CinemaTicketingSystem.Persistence.Accounts;
 using CinemaTicketingSystem.ServiceBus;
+using CinemaTicketingSystem.SharedKernel;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using System.Reflection;
 
-namespace CinemaTicketingSystem.Host;
+namespace CinemaTicketingSystem.Host.Extensions;
 
 public static class ServiceCollectionExtensions
 {
+
+
+    public static IServiceCollection RegisterIdentity(this IServiceCollection services,
+        IConfiguration configuration)
+    {
+
+        services.AddScoped<IUserContext, UserContext>();
+
+        return services;
+    }
+
+
     public static IServiceCollection RegisterServiceBus(this IServiceCollection services,
         IConfiguration configuration)
     {
@@ -24,6 +38,9 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IEventHandler<MovieCreatedEvent>, MovieCreatedEventHandler>();
 
         services.AddScoped<IIntegrationEventBus, IntegrationEventBus>();
+
+
+
 
         services.AddMassTransit(configure =>
         {
@@ -59,7 +76,7 @@ public static class ServiceCollectionExtensions
     }
 
 
-    public static IServiceCollection RegisterPersistenceServices(this IServiceCollection services,
+    public static IServiceCollection RegisterPersistence(this IServiceCollection services,
         IConfiguration configuration)
     {
         services.AddDbContext<AppDbContext>(options =>

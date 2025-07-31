@@ -4,22 +4,22 @@ using CinemaTicketingSystem.Application.Abstraction.Ticketing;
 using CinemaTicketingSystem.Application.Catalog.ICL;
 using CinemaTicketingSystem.Application.Schedules.ICL;
 using CinemaTicketingSystem.Domain.Core;
+using CinemaTicketingSystem.Domain.Ticketing;
 using CinemaTicketingSystem.Domain.Ticketing.Repositories;
-using CinemaTicketingSystem.Domain.Ticketing.Tickets;
 using CinemaTicketingSystem.Domain.ValueObjects;
 using CinemaTicketingSystem.SharedKernel;
 using System.Net;
 
 namespace CinemaTicketingSystem.Application.Ticketing;
 
-public class TicketingAppService(
+public class TicketPurchaseAppService(
     AppDependencyService appDependencyService,
     ITicketPurchaseRepository ticketPurchaseRepository,
     IUserContext userContext,
     ICatalogQueryService catalogQueryService,
-    IScheduleQueryService iScheduleQueryService) : IScopedDependency, ITicketingAppService
+    IScheduleQueryService iScheduleQueryService) : IScopedDependency, ITicketPurchaseAppService
 {
-    public async Task<AppResult> PurchaseTicket(PurchaseTicketRequest request)
+    public async Task<AppResult> Purchase(PurchaseTicketRequest request)
     {
         var scheduleInfo = await iScheduleQueryService.GetScheduleInfo(request.ScheduleId);
 

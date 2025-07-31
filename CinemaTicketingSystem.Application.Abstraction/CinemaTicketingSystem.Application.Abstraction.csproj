@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\CinemaTicketingSytem.Domain.Core\CinemaTicketingSystem.Domain.Core.csproj"/>
+        <ProjectReference Include="..\CinemaTicketingSytem.Domain.Core\CinemaTicketingSystem.SharedKernel.csproj" />
     </ItemGroup>
 
 </Project>
