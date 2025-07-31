@@ -1,6 +1,6 @@
 using CinemaTicketingSystem.Domain.Core;
 using CinemaTicketingSystem.Domain.Core.Exceptions;
-using CinemaTicketingSystem.Domain.Ticketing.ValueObjects;
+using CinemaTicketingSystem.Domain.ValueObjects;
 
 namespace CinemaTicketingSystem.Domain.Ticketing.Reservations.Exceptions;
 

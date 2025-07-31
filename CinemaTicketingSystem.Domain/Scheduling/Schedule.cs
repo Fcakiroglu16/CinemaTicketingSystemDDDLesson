@@ -1,4 +1,5 @@
 ﻿using Ardalis.GuardClauses;
+using CinemaTicketingSystem.Domain.ValueObjects;
 
 namespace CinemaTicketingSystem.Domain.Scheduling;
 
@@ -8,12 +9,13 @@ public class Schedule : AggregateRoot<Guid>
     {
     }
 
-    public Schedule(Guid movieId, Guid hallId, ShowTime showTime)
+    public Schedule(Guid movieId, Guid hallId, ShowTime showTime, Price price)
     {
         Guard.Against.Default(movieId, nameof(movieId));
         Guard.Against.Default(hallId, nameof(hallId));
         ShowTime = Guard.Against.Null(showTime, nameof(showTime));
 
+        TicketPrice = Guard.Against.Null(price, nameof(price));
         MovieId = movieId;
         HallId = hallId;
         Id = Guid.CreateVersion7();
@@ -21,6 +23,8 @@ public class Schedule : AggregateRoot<Guid>
 
     public Guid MovieId { get; private set; }
     public Guid HallId { get; }
+
+    public Price TicketPrice { get; private set; }
     public virtual ShowTime ShowTime { get; private set; } = null!;
 
     /// <summary>

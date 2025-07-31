@@ -1,5 +1,5 @@
 using CinemaTicketingSystem.Domain.Ticketing.Reservations.DomainEvents;
-using CinemaTicketingSystem.Domain.Ticketing.ValueObjects;
+using CinemaTicketingSystem.Domain.ValueObjects;
 
 namespace CinemaTicketingSystem.Domain.Ticketing.Reservations;
 

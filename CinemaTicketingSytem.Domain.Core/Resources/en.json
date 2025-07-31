@@ -12,9 +12,11 @@
   "Schedule:ShowTimeConflict": "Show time conflicts with existing schedule. Conflicting showtimes: {0}",
   "Schedule:ScheduleNotFound": "Schedule not found.",
   "Ticketing:MaxTicketsExceeded": "Maximum number of tickets per purchase exceeded. Limit is {0} tickets.",
-  "Ticketing:DuplicateSeat": "Seat {0}{1} is already selected for this ticket.",
+  "Ticketing:DuplicateSeat": "The selected seat {0}{1} is already taken..",
   "Ticketing:TicketNotFound": "Ticket for seat {0}{1} not found.",
+  "Ticketing:TicketNotAvailable": "Ticket is not available.",
   "Ticketing:TicketAlreadyUsed": "Ticket with code {0} has already been used.",
+  "Ticketing:NotEnoughSeatsAvailable": "Not enough seats available. Only {0} seats are left.",
   "Common:ServerErrorTitle": "An unexpected error occurred",
   "Common:ServerErrorDetail": "Please try again later or contact support if the issue persists."
 }

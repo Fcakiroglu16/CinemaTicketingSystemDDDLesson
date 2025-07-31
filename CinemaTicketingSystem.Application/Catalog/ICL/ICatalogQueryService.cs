@@ -5,5 +5,5 @@ namespace CinemaTicketingSystem.Application.Catalog.ICL;
 
 public interface ICatalogQueryService
 {
-    Task<AppResult<GetCatalogInfoResponse>> GetCinemaInfo(Guid cinemaId, Guid HallId, Guid MovieId);
+    Task<AppResult<GetCatalogInfoResponse>> GetCinemaInfo(Guid hallId, Guid movieId);
 }

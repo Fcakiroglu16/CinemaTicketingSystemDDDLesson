@@ -22,6 +22,9 @@ public static class ErrorCodes
     public const string TicketNotFound = "Ticketing:TicketNotFound";
     public const string DuplicateSeat = "Ticketing:DuplicateSeat";
     public const string TicketAlreadyUsed = "Ticketing:TicketAlreadyUsed";
+    public const string TicketNotAvailable = "Ticketing:TicketNotAvailable";
+    public const string SeatNotAvailable = "Ticketing:SeatNotAvailable";
+    public const string NotEnoughSeatsAvailable = "Ticketing:NotEnoughSeatsAvailable";
 
     public const string ServerErrorTitle = "Common:ServerErrorTitle";
     public const string ServerErrorDetail = "Common:ServerErrorDetail";

@@ -1,7 +1,7 @@
 ﻿using CinemaTicketingSystem.Domain.Core;
 using CinemaTicketingSystem.Domain.Core.Exceptions;
 using CinemaTicketingSystem.Domain.Ticketing.Tickets.DomainEvents;
-using CinemaTicketingSystem.Domain.Ticketing.ValueObjects;
+using CinemaTicketingSystem.Domain.ValueObjects;
 
 namespace CinemaTicketingSystem.Domain.Ticketing.Tickets;
 
@@ -27,7 +27,7 @@ public class TicketPurchase : AggregateRoot<Guid>
     public Guid ScheduleId { get; private set; }
     public bool IsDiscountApplied { get; private set; }
 
-    public virtual IReadOnlyCollection<Ticket> TicketSales => _ticketList.AsReadOnly();
+    public virtual IReadOnlyCollection<Ticket> TicketList => _ticketList.AsReadOnly();
 
     public void AddTicket(Ticket ticket)
     {
@@ -35,7 +35,8 @@ public class TicketPurchase : AggregateRoot<Guid>
             throw new BusinessException(ErrorCodes.MaxTicketsExceeded).AddData(MaxTicketsPerPurchase);
 
         if (_ticketList.Any(t => t.SeatNumber == ticket.SeatNumber))
-            throw new BusinessException(ErrorCodes.DuplicateSeat).AddData(ticket.SeatNumber.Row).AddData(ticket.SeatNumber.Number);
+            throw new BusinessException(ErrorCodes.DuplicateSeat).AddData(ticket.SeatNumber.Row)
+                .AddData(ticket.SeatNumber.Number);
         _ticketList.Add(ticket);
         ApplyBulkDiscountIfEligible();
         AddDomainEvent(new TicketPurchasedEvent(ticket.Id, CustomerId!.Value, ticket.Price));

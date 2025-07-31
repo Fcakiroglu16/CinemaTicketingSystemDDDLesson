@@ -13,7 +13,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Schedules\Contracts\" />
         <Folder Include="Schedules\EventHandlers\" />
         <Folder Include="Schedules\Implementations\" />
     </ItemGroup>

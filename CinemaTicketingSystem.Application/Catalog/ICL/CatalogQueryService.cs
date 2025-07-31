@@ -7,37 +7,43 @@ using System.Net;
 
 namespace CinemaTicketingSystem.Application.Catalog.ICL;
 
-public class CatalogQueryService(ICinemaRepository cinemaRepository, IMovieRepository movieRepository, AppDependencyService appDependencyService, ILogger<CatalogQueryService> logger) : ICatalogQueryService
+public class CatalogQueryService(
+    ICinemaRepository cinemaRepository,
+    IMovieRepository movieRepository,
+    AppDependencyService appDependencyService,
+    ILogger<CatalogQueryService> logger) : ICatalogQueryService
 {
-    public async Task<AppResult<GetCatalogInfoResponse>> GetCinemaInfo(Guid cinemaId, Guid HallId, Guid MovieId)
+    public async Task<AppResult<GetCatalogInfoResponse>> GetCinemaInfo(Guid hallId, Guid movieId)
     {
-
-        var movie = await movieRepository.GetByIdAsync(MovieId);
+        var movie = await movieRepository.GetByIdAsync(movieId);
 
         if (movie is null)
         {
-
-            logger.LogWarning($"Movie with Id: {MovieId} not found.");
-            return appDependencyService.Error<GetCatalogInfoResponse>(ErrorCodes.MovieNotFound, HttpStatusCode.NotFound);
+            logger.LogWarning($"Movie with Id: {movieId} not found.");
+            return appDependencyService.Error<GetCatalogInfoResponse>(ErrorCodes.MovieNotFound,
+                HttpStatusCode.NotFound);
         }
 
-        var cinema = await cinemaRepository.GetByIdAsync(cinemaId);
+        var cinema = await cinemaRepository.GetByHallId(hallId);
 
         if (cinema is null)
         {
-            logger.LogWarning($"Cinema with Id: {cinemaId} not found.");
-            return appDependencyService.Error<GetCatalogInfoResponse>(ErrorCodes.CinemaNotFound, HttpStatusCode.NotFound);
+            logger.LogWarning($"Cinema with Hall Id: {hallId} not found.");
+            return appDependencyService.Error<GetCatalogInfoResponse>(ErrorCodes.CinemaNotFound,
+                HttpStatusCode.NotFound);
         }
 
-        var hall = cinema.Halls.FirstOrDefault(h => h.Id == HallId);
+        var hall = cinema.Halls.FirstOrDefault(h => h.Id == hallId);
 
         if (hall is null)
         {
-            logger.LogWarning($"Cinema hall with Id: {HallId} not found in cinema with Id: {cinemaId}.");
-            return appDependencyService.Error<GetCatalogInfoResponse>(ErrorCodes.CinemaHallNotFound, HttpStatusCode.NotFound);
+            logger.LogWarning($"Cinema hall with Id: {hallId} not found in cinema with Name: {cinema.Name}.");
+            return appDependencyService.Error<GetCatalogInfoResponse>(ErrorCodes.CinemaHallNotFound,
+                HttpStatusCode.NotFound);
         }
 
 
-        return AppResult<GetCatalogInfoResponse>.SuccessAsOk(new GetCatalogInfoResponse(cinema.Name, hall.Name, movie.Title, hall.Capacity));
+        return AppResult<GetCatalogInfoResponse>.SuccessAsOk(new GetCatalogInfoResponse(cinema.Name, hall.Name,
+            movie.Title, hall.Capacity));
     }
 }
