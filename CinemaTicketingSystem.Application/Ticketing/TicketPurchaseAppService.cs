@@ -1,3 +1,4 @@
+using System.Net;
 using CinemaTicketingSystem.Application.Abstraction;
 using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
 using CinemaTicketingSystem.Application.Abstraction.Ticketing;
@@ -8,7 +9,6 @@ using CinemaTicketingSystem.Domain.Ticketing;
 using CinemaTicketingSystem.Domain.Ticketing.Repositories;
 using CinemaTicketingSystem.Domain.ValueObjects;
 using CinemaTicketingSystem.SharedKernel;
-using System.Net;
 
 namespace CinemaTicketingSystem.Application.Ticketing;
 
@@ -53,7 +53,6 @@ public class TicketPurchaseAppService(
                 HttpStatusCode.BadRequest);
 
 
-
         foreach (var seat in request.seats)
         {
             var seatNumber = new SeatNumber(seat.Row, seat.Number);
@@ -68,7 +67,6 @@ public class TicketPurchaseAppService(
 
         foreach (var seat in request.seats)
         {
-
             var newTicket = new Ticket(new SeatNumber(seat.Row, seat.Number), scheduleInfo.Data.TicketPrice);
             ticket.AddTicket(newTicket);
         }

@@ -1,4 +1,5 @@
-﻿using CinemaTicketingSystem.Application.Abstraction;
+﻿using System.Net;
+using CinemaTicketingSystem.Application.Abstraction;
 using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
 using CinemaTicketingSystem.Application.Abstraction.Schedule;
 using CinemaTicketingSystem.Domain.Core;
@@ -6,7 +7,6 @@ using CinemaTicketingSystem.Domain.Repositories;
 using CinemaTicketingSystem.Domain.Scheduling;
 using CinemaTicketingSystem.Domain.Scheduling.Repositories;
 using CinemaTicketingSystem.Domain.ValueObjects;
-using System.Net;
 
 namespace CinemaTicketingSystem.Application.Schedules;
 
@@ -61,7 +61,8 @@ public class ScheduleAppService(
                 HttpStatusCode.Conflict);
         }
 
-        var schedule = new Schedule(request.MovieId, hallId, showTime, new Price(request.Price.Amount, request.Price.Currency));
+        var schedule = new Schedule(request.MovieId, hallId, showTime,
+            new Price(request.Price.Amount, request.Price.Currency));
         await scheduleRepository.AddAsync(schedule);
 
         await appDependencyService.UnitOfWork.SaveChangesAsync();

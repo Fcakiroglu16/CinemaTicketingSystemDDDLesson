@@ -2,54 +2,44 @@
 using CinemaTicketingSystem.SharedKernel;
 using System.Security.Claims;
 
-namespace CinemaTicketingSystem.Host.Identities
+namespace CinemaTicketingSystem.Host.Identities;
+
+internal class UserContext(IHttpContextAccessor httpContextAccessor, ILogger<UserContext> logger, ILocalizer localizer)
+    : IUserContext
 {
-    internal class UserContext(IHttpContextAccessor httpContextAccessor, ILogger<UserContext> logger, ILocalizer localizer) : IUserContext
+    public Guid UserId
     {
-        public Guid UserId
+        get
         {
-            get
-            {
-                if (!httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
-                {
-
-                    throw new UnauthorizedAccessException("User is not authenticated.");
-                }
-                return Guid.Parse(httpContextAccessor.HttpContext.User.Claims
-                    .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)
-                    ?.Value!);
-
-            }
+            if (!httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
+                throw new UnauthorizedAccessException("User is not authenticated.");
+            return Guid.Parse(httpContextAccessor.HttpContext.User.Claims
+                .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)
+                ?.Value!);
         }
+    }
 
-        public string UserName
+    public string UserName
+    {
+        get
         {
-            get
-            {
+            if (!httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
+                throw new UnauthorizedAccessException("User is not authenticated.");
 
-                if (!httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
-                {
-                    throw new UnauthorizedAccessException("User is not authenticated.");
-                }
-
-                return httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)
-                    ?.Value!;
-            }
+            return httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)
+                ?.Value!;
         }
+    }
 
-        public string Email
+    public string Email
+    {
+        get
         {
-            get
-            {
+            if (!httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
+                throw new UnauthorizedAccessException("User is not authenticated.");
 
-                if (!httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
-                {
-                    throw new UnauthorizedAccessException("User is not authenticated.");
-                }
-
-                return httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)
-                    ?.Value!;
-            }
+            return httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)
+                ?.Value!;
         }
     }
 }

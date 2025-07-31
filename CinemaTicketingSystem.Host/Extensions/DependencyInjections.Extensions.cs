@@ -1,4 +1,5 @@
-﻿using CinemaTicketingSystem.API.Localization;
+﻿using System.Reflection;
+using CinemaTicketingSystem.API.Localization;
 using CinemaTicketingSystem.Application.Abstraction.Contracts;
 using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
 using CinemaTicketingSystem.Application.Schedules.IntegrationEventHandlers;
@@ -13,18 +14,14 @@ using CinemaTicketingSystem.SharedKernel;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
-using System.Reflection;
 
 namespace CinemaTicketingSystem.Host.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-
-
     public static IServiceCollection RegisterIdentity(this IServiceCollection services,
         IConfiguration configuration)
     {
-
         services.AddScoped<IUserContext, UserContext>();
 
         return services;
@@ -38,8 +35,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IEventHandler<MovieCreatedEvent>, MovieCreatedEventHandler>();
 
         services.AddScoped<IIntegrationEventBus, IntegrationEventBus>();
-
-
 
 
         services.AddMassTransit(configure =>
