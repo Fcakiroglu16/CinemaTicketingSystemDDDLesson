@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace CinemaTicketingSystem.Domain.Accounts.ValueObjects;
+namespace CinemaTicketingSystem.Domain.BoundedContexts.Accounts.ValueObjects;
 
 public class Email : ValueObject
 {
