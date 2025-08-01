@@ -5,8 +5,6 @@ namespace CinemaTicketingSystem.API.Ticketing.Purchase.Purchase;
 
 public class PurchaseTicketRequestValidator : AbstractValidator<PurchaseTicketRequest>
 {
-
-
     public PurchaseTicketRequestValidator()
     {
         RuleFor(x => x.SeatPositionList).NotEmpty();

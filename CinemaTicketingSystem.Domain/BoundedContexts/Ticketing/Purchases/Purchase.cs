@@ -1,6 +1,5 @@
 ﻿using CinemaTicketingSystem.Domain.Core;
 using CinemaTicketingSystem.Domain.Core.Exceptions;
-using CinemaTicketingSystem.Domain.Ticketing;
 using CinemaTicketingSystem.Domain.Ticketing.DomainEvents;
 using CinemaTicketingSystem.Domain.ValueObjects;
 
@@ -40,14 +39,16 @@ public class Purchase : AggregateRoot<Guid>
                 .AddData(ticket.SeatPosition.Number);
         _ticketList.Add(ticket);
         ApplyBulkDiscountIfEligible();
-        AddDomainEvent(new TicketPurchasedEvent(ticket.Id, ScheduledMovieShowId, CustomerId!.Value, ticket.SeatPosition, ticket.Price));
+        AddDomainEvent(new TicketPurchasedEvent(ticket.Id, ScheduledMovieShowId, CustomerId!.Value, ticket.SeatPosition,
+            ticket.Price));
     }
 
     public void RemoveTicket(SeatPosition seatPosition)
     {
         var ticket = _ticketList.FirstOrDefault(t => t.SeatPosition == seatPosition);
         if (ticket is null)
-            throw new BusinessException(ErrorCodes.TicketNotFound).AddData(seatPosition.Row).AddData(seatPosition.Number);
+            throw new BusinessException(ErrorCodes.TicketNotFound).AddData(seatPosition.Row)
+                .AddData(seatPosition.Number);
 
         _ticketList.Remove(ticket);
         AddDomainEvent(new TicketReleasedEvent(ticket.Id));

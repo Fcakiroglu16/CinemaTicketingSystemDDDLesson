@@ -1,7 +1,6 @@
 ﻿using CinemaTicketingSystem.API.Extensions;
 using CinemaTicketingSystem.API.Filters;
 using CinemaTicketingSystem.Application.Abstraction.Catalog.Cinema;
-using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Cinema;
 using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Movie.Create;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;

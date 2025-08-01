@@ -20,8 +20,10 @@ public class SeatHoldAppService(AppDependencyService appDependencyService, ISeat
         var seatHold = await seatHoldRepository.WhereAsync(x => x.ScheduledMovieShowId == request.ScheduledMovieShowId);
 
 
-        foreach (var seat in request.SeatPosition.Where(seat => seatHold.Any(x => x.SeatPosition == new SeatPosition(seat.Row, seat.Number))))
-            return appDependencyService.Error(ErrorCodes.SeatAlreadyHeld, [seat.Row, seat.Number], HttpStatusCode.BadRequest);
+        foreach (var seat in request.SeatPosition.Where(seat =>
+                     seatHold.Any(x => x.SeatPosition == new SeatPosition(seat.Row, seat.Number))))
+            return appDependencyService.Error(ErrorCodes.SeatAlreadyHeld, [seat.Row, seat.Number],
+                HttpStatusCode.BadRequest);
 
 
         foreach (var newSeatHold in request.SeatPosition.Select(seat =>

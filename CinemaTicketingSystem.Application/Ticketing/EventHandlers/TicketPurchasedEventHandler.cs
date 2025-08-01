@@ -19,7 +19,8 @@ public class TicketPurchasedEventHandler(ISeatHoldRepository seatHoldRepository)
                  x.SeatPosition == message.SeatPosition, cancellationToken);
 
         if (seatHoldToDelete is null)
-            throw new BusinessException(ErrorCodes.SeatHoldNotFound).AddData(message.SeatPosition.Row).AddData(message.SeatPosition.Number);
+            throw new BusinessException(ErrorCodes.SeatHoldNotFound).AddData(message.SeatPosition.Row)
+                .AddData(message.SeatPosition.Number);
 
         if (!seatHoldToDelete.CanBeConvertedToReservationOrPurchase())
             throw new BusinessException(ErrorCodes.SeatHoldExpired)

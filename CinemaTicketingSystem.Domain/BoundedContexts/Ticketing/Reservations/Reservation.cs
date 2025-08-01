@@ -18,14 +18,6 @@ public class Reservation : AggregateRoot<Guid>
     {
     }
 
-    public Guid CustomerId { get; private set; }
-    public Guid ScheduledMovieShowId { get; private set; }
-    public DateTime ReservationTime { get; private set; }
-    public DateTime ExpirationTime { get; private set; }
-    public ReservationStatus Status { get; private set; }
-
-    public virtual IReadOnlyCollection<ReservationSeat> ReservationSeatList => _reservationSeatList.AsReadOnly();
-
 
     public Reservation(Guid scheduleId, Guid customerId)
     {
@@ -36,6 +28,14 @@ public class Reservation : AggregateRoot<Guid>
         ExpirationTime = ReservationTime.AddMinutes(ReservationExpiryMinutes);
         AddDomainEvent(new ReservationCreatedEvent(Id, CustomerId, scheduleId, ReservationTime));
     }
+
+    public Guid CustomerId { get; }
+    public Guid ScheduledMovieShowId { get; }
+    public DateTime ReservationTime { get; }
+    public DateTime ExpirationTime { get; }
+    public ReservationStatus Status { get; private set; }
+
+    public virtual IReadOnlyCollection<ReservationSeat> ReservationSeatList => _reservationSeatList.AsReadOnly();
 
     public void AddSeat(ReservationSeat reservationSeat)
     {

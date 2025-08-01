@@ -3,7 +3,6 @@ using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Purchases;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Reservations;
 using CinemaTicketingSystem.Domain.Catalog;
 using CinemaTicketingSystem.Domain.Scheduling;
-using CinemaTicketingSystem.Domain.Ticketing;
 using CinemaTicketingSystem.Persistence.Accounts;
 using CinemaTicketingSystem.Persistence.Interceptors;
 using MediatR;
@@ -46,12 +45,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, IPublisher pub
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-            foreach (var mutableProperty in entityType.GetProperties())
-            {
-                if (!ReferenceEquals(mutableProperty.ClrType, typeof(decimal))) continue;
-                mutableProperty.SetPrecision(9);
-                mutableProperty.SetScale(2);
-            }
+        foreach (var mutableProperty in entityType.GetProperties())
+        {
+            if (!ReferenceEquals(mutableProperty.ClrType, typeof(decimal))) continue;
+            mutableProperty.SetPrecision(9);
+            mutableProperty.SetScale(2);
+        }
 
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

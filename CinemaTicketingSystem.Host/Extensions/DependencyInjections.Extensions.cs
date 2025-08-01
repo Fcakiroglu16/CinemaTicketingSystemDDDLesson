@@ -77,7 +77,10 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<AppDbContext>(options =>
         {
             options.UseSqlServer(configuration.GetConnectionString("CinemaTicketingDb"),
-                sqlServerDbContextOptionsBuilder => { sqlServerDbContextOptionsBuilder.MigrationsAssembly(typeof(PersistenceAssembly).Assembly); });
+                sqlServerDbContextOptionsBuilder =>
+                {
+                    sqlServerDbContextOptionsBuilder.MigrationsAssembly(typeof(PersistenceAssembly).Assembly);
+                });
         });
 
 

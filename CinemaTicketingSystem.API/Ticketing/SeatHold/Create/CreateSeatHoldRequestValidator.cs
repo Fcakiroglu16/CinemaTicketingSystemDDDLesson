@@ -5,7 +5,6 @@ namespace CinemaTicketingSystem.API.Ticketing.SeatHold.Create;
 
 public class CreateSeatHoldRequestValidator : AbstractValidator<CreateSeatHoldRequest>
 {
-
     public CreateSeatHoldRequestValidator()
     {
         RuleFor(x => x.SeatPosition).NotEmpty();
