@@ -1,5 +1,5 @@
 ﻿using CinemaTicketingSystem.Application.Abstraction.Contracts;
-using CinemaTicketingSystem.Domain.Catalog.DomainEvents;
+using CinemaTicketingSystem.Domain.BoundedContexts.Catalog.DomainEvents;
 using MediatR;
 
 namespace CinemaTicketingSystem.Application.Catalog.Cinema.EventHandlers;

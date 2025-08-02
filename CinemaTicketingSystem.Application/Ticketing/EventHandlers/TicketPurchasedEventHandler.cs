@@ -1,8 +1,8 @@
 using CinemaTicketingSystem.Application.Abstraction.Contracts;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds;
+using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Purchases.DomainEvents;
 using CinemaTicketingSystem.Domain.Core;
 using CinemaTicketingSystem.Domain.Core.Exceptions;
-using CinemaTicketingSystem.Domain.Ticketing.DomainEvents;
 
 namespace CinemaTicketingSystem.Application.Ticketing.EventHandlers;
 

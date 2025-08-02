@@ -1,4 +1,4 @@
-namespace CinemaTicketingSystem.Domain.Accounts.ValueObjects;
+namespace CinemaTicketingSystem.Domain.BoundedContexts.Accounts.ValueObjects;
 
 public class UserId : ValueObject
 {

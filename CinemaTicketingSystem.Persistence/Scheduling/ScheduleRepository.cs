@@ -1,5 +1,5 @@
-﻿using CinemaTicketingSystem.Domain.Scheduling;
-using CinemaTicketingSystem.Domain.Scheduling.Repositories;
+﻿using CinemaTicketingSystem.Domain.BoundedContexts.Scheduling;
+using CinemaTicketingSystem.Domain.BoundedContexts.Scheduling.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaTicketingSystem.Persistence.Scheduling;

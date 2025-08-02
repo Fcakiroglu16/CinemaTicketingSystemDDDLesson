@@ -1,4 +1,5 @@
-﻿using CinemaTicketingSystem.Domain.Repositories;
+﻿using CinemaTicketingSystem.Domain.BoundedContexts.Catalog;
+using CinemaTicketingSystem.Domain.Repositories;
 
 namespace CinemaTicketingSystem.Domain.Catalog.Repositories;
 

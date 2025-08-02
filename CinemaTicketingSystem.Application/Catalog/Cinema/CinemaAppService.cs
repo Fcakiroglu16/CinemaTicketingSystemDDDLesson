@@ -4,6 +4,7 @@ using CinemaTicketingSystem.Application.Abstraction.Catalog.Cinema.Hall;
 using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Cinema;
 using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Cinema.Hall;
 using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
+using CinemaTicketingSystem.Domain.BoundedContexts.Catalog;
 using CinemaTicketingSystem.Domain.Catalog;
 using CinemaTicketingSystem.Domain.Catalog.Repositories;
 using CinemaTicketingSystem.Domain.Core;
@@ -32,7 +33,8 @@ public class CinemaAppService(
             addressDto.Description);
 
 
-        var newCinema = new Domain.Catalog.Cinema(request.Name, address);
+
+        var newCinema = new CinemaTicketingSystem.Domain.BoundedContexts.Catalog.Cinema(request.Name, address);
 
 
         await cinemaRepository.AddAsync(newCinema);

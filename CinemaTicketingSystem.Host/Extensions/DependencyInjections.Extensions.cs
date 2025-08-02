@@ -1,25 +1,39 @@
-﻿using System.Reflection;
-using CinemaTicketingSystem.API.Localization;
+﻿using CinemaTicketingSystem.API.Localization;
 using CinemaTicketingSystem.Application.Abstraction.Contracts;
 using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
 using CinemaTicketingSystem.Application.Schedules.IntegrationEventHandlers;
 using CinemaTicketingSystem.Caching;
-using CinemaTicketingSystem.Domain.Catalog.DomainEvents;
+using CinemaTicketingSystem.Domain.BoundedContexts.Catalog.DomainEvents;
 using CinemaTicketingSystem.Domain.Repositories;
-using CinemaTicketingSystem.Host.Identities;
 using CinemaTicketingSystem.Identity;
 using CinemaTicketingSystem.Persistence;
 using CinemaTicketingSystem.Persistence.Accounts;
 using CinemaTicketingSystem.ServiceBus;
 using CinemaTicketingSystem.SharedKernel;
+using CinemaTicketingSystem.SharedKernel.Options;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
+using System.Reflection;
 
 namespace CinemaTicketingSystem.Host.Extensions;
 
 public static class ServiceCollectionExtensions
 {
+    public static IServiceCollection AddOptions(this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services.Configure<TokenOption>(configuration.GetSection(nameof(TokenOption)));
+        services.Configure<ClientOption>(configuration.GetSection(nameof(ClientOption)));
+
+
+        services.AddSingleton(sp => sp.GetRequiredService<IOptions<TokenOption>>().Value);
+
+        services.AddSingleton(sp => sp.GetRequiredService<IOptions<ClientOption>>().Value);
+        return services;
+    }
+
     public static IServiceCollection RegisterIdentity(this IServiceCollection services,
         IConfiguration configuration)
     {
@@ -96,6 +110,7 @@ public static class ServiceCollectionExtensions
 
 
         services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
+        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.RegisterRepositories();

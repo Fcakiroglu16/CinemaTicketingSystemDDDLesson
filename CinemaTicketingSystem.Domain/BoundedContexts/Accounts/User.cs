@@ -1,5 +1,5 @@
-﻿using CinemaTicketingSystem.Domain.Accounts.ValueObjects;
-using CinemaTicketingSystem.Domain.BoundedContexts.Accounts.ValueObjects;
+﻿using CinemaTicketingSystem.Domain.BoundedContexts.Accounts.ValueObjects;
+using CinemaTicketingSystem.SharedKernel.AggregateRoot;
 
 namespace CinemaTicketingSystem.Domain.BoundedContexts.Accounts;
 
@@ -39,6 +39,9 @@ public class User : AggregateRoot<UserId>
     public bool IsActive { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
+
+
+
 
     public string FullName => $"{FirstName} {LastName}";
 

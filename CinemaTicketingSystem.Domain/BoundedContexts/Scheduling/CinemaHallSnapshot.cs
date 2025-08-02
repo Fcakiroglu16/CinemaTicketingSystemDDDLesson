@@ -1,6 +1,7 @@
 ﻿using CinemaTicketingSystem.Domain.Core;
+using CinemaTicketingSystem.SharedKernel.AggregateRoot;
 
-namespace CinemaTicketingSystem.Domain.Scheduling;
+namespace CinemaTicketingSystem.Domain.BoundedContexts.Scheduling;
 
 public class CinemaHallSnapshot : AggregateRoot<Guid>
 {

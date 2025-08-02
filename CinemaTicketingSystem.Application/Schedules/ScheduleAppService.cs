@@ -2,10 +2,11 @@
 using CinemaTicketingSystem.Application.Abstraction;
 using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
 using CinemaTicketingSystem.Application.Abstraction.Schedule;
+using CinemaTicketingSystem.Domain.BoundedContexts.Scheduling;
+using CinemaTicketingSystem.Domain.BoundedContexts.Scheduling.Repositories;
 using CinemaTicketingSystem.Domain.Core;
 using CinemaTicketingSystem.Domain.Repositories;
 using CinemaTicketingSystem.Domain.Scheduling;
-using CinemaTicketingSystem.Domain.Scheduling.Repositories;
 using CinemaTicketingSystem.Domain.ValueObjects;
 
 namespace CinemaTicketingSystem.Application.Schedules;

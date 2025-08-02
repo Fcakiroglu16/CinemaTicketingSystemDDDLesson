@@ -1,4 +1,4 @@
-namespace CinemaTicketingSystem.Domain;
+namespace CinemaTicketingSystem.SharedKernel.Entities;
 
 public class AuditedEntity<TKey> : Entity<TKey>
     where TKey : notnull

@@ -1,10 +1,11 @@
 using CinemaTicketingSystem.Application.Abstraction;
+using CinemaTicketingSystem.Application.Abstraction.Accounts;
 using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
 using CinemaTicketingSystem.Domain.BoundedContexts.Accounts;
 
 namespace CinemaTicketingSystem.Application.Account;
 
-public class AccountService(AppDependencyService appDependencyService, IAccountRepository accountRepository, I) : IScopedDependency
+public class AccountAppService(AppDependencyService appDependencyService, IAccountRepository accountRepository, ITokenService tokenService) : IScopedDependency, IAccountAppService
 {
 
     public async Task<AppResult> SignUpAsync(SignUpRequest request)
@@ -20,7 +21,7 @@ public class AccountService(AppDependencyService appDependencyService, IAccountR
 
     }
 
-    public async Task<AppResult<User>> SignInRequest(SignInRequest userId)
+    public async Task<AppResult?> SignInAsync(SignInRequest userId)
     {
         var user = await accountRepository.GetAsync(userId.Email, userId.Password);
 
@@ -32,7 +33,7 @@ public class AccountService(AppDependencyService appDependencyService, IAccountR
 
 
 
-
+        return null;
 
 
 
@@ -40,7 +41,3 @@ public class AccountService(AppDependencyService appDependencyService, IAccountR
 
     }
 }
-
-public record SignInRequest(string Email, string Password);
-
-public record SignUpRequest(string Email, string Password, string FirstName, string LastName);

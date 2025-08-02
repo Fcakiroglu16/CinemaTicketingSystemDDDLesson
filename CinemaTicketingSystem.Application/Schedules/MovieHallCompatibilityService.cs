@@ -1,6 +1,6 @@
 ﻿using CinemaTicketingSystem.Application.Abstraction.Contracts;
+using CinemaTicketingSystem.Domain.BoundedContexts.Scheduling;
 using CinemaTicketingSystem.Domain.Core;
-using CinemaTicketingSystem.Domain.Scheduling;
 
 namespace CinemaTicketingSystem.Application.Schedules;
 

@@ -1,4 +1,4 @@
-﻿using CinemaTicketingSystem.Domain.Scheduling;
+﻿using CinemaTicketingSystem.Domain.BoundedContexts.Scheduling;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

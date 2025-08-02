@@ -1,6 +1,7 @@
 ﻿using CinemaTicketingSystem.Domain.ValueObjects;
+using CinemaTicketingSystem.SharedKernel;
 
-namespace CinemaTicketingSystem.Domain.Ticketing.DomainEvents;
+namespace CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Purchases.DomainEvents;
 
 public record TicketPurchasedEvent(
     Guid TicketId,

@@ -1,4 +1,6 @@
-namespace CinemaTicketingSystem.Domain.Ticketing.Reservations.DomainEvents;
+using CinemaTicketingSystem.SharedKernel;
+
+namespace CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Reservations.DomainEvents;
 
 public record ReservationCanceledEvent(Guid ReservationId, Guid CustomerId, Guid ScheduledMovieShowId) : IDomainEvent
 {

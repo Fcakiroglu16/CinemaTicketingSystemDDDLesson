@@ -19,7 +19,9 @@ public class MovieAppService(IMovieRepository movieRepository, AppDependencyServ
         if (existMovie)
             return appDependencyService.Error<CreateMovieResponse>(ErrorCodes.MovieAlreadyExists, [request.Title]);
 
-        var newMovie = new Domain.Catalog.Movie(request.Title, new Duration(request.Duration.TotalMinutes),
+
+
+        var newMovie = new Domain.BoundedContexts.Catalog.Movie(request.Title, new Duration(request.Duration.TotalMinutes),
             request.PosterImageUrl);
 
 

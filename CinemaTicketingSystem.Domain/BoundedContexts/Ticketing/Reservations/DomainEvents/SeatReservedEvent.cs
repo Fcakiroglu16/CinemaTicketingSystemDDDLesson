@@ -1,6 +1,7 @@
 using CinemaTicketingSystem.Domain.ValueObjects;
+using CinemaTicketingSystem.SharedKernel;
 
-namespace CinemaTicketingSystem.Domain.Ticketing.Reservations.DomainEvents;
+namespace CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Reservations.DomainEvents;
 
 public record SeatReservedEvent(
     Guid ReservationId,

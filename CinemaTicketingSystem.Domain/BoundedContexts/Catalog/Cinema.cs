@@ -1,8 +1,10 @@
 ﻿using Ardalis.GuardClauses;
-using CinemaTicketingSystem.Domain.Catalog.DomainEvents;
+using CinemaTicketingSystem.Domain.AggregateRoot;
+using CinemaTicketingSystem.Domain.BoundedContexts.Catalog.DomainEvents;
+using CinemaTicketingSystem.Domain.Catalog;
 using CinemaTicketingSystem.Domain.Core.Exceptions;
 
-namespace CinemaTicketingSystem.Domain.Catalog;
+namespace CinemaTicketingSystem.Domain.BoundedContexts.Catalog;
 
 public class Cinema : AuditedAggregateRoot<Guid>
 {

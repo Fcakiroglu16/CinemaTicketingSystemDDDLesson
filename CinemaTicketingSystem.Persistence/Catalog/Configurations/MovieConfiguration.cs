@@ -1,4 +1,4 @@
-﻿using CinemaTicketingSystem.Domain.Catalog;
+﻿using CinemaTicketingSystem.Domain.BoundedContexts.Catalog;
 using CinemaTicketingSystem.Domain.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

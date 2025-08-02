@@ -1,5 +1,5 @@
 using MediatR;
 
-namespace CinemaTicketingSystem.Domain;
+namespace CinemaTicketingSystem.SharedKernel;
 
 public interface IDomainEvent : INotification;

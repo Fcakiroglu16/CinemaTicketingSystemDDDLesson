@@ -1,6 +1,8 @@
-namespace CinemaTicketingSystem.Domain;
+using CinemaTicketingSystem.SharedKernel.Entities;
 
-public class AggregateRoot<T> : Entity<T>, IAggregateRoot
+namespace CinemaTicketingSystem.SharedKernel.AggregateRoot;
+
+public abstract class AggregateRoot<T> : Entity<T>, IAggregateRoot
 {
     private readonly List<IDomainEvent> _domainEvents = [];
 
@@ -19,7 +21,7 @@ public class AggregateRoot<T> : Entity<T>, IAggregateRoot
     }
 }
 
-public class AggregateRoot : Entity, IAggregateRoot
+public abstract class AggregateRoot : Entity, IAggregateRoot
 {
     private readonly List<IDomainEvent> _domainEvents = [];
 
@@ -36,4 +38,6 @@ public class AggregateRoot : Entity, IAggregateRoot
     {
         _domainEvents.Add(eventData);
     }
+
+
 }

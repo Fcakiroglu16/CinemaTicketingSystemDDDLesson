@@ -1,11 +1,11 @@
-﻿using CinemaTicketingSystem.Domain.Accounts.ValueObjects;
+﻿using CinemaTicketingSystem.Domain.BoundedContexts.Accounts.ValueObjects;
 
 namespace CinemaTicketingSystem.Domain.BoundedContexts.Accounts
 {
-    internal class RefreshToken : Entity<Guid>
+    public class RefreshToken : SharedKernel.AggregateRoot.AggregateRoot
     {
 
-        public string Token { get; set; } = default!;
+        public string Token { get; set; } = null!;
         public DateTime Expires { get; set; }
         public bool IsExpired => DateTime.UtcNow >= Expires;
         public UserId UserId { get; set; }
@@ -21,5 +21,9 @@ namespace CinemaTicketingSystem.Domain.BoundedContexts.Accounts
         }
 
 
+        public override object?[] GetKeys()
+        {
+            return [UserId];
+        }
     }
 }

@@ -6,6 +6,7 @@ using CinemaTicketingSystem.Application;
 using CinemaTicketingSystem.Application.Abstraction;
 using CinemaTicketingSystem.Domain;
 using CinemaTicketingSystem.Host.Extensions;
+using CinemaTicketingSystem.Identity;
 using CinemaTicketingSystem.Persistence;
 using FluentValidation;
 using Microsoft.Extensions.Options;
@@ -19,11 +20,12 @@ builder.Services.AddOpenApi();
 builder.Services.RegisterIdentity(builder.Configuration);
 builder.Services.RegisterLocalization();
 builder.Services.RegisterCaching();
+builder.Services.AddOptions(builder.Configuration);
 builder.Services.RegisterServiceBus(builder.Configuration);
 builder.Services.RegisterDomainServices(typeof(ApplicationAssembly).Assembly);
 builder.Services.RegisterPersistence(builder.Configuration);
 builder.Services.RegisterConventions(typeof(ApplicationAssembly).Assembly,
-    typeof(ApplicationAbstractionAssembly).Assembly);
+    typeof(ApplicationAbstractionAssembly).Assembly, typeof(IdentityAssembly).Assembly);
 
 
 builder.Services.AddMediatR(configuration =>

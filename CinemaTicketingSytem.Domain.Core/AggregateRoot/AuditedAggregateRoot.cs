@@ -1,6 +1,8 @@
-namespace CinemaTicketingSystem.Domain;
+using CinemaTicketingSystem.SharedKernel.AggregateRoot;
 
-public class AuditedAggregateRoot<T> : AggregateRoot<T>
+namespace CinemaTicketingSystem.Domain.AggregateRoot;
+
+public abstract class AuditedAggregateRoot<T> : AggregateRoot<T>
     where T : notnull
 {
     public DateTime CreationTime { get; set; }

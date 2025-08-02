@@ -1,7 +1,7 @@
 ﻿using CinemaTicketingSystem.Application.Abstraction.Contracts;
-using CinemaTicketingSystem.Domain.Catalog.DomainEvents;
+using CinemaTicketingSystem.Domain.BoundedContexts.Catalog.DomainEvents;
+using CinemaTicketingSystem.Domain.BoundedContexts.Scheduling;
 using CinemaTicketingSystem.Domain.Repositories;
-using CinemaTicketingSystem.Domain.Scheduling;
 
 namespace CinemaTicketingSystem.Application.Schedules.IntegrationEventHandlers;
 

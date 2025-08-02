@@ -2,8 +2,9 @@
 using CinemaTicketingSystem.Domain.Core;
 using CinemaTicketingSystem.Domain.Core.Exceptions;
 using CinemaTicketingSystem.Domain.ValueObjects;
+using CinemaTicketingSystem.SharedKernel.Entities;
 
-namespace CinemaTicketingSystem.Domain.Catalog;
+namespace CinemaTicketingSystem.Domain.BoundedContexts.Catalog;
 
 public class CinemaHall : Entity<Guid>
 {

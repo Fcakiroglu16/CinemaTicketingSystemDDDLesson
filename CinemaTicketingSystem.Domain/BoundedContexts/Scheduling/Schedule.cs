@@ -1,7 +1,9 @@
 ﻿using Ardalis.GuardClauses;
+using CinemaTicketingSystem.Domain.Scheduling;
 using CinemaTicketingSystem.Domain.ValueObjects;
+using CinemaTicketingSystem.SharedKernel.AggregateRoot;
 
-namespace CinemaTicketingSystem.Domain.Scheduling;
+namespace CinemaTicketingSystem.Domain.BoundedContexts.Scheduling;
 
 public class Schedule : AggregateRoot<Guid>
 {

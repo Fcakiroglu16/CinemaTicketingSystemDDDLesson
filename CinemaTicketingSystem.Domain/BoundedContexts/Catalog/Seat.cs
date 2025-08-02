@@ -1,7 +1,8 @@
 ﻿using CinemaTicketingSystem.Domain.Core;
 using CinemaTicketingSystem.Domain.ValueObjects;
+using CinemaTicketingSystem.SharedKernel.Entities;
 
-namespace CinemaTicketingSystem.Domain.Catalog;
+namespace CinemaTicketingSystem.Domain.BoundedContexts.Catalog;
 
 public class Seat : Entity<Guid>
 {

@@ -1,8 +1,10 @@
 ﻿using Ardalis.GuardClauses;
+using CinemaTicketingSystem.Domain.BoundedContexts.Catalog.DomainEvents;
 using CinemaTicketingSystem.Domain.Catalog.DomainEvents;
 using CinemaTicketingSystem.Domain.Core;
+using CinemaTicketingSystem.SharedKernel.AggregateRoot;
 
-namespace CinemaTicketingSystem.Domain.Catalog;
+namespace CinemaTicketingSystem.Domain.BoundedContexts.Catalog;
 
 public class Movie : AggregateRoot<Guid>
 {

@@ -1,4 +1,4 @@
-﻿namespace CinemaTicketingSystem.Domain;
+﻿namespace CinemaTicketingSystem.SharedKernel.AggregateRoot;
 
 public interface IAggregateRoot
 {

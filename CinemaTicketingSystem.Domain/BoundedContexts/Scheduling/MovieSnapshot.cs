@@ -1,7 +1,8 @@
 ﻿using Ardalis.GuardClauses;
 using CinemaTicketingSystem.Domain.Core;
+using CinemaTicketingSystem.SharedKernel.AggregateRoot;
 
-namespace CinemaTicketingSystem.Domain.Scheduling;
+namespace CinemaTicketingSystem.Domain.BoundedContexts.Scheduling;
 
 public class MovieSnapshot : AggregateRoot<Guid>
 {

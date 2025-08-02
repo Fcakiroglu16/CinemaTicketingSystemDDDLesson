@@ -1,5 +1,4 @@
-﻿using CinemaTicketingSystem.Domain.Accounts.ValueObjects;
-using CinemaTicketingSystem.Domain.BoundedContexts.Accounts.ValueObjects;
+﻿using CinemaTicketingSystem.Domain.BoundedContexts.Accounts.ValueObjects;
 
 namespace CinemaTicketingSystem.Domain.BoundedContexts.Accounts
 {

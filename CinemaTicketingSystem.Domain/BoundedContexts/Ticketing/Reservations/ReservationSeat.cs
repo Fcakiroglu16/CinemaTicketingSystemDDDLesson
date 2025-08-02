@@ -1,4 +1,5 @@
 using CinemaTicketingSystem.Domain.ValueObjects;
+using CinemaTicketingSystem.SharedKernel.Entities;
 
 namespace CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Reservations;
 

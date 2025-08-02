@@ -1,4 +1,5 @@
-﻿using CinemaTicketingSystem.Domain;
+﻿using CinemaTicketingSystem.SharedKernel;
+using CinemaTicketingSystem.SharedKernel.AggregateRoot;
 using MediatR;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
