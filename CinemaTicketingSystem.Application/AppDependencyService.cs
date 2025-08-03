@@ -1,8 +1,8 @@
-﻿using System.Net;
-using CinemaTicketingSystem.Application.Abstraction;
+﻿using CinemaTicketingSystem.Application.Abstraction;
 using CinemaTicketingSystem.Application.Abstraction.Contracts;
 using CinemaTicketingSystem.Domain.Repositories;
 using CinemaTicketingSystem.SharedKernel;
+using System.Net;
 
 namespace CinemaTicketingSystem.Application;
 
@@ -11,12 +11,26 @@ public class AppDependencyService(IUnitOfWork unitOfWork, ILocalizer localizer, 
     public IUnitOfWork UnitOfWork => unitOfWork;
     public IUserContext UserContext => userContext;
 
-    private string LocalizeError(string ErrorCodeAsTitle, params object[]? data)
+    private string LocalizeError(string errorCode, object[]? data = null)
     {
-        return data is not null ? localizer.L(ErrorCodeAsTitle, data) : localizer.L(ErrorCodeAsTitle);
+        return localizer.L(errorCode, data);
     }
 
-    public AppResult Error(string ErrorCodeAsTitle, object[]? ErrorCodeAsTitlePlaceHolder, HttpStatusCode statusCode)
+    public AppResult Error(string ErrorCodeAsTitle, HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest)
+    {
+        var titleError = LocalizeError(ErrorCodeAsTitle);
+
+        return AppResult.Error(titleError, httpStatusCode);
+    }
+    public AppResult Error(string ErrorCodeAsTitle, string ErrorCodeAsDescription, HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest)
+    {
+        var titleError = LocalizeError(ErrorCodeAsTitle);
+        var descriptionError = LocalizeError(ErrorCodeAsDescription);
+
+        return AppResult.Error(titleError, descriptionError, httpStatusCode);
+    }
+
+    public AppResult Error(string ErrorCodeAsTitle, object[]? ErrorCodeAsTitlePlaceHolder, HttpStatusCode statusCode = HttpStatusCode.BadRequest)
     {
         var titleError = LocalizeError(ErrorCodeAsTitle, ErrorCodeAsTitlePlaceHolder);
 
@@ -24,100 +38,20 @@ public class AppDependencyService(IUnitOfWork unitOfWork, ILocalizer localizer, 
     }
 
 
-    public AppResult Error(string ErrorCodeAsTitle, object[]? data)
-    {
-        var titleError = LocalizeError(ErrorCodeAsTitle, data);
-
-        return AppResult.Error(titleError);
-    }
-
-    public AppResult Error(string ErrorCodeAsTitle)
-    {
-        var titleError = LocalizeError(ErrorCodeAsTitle, null);
-
-        return AppResult.Error(titleError);
-    }
-
-    public AppResult Error(string ErrorCodeAsTitle, HttpStatusCode httpStatusCode)
-    {
-        var titleError = LocalizeError(ErrorCodeAsTitle, null);
-
-        return AppResult.Error(titleError, httpStatusCode);
-    }
-
-    public AppResult<T> Error<T>(string ErrorCodeAsTitle, object[]? ErrorCodeAsTitlePlaceHolder,
-        HttpStatusCode statusCode)
+    public AppResult Error(string ErrorCodeAsTitle, object[]? ErrorCodeAsTitlePlaceHolder, string ErrorCodeAsDescription, object[]? ErrorCodeAsDescriptionPlaceHolder, HttpStatusCode statusCode = HttpStatusCode.BadRequest)
     {
         var titleError = LocalizeError(ErrorCodeAsTitle, ErrorCodeAsTitlePlaceHolder);
+        var descriptionError = LocalizeError(ErrorCodeAsDescription, ErrorCodeAsDescriptionPlaceHolder);
 
-        return AppResult<T>.Error(titleError, statusCode);
+        return AppResult.Error(titleError, descriptionError, statusCode);
     }
-
-
-    public AppResult<T> Error<T>(string ErrorCodeAsTitle, object[]? data)
+    public AppResult Error(string ErrorCodeAsTitle, object[]? ErrorCodeAsTitlePlaceHolder, string ErrorCodeAsDescription, HttpStatusCode statusCode = HttpStatusCode.BadRequest)
     {
-        var titleError = LocalizeError(ErrorCodeAsTitle, data);
-
-        return AppResult<T>.Error(titleError);
-    }
-
-    public AppResult<T> Error<T>(string ErrorCodeAsTitle)
-    {
-        var titleError = LocalizeError(ErrorCodeAsTitle, null);
-
-        return AppResult<T>.Error(titleError);
-    }
-
-
-    public AppResult<T> Error<T>(string ErrorCodeAsTitle, HttpStatusCode httpStatusCode)
-    {
-        var titleError = LocalizeError(ErrorCodeAsTitle, null);
-
-        return AppResult<T>.Error(titleError, httpStatusCode);
-    }
-
-
-    public AppResult Error(string ErrorCodeAsTitle, object[]? errorCodeAsTitlePlaceHolder,
-        string errorCodeAsDescription, object[]? errorCodeAsDescriptionPlaceHolder,
-        HttpStatusCode statusCode = HttpStatusCode.BadRequest)
-    {
-        var titleError = LocalizeError(ErrorCodeAsTitle, errorCodeAsTitlePlaceHolder);
-        var descriptionError = LocalizeError(errorCodeAsDescription, errorCodeAsDescriptionPlaceHolder);
-
+        var titleError = LocalizeError(ErrorCodeAsTitle, ErrorCodeAsTitlePlaceHolder);
+        var descriptionError = LocalizeError(ErrorCodeAsDescription);
 
         return AppResult.Error(titleError, descriptionError, statusCode);
     }
 
-    public AppResult<T> Error<T>(string ErrorCodeAsTitle, object[]? errorCodeAsTitlePlaceHolder,
-        string errorCodeAsDescription, object[]? errorCodeAsDescriptionPlaceHolder,
-        HttpStatusCode statusCode = HttpStatusCode.BadRequest)
-    {
-        var titleError = LocalizeError(ErrorCodeAsTitle, errorCodeAsTitlePlaceHolder);
-        var descriptionError = LocalizeError(errorCodeAsDescription, errorCodeAsDescriptionPlaceHolder);
 
-
-        return AppResult<T>.Error(titleError, descriptionError, statusCode);
-    }
-
-
-    public AppResult Error(string ErrorCodeAsTitle,
-        string errorCodeAsDescription,
-        HttpStatusCode statusCode = HttpStatusCode.BadRequest)
-    {
-        var titleError = LocalizeError(ErrorCodeAsTitle);
-        var descriptionError = LocalizeError(errorCodeAsDescription);
-
-
-        return AppResult.Error(titleError, descriptionError, statusCode);
-    }
-
-    public AppResult<T> Error<T>(string ErrorCodeAsTitle, string errorCodeAsDescription,
-        HttpStatusCode statusCode = HttpStatusCode.BadRequest)
-    {
-        var titleError = LocalizeError(ErrorCodeAsTitle);
-        var descriptionError = LocalizeError(errorCodeAsDescription);
-
-
-        return AppResult<T>.Error(titleError, descriptionError, statusCode);
-    }
 }

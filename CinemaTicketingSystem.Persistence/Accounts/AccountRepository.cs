@@ -35,13 +35,16 @@ internal class AccountRepository(UserManager<AppUser> userManager) : IAccountRep
             userFromDb.FirstName!, userFromDb.LastName!, userFromDb.CreatedAt);
     }
 
-    public async Task<User?> GetAsync(UserName UserName, Password Password)
+    public async Task<User?> GetAsync(Email email, Password password)
     {
-        var userFromDb = await userManager.FindByNameAsync(UserName);
+        var userFromDb = await userManager.FindByEmailAsync(email);
         if (userFromDb is null) return null;
-        var passwordCheck = await userManager.CheckPasswordAsync(userFromDb, Password);
+        var passwordCheck = await userManager.CheckPasswordAsync(userFromDb, password);
         if (!passwordCheck) return null;
+
+
         return new User(userFromDb.Id, userFromDb.UserName!, userFromDb.Email!,
             userFromDb.FirstName!, userFromDb.LastName!, userFromDb.CreatedAt);
     }
+
 }

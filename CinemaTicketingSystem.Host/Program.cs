@@ -1,4 +1,5 @@
 using CinemaTicketingSystem.API;
+using CinemaTicketingSystem.API.Account;
 using CinemaTicketingSystem.API.Catalog;
 using CinemaTicketingSystem.API.Extensions;
 using CinemaTicketingSystem.API.Schedule;
@@ -54,5 +55,6 @@ app.UseRequestLocalization(locOptions.Value);
 //app.UseAuthorization();
 app.AddCatalogGroupEndpointExt(app.AddVersionSetExt());
 app.AddScheduleGroupEndpointExt(app.AddVersionSetExt());
+app.AddAccountGroupEndpointExt(app.AddVersionSetExt());
 
 app.Run();

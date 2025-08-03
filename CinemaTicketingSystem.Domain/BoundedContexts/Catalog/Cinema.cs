@@ -1,12 +1,12 @@
 ﻿using Ardalis.GuardClauses;
-using CinemaTicketingSystem.Domain.AggregateRoot;
 using CinemaTicketingSystem.Domain.BoundedContexts.Catalog.DomainEvents;
 using CinemaTicketingSystem.Domain.Catalog;
 using CinemaTicketingSystem.Domain.Core.Exceptions;
+using CinemaTicketingSystem.SharedKernel.AggregateRoot;
 
 namespace CinemaTicketingSystem.Domain.BoundedContexts.Catalog;
 
-public class Cinema : AuditedAggregateRoot<Guid>
+public class Cinema : AggregateRoot<Guid>
 {
     private readonly List<CinemaHall> cinemaHalls = [];
 

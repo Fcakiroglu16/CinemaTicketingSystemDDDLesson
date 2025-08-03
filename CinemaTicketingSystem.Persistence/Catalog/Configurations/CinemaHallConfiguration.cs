@@ -1,5 +1,4 @@
 ﻿using CinemaTicketingSystem.Domain.BoundedContexts.Catalog;
-using CinemaTicketingSystem.Domain.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -27,10 +26,8 @@ public class CinemaHallConfiguration : IEntityTypeConfiguration<CinemaHall>
             .IsRequired()
             .HasDefaultValue(true);
 
-        // Enum configuration for HallTechnology (Flags enum)
         builder.Property(h => h.SupportedTechnologies)
-            .HasConversion<int>()
-            .HasDefaultValue(ScreeningTechnology.Standard);
+            .HasConversion<int>();
 
         // Foreign key to Cinema
         builder.Property<Guid>("CinemaId")

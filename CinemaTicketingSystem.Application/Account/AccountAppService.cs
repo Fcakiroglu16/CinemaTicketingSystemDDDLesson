@@ -22,9 +22,9 @@ public class AccountAppService(
         return AppResult.SuccessAsNoContent();
     }
 
-    public async Task<AppResult<SignInResponse>> SignInAsync(SignInRequest userId)
+    public async Task<AppResult<SignInResponse>> SignInAsync(SignInRequest request)
     {
-        var user = await accountRepository.GetAsync(userId.Email, userId.Password);
+        var user = await accountRepository.GetAsync(request.Email, request.Password);
 
 
         if (user is null)
@@ -40,14 +40,16 @@ public class AccountAppService(
         {
             hasRefreshToken.Token = tokenResponse.RefreshToken;
             hasRefreshToken.Expiration = tokenResponse.RefreshTokenExpiration;
+            await refreshTokenRepository.UpdateAsync(hasRefreshToken);
         }
         else
         {
             hasRefreshToken =
                 new RefreshToken(tokenResponse.RefreshToken, tokenResponse.RefreshTokenExpiration, user.Id);
+            await refreshTokenRepository.AddAsync(hasRefreshToken);
         }
 
-        await refreshTokenRepository.AddAsync(hasRefreshToken);
+
 
 
         await appDependencyService.UnitOfWork.SaveChangesAsync();

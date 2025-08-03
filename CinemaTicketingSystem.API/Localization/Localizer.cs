@@ -5,13 +5,10 @@ namespace CinemaTicketingSystem.API.Localization;
 
 public class Localizer(IStringLocalizer<SharedResource> stringLocalizer) : ILocalizer
 {
-    public string L(string key)
-    {
-        return stringLocalizer[key];
-    }
 
-    public string L(string key, params object?[] data)
+
+    public string L(string key, object[]? data)
     {
-        return string.Format(stringLocalizer[key], data);
+        return data?.Length > 0 ? string.Format(stringLocalizer[key], data) : stringLocalizer[key];
     }
 }

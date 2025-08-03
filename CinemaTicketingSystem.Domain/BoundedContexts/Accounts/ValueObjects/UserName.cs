@@ -28,7 +28,7 @@ public class UserName : ValueObject
     public static UserName GenerateFromEmail(string email)
     {
         var localPart = email.Split('@')[0];
-        var cleaned = Regex.Replace(localPart, @"[^a-zA-Z0-9_.-]", "");
+        var cleaned = Regex.Replace(localPart, @"[^a-zA-Z0-9_.]", "");
         if (cleaned.Length < MinLength)
             cleaned = cleaned.PadRight(MinLength, 'x');
         if (cleaned.Length > MaxLength - 4)

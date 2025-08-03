@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+﻿using CinemaTicketingSystem.Domain.BoundedContexts.Accounts;
 using CinemaTicketingSystem.Domain.BoundedContexts.Catalog;
 using CinemaTicketingSystem.Domain.BoundedContexts.Scheduling;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Purchases;
@@ -9,6 +9,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace CinemaTicketingSystem.Persistence;
 
@@ -34,6 +35,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, IPublisher pub
     public DbSet<Purchase> TicketPurchases { get; set; }
     public DbSet<Ticket> Tickets { get; set; }
 
+
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseLazyLoadingProxies();
@@ -45,12 +49,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, IPublisher pub
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-        foreach (var mutableProperty in entityType.GetProperties())
-        {
-            if (!ReferenceEquals(mutableProperty.ClrType, typeof(decimal))) continue;
-            mutableProperty.SetPrecision(9);
-            mutableProperty.SetScale(2);
-        }
+            foreach (var mutableProperty in entityType.GetProperties())
+            {
+                if (!ReferenceEquals(mutableProperty.ClrType, typeof(decimal))) continue;
+                mutableProperty.SetPrecision(9);
+                mutableProperty.SetScale(2);
+            }
 
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

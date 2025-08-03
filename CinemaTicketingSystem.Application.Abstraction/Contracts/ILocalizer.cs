@@ -2,7 +2,7 @@
 
 public interface ILocalizer
 {
-    string L(string key);
 
-    string L(string key, params object?[] data);
+
+    string L(string key, object[]? data);
 }

@@ -106,3 +106,20 @@ Content-Type: application/json
 }
 
 ###
+POST {{HostAddress}}/api/v1/accounts/auth/signup
+Accept: application/json
+Content-Type: application/json
+{
+  "email": "f-cakiroglu@outlook.com",
+  "password": "Password12*",
+  "firstName": "Fatih",
+  "lastName": "Çakıroğlu"
+}
+###
+POST {{HostAddress}}/api/v1/accounts/auth/signin
+Accept: application/json
+Content-Type: application/json
+{
+  "email": "f-cakiroglu@outlook.com",
+  "password": "Password12**"
+}

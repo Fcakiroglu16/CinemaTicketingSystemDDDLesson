@@ -56,29 +56,13 @@ public class CinemaConfiguration : IEntityTypeConfiguration<Cinema>
                 .HasColumnName("AddressDescription");
         });
 
-        // Audit properties (inherited from AuditedAggregateRoot)
-        builder.Property(c => c.CreationTime)
-            .IsRequired();
 
-        builder.Property(c => c.CreatorId)
-            .IsRequired();
 
-        builder.Property(c => c.LastModificationTime);
 
-        builder.Property(c => c.LastModifierId);
-
-        builder.Property(c => c.IsDeleted)
-            .HasDefaultValue(false);
-
-        builder.Property(c => c.DeleterId);
-
-        builder.Property(c => c.DeletionTime);
-
-        // Relationships
         builder.HasMany(x => x.Halls).WithOne(x => x.Cinema);
 
         builder.Metadata.FindNavigation(nameof(Cinema.Halls))!.SetField("cinemaHalls");
 
-        builder.HasQueryFilter(c => !c.IsDeleted);
+
     }
 }

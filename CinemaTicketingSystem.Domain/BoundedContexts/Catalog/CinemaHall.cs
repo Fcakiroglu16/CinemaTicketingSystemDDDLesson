@@ -23,7 +23,7 @@ public class CinemaHall : Entity<Guid>
     }
 
     public string Name { get; private set; }
-    public ScreeningTechnology SupportedTechnologies { get; private set; } = ScreeningTechnology.Standard;
+    public ScreeningTechnology SupportedTechnologies { get; private set; }
     public virtual IReadOnlyList<Seat> Seats => seats.AsReadOnly();
     public bool IsOperational { get; private set; } = true;
 

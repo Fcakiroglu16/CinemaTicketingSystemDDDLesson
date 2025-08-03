@@ -1,6 +1,4 @@
-using CinemaTicketingSystem.SharedKernel.AggregateRoot;
-
-namespace CinemaTicketingSystem.Domain.AggregateRoot;
+namespace CinemaTicketingSystem.SharedKernel.AggregateRoot;
 
 public abstract class AuditedAggregateRoot<T> : AggregateRoot<T>
     where T : notnull
