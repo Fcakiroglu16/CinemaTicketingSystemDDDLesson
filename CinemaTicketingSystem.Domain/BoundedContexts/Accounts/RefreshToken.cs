@@ -21,7 +21,7 @@ public class RefreshToken : SharedKernel.AggregateRoot.AggregateRoot
     public UserId UserId { get; set; }
 
 
-    public override object?[] GetKeys()
+    protected override object?[] GetKeys()
     {
         return [UserId];
     }

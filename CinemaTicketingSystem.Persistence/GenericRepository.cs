@@ -1,11 +1,11 @@
-﻿using System.Linq.Expressions;
-using CinemaTicketingSystem.Domain.Repositories;
+﻿using CinemaTicketingSystem.Domain.Repositories;
 using CinemaTicketingSystem.SharedKernel.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace CinemaTicketingSystem.Persistence;
 
-public class GenericRepository<TId, TEntity> : IGenericRepository<TId, TEntity> where TEntity : Entity<TId>
+public class GenericRepository<TId, TEntity> : IGenericRepository<TId, TEntity> where TEntity : EntityBase where TId : notnull
 {
     protected readonly AppDbContext _context;
     private readonly DbSet<TEntity> _dbSet;
@@ -50,10 +50,6 @@ public class GenericRepository<TId, TEntity> : IGenericRepository<TId, TEntity> 
     }
 
 
-    public async Task<bool> ExistsAsync(TId id, CancellationToken cancellationToken = default)
-    {
-        return await _dbSet.AnyAsync(e => e.Id!.Equals(id), cancellationToken);
-    }
 
     public async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate,
         CancellationToken cancellationToken = default)
@@ -147,7 +143,7 @@ public class GenericRepository<TId, TEntity> : IGenericRepository<TId, TEntity> 
     }
 }
 
-public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : Entity
+public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : EntityBase
 {
     protected readonly AppDbContext _context;
     private readonly DbSet<TEntity> _dbSet;

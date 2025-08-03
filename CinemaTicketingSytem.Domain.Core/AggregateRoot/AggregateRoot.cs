@@ -3,43 +3,31 @@ using CinemaTicketingSystem.SharedKernel.Entities;
 namespace CinemaTicketingSystem.SharedKernel.AggregateRoot;
 
 
-
-public abstract class AggregateRoot<T> : Entity<T>, IAggregateRoot where T : notnull
+public abstract class AggregateRootBase : EntityBase
 {
     private readonly List<IDomainEvent> _domainEvents = [];
-
-    public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
-
     private readonly List<IIntegrationEvent> _integrationEvents = [];
 
+    public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
     public IReadOnlyCollection<IIntegrationEvent> IntegrationEvents => _integrationEvents.AsReadOnly();
 
-
     public void ClearDomainEvents() => _domainEvents.Clear();
-
     public void ClearIntegrationEvents() => _integrationEvents.Clear();
-
-
     public void AddDomainEvent(IDomainEvent eventData) => _domainEvents.Add(eventData);
     public void AddIntegrationEvent(IIntegrationEvent eventData) => _integrationEvents.Add(eventData);
 }
 
-public abstract class AggregateRoot : Entity, IAggregateRoot
+public abstract class AggregateRoot<T> : AggregateRootBase, IAggregateRoot where T : notnull
 {
-    private readonly List<IDomainEvent> _domainEvents = [];
+    public T Id { get; set; } = default!;
 
-    public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
+    protected override object?[] GetKeys()
+    {
+        return [Id];
+    }
+}
 
-    private readonly List<IIntegrationEvent> _integrationEvents = [];
-
-    public IReadOnlyCollection<IIntegrationEvent> IntegrationEvents => _integrationEvents.AsReadOnly();
-
-
-    public void ClearDomainEvents() => _domainEvents.Clear();
-
-    public void ClearIntegrationEvents() => _integrationEvents.Clear();
-
-
-    public void AddDomainEvent(IDomainEvent eventData) => _domainEvents.Add(eventData);
-    public void AddIntegrationEvent(IIntegrationEvent eventData) => _integrationEvents.Add(eventData);
+public abstract class AggregateRoot : AggregateRootBase, IAggregateRoot
+{
+    protected abstract override object?[] GetKeys();
 }

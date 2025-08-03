@@ -1,9 +1,9 @@
-﻿using System.Linq.Expressions;
-using CinemaTicketingSystem.SharedKernel.Entities;
+﻿using CinemaTicketingSystem.SharedKernel.Entities;
+using System.Linq.Expressions;
 
 namespace CinemaTicketingSystem.Domain.Repositories;
 
-public interface IGenericRepository<in TId, TEntity> where TEntity : Entity<TId>
+public interface IGenericRepository<in TId, TEntity> where TEntity : EntityBase where TId : notnull
 {
     // Create operations
     Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default);
@@ -21,7 +21,6 @@ public interface IGenericRepository<in TId, TEntity> where TEntity : Entity<TId>
         CancellationToken cancellationToken = default);
 
 
-    Task<bool> ExistsAsync(TId id, CancellationToken cancellationToken = default);
     Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
     Task<int> CountAsync(CancellationToken cancellationToken = default);
     Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
@@ -46,7 +45,7 @@ public interface IGenericRepository<in TId, TEntity> where TEntity : Entity<TId>
         CancellationToken cancellationToken = default);
 }
 
-public interface IGenericRepository<TEntity> where TEntity : Entity
+public interface IGenericRepository<TEntity> where TEntity : EntityBase
 {
     Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default);
     Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
