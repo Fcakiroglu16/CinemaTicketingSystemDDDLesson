@@ -1,7 +1,7 @@
 ﻿using Ardalis.GuardClauses;
 using CinemaTicketingSystem.SharedKernel.ValueObjects;
 
-namespace CinemaTicketingSystem.Domain.Scheduling;
+namespace CinemaTicketingSystem.Domain.BoundedContexts.Scheduling;
 
 public class ShowTime : ValueObject
 {
@@ -49,8 +49,15 @@ public class ShowTime : ValueObject
         other = Guard.Against.Null(other, nameof(other));
         Guard.Against.Negative(cleaningTime, nameof(cleaningTime));
 
+        // İki gösterim arasında çakışma kontrolü
+        // 1. Bu gösterinin sonu + temizlik > diğerinin başlangıcı VE
+        // 2. Bu gösterinin başlangıcı < diğerinin sonu + temizlik
+
         var thisEndTimeWithCleaning = EndTime.AddMinutes(cleaningTime);
-        return thisEndTimeWithCleaning > other.StartTime;
+        var otherEndTimeWithCleaning = other.EndTime.AddMinutes(cleaningTime);
+
+        return thisEndTimeWithCleaning > other.StartTime &&
+               StartTime < otherEndTimeWithCleaning;
     }
 
     /// <summary>

@@ -1,11 +1,12 @@
 ﻿@HostAddress = http://localhost:5094
-
+@accessToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOTg3NGZmLTFjZDUtNzZkNC04NmM2LTdjZDY5OWNjZTk1YSIsImVtYWlsIjoiZi1jYWtpcm9nbHVAb3V0bG9vay5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiZmNha2lyb2dsdTM4MTEiLCJqdGkiOiI4MTQ0MzdiNy1kODk1LTQ3N2YtYjk1Yi00OGM5NjEyYzZlYTkiLCJuYmYiOjE3NTQzMDk1MzgsImV4cCI6MTc1NDMyMzkzOCwiaXNzIjoiYXBpLmNpbmVtYS10aWNrZXRpbmctc3l0ZW0uY29tIn0.WJNPwUKDz7-M1hRSZGEsFxYV3Oh8-OG7oAyubZg50RQ
 ###
 POST {{HostAddress}}/api/v1/catalogs/movies
 Accept: application/json
 Content-Type: application/json
+
 {
-  "title": "Inception 6",
+  "title": "Inception 1",
   "originalTitle": "Inception",
   "description": "A mind-bending thriller that delves into the world of dreams.",
   "EarliestShowingDate": "2026-07-16T00:00:00Z",
@@ -13,7 +14,6 @@ Content-Type: application/json
   "posterImageUrl":"http://wwww.abc.com",
   "supportedTechnology":1
 }
-
 ###
 GET {{HostAddress}}/api/v1/catalogs/movies
 Accept: application/json
@@ -22,6 +22,7 @@ Accept: application/json
 POST {{HostAddress}}/api/v1/catalogs/cinemas
 Accept: application/json
 Content-Type: application/json
+
 {
   "name": "Galaxy Cinema Mall",
   "address": {
@@ -42,10 +43,11 @@ Accept-Language: tr
 ###
 
 
-POST {{HostAddress}}/api/v1/catalogs/cinemas/01987042-86bf-762d-a34a-a0dc299d77fc/hall
+POST {{HostAddress}}/api/v1/catalogs/cinemas/019874ff-bd7d-7982-96f5-07696c31dc0d/hall
 Accept: application/json
 Content-Type: application/json
 Accept-Language: en
+
 {
   "cinemaId": "f93795b0-e16f-4d00-9fbf-7657e9257945",
   "name": "Hall 5 - Strandart Premium",
@@ -88,9 +90,8 @@ Accept-Language: en
     }
   ]
 }
-
 ###
-GET {{HostAddress}}/api/v1/catalogs/cinemas/01987042-86bf-762d-a34a-a0dc299d77fc/hall
+GET {{HostAddress}}/api/v1/catalogs/cinemas/019874ff-bd7d-7982-96f5-07696c31dc0d/hall
 Accept: application/json
 
 ###
@@ -99,24 +100,25 @@ Accept: application/json
 
 ###
 
-POST {{HostAddress}}/api/v1/schedules/halls/01987058-3e88-7c83-814e-ec3033ef4fb7/movies
+POST {{HostAddress}}/api/v1/schedules/halls/019874ff-ea96-790a-a2ff-1feaad31ecd7/movies
 Accept: application/json
 Content-Type: application/json
 {
-  "movieId": "01987057-d3d6-7a12-8075-cc1bbf9e4b76",
-  "startTime": "22:05:00",
+  "movieId": "019874ff-96d8-7e58-9da2-7e664a27d07f",
+  "startTime": "19:05:00",
   "Price": {
     "Amount": 100,
     "Currency": "TRY"
   }
 }
 ###
-GET {{HostAddress}}/api/v1/schedules/halls/01987058-3e88-7c83-814e-ec3033ef4fb7/movies
+GET {{HostAddress}}/api/v1/schedules/halls/019874ff-ea96-790a-a2ff-1feaad31ecd7/movies
 Accept: application/json
 ###
 POST {{HostAddress}}/api/v1/accounts/auth/signup
 Accept: application/json
 Content-Type: application/json
+
 {
   "email": "f-cakiroglu@outlook.com",
   "password": "Password12*",
@@ -127,7 +129,45 @@ Content-Type: application/json
 POST {{HostAddress}}/api/v1/accounts/auth/signin
 Accept: application/json
 Content-Type: application/json
+
 {
   "email": "f-cakiroglu@outlook.com",
   "password": "Password12*"
 }
+###
+POST {{HostAddress}}/api/v1/ticketing/seathold
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "seatPosition": [
+    {
+      "row": "B",
+      "number": 1
+    }
+  ],
+  "scheduledMovieShowId": "01987510-c5ec-7a23-905d-44a519a20774"
+}
+
+
+}
+###
+POST {{HostAddress}}/api/v1/ticketing/purchases
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "seatPositionList": [
+    {
+      "row": "A",
+      "number": 1
+    }
+  ],
+  "scheduledMovieShowId": "01987510-c5ec-7a23-905d-44a519a20774"
+}
+
+
+
+

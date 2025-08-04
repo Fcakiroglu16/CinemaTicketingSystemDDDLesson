@@ -12,7 +12,7 @@ public static class CreateSeatHoldEndpoint
 {
     public static RouteGroupBuilder CreateSeatHoldGroupItemEndpoint(this RouteGroupBuilder group)
     {
-        group.MapPost("/seathold/create",
+        group.MapPost("/seathold",
                 async (CreateSeatHoldRequest request, [FromServices] ISeatHoldAppService seatHoldAppService) =>
                 (await seatHoldAppService.CreateSeatHoldAsync(request)).ToGenericResult())
             .WithName("CreateSeatHold")

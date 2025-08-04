@@ -1,17 +1,21 @@
-﻿using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Reservations;
+﻿using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CinemaTicketingSystem.Persistence.Ticketing.Configurations;
 
-internal class SeatHold : IEntityTypeConfiguration<ReservationSeat>
+internal class SeatHoldConfiguration : IEntityTypeConfiguration<SeatHold>
 {
-    public void Configure(EntityTypeBuilder<ReservationSeat> builder)
+    public void Configure(EntityTypeBuilder<SeatHold> builder)
     {
-        builder.ToTable("ReservedSeats", "Ticketing");
+        builder.ToTable("SeatHolds", "Ticketing");
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedNever();
 
+
+        builder.Property(x => x.ScheduledMovieShowId).IsRequired();
+        builder.Property(x => x.CustomerId).IsRequired();
+        builder.Property(x => x.ExpiresAt).IsRequired();
         builder.OwnsOne(x => x.SeatPosition, seatBuilder =>
         {
             seatBuilder.Property(s => s.Number)

@@ -5,7 +5,7 @@ using CinemaTicketingSystem.SharedKernel.ValueObjects;
 
 namespace CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds;
 
-public sealed class SeatHold : AggregateRoot<Guid>
+public class SeatHold : AggregateRoot<Guid>
 {
     protected SeatHold()
     {
@@ -22,7 +22,7 @@ public sealed class SeatHold : AggregateRoot<Guid>
 
     public Guid ScheduledMovieShowId { get; private set; }
     public Guid CustomerId { get; private set; }
-    public SeatPosition SeatPosition { get; private set; } = null!;
+    public SeatPosition SeatPosition { get; private set; }
     public DateTime ExpiresAt { get; private set; }
 
     public void ExtendHold(TimeSpan additionalTime)

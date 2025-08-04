@@ -4,5 +4,5 @@ public interface IScheduleAppService
 {
     Task<AppResult> AddMovieToHall(Guid hallId, AddMovieToHallRequest request);
 
-    Task<AppResult<List<GetMoviesByHallIdRequest>>> GetMoviesByHallId(Guid hallId);
+    Task<AppResult<List<GetMoviesByHallIdResponse>>> GetMoviesByHallId(Guid hallId);
 }

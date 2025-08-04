@@ -1,6 +1,7 @@
 ﻿using CinemaTicketingSystem.Domain.BoundedContexts.Accounts;
 using CinemaTicketingSystem.Domain.BoundedContexts.Catalog;
 using CinemaTicketingSystem.Domain.BoundedContexts.Scheduling;
+using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Purchases;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Reservations;
 using CinemaTicketingSystem.Persistence.Accounts;
@@ -13,12 +14,13 @@ using System.Reflection;
 
 namespace CinemaTicketingSystem.Persistence;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options, IDomainEventBus domainEventBus, IIntegrationEventBus integrationEventBus)
+public class AppDbContext(DbContextOptions<AppDbContext> options, IDomainEventMediator domainEventMediator, IIntegrationEventBus integrationEventBus)
     : IdentityDbContext<AppUser, AppRole, Guid>(options)
 {
-    public DbSet<Purchase> MovieTickets { get; set; }
 
-    public DbSet<Reservation> SeatReservations { get; set; }
+    public DbSet<Cinema> Cinemas { get; set; }
+    public DbSet<Movie> Movies { get; set; }
+
 
 
     public DbSet<CinemaHallSnapshot> CinemaHallSchedules { get; set; }
@@ -28,21 +30,26 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, IDomainEventBu
     public DbSet<Schedule> Schedules { get; set; }
 
 
-    public DbSet<Cinema> Cinemas { get; set; }
-    public DbSet<Movie> Movies { get; set; }
 
-
-    public DbSet<Purchase> TicketPurchases { get; set; }
-    public DbSet<Ticket> Tickets { get; set; }
 
 
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+
+
+
+
+    public DbSet<Purchase> Purchases { get; set; }
+
+    public DbSet<Reservation> Reservations { get; set; }
+    public DbSet<SeatHold> SeatHolds { get; set; }
+
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseLazyLoadingProxies();
 
-        optionsBuilder.AddInterceptors(new DomainEventsInterceptor(integrationEventBus, domainEventBus));
+        optionsBuilder.AddInterceptors(new DomainEventsInterceptor(integrationEventBus, domainEventMediator));
         base.OnConfiguring(optionsBuilder);
     }
 

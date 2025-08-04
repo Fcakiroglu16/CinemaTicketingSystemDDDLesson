@@ -17,7 +17,11 @@ public class SeatHoldAppService(AppDependencyService appDependencyService, ISeat
 
 
         //TODO: redis lock eklenebilir
-        var seatHold = await seatHoldRepository.WhereAsync(x => x.ScheduledMovieShowId == request.ScheduledMovieShowId);
+        var seatHold =
+            (await seatHoldRepository.WhereAsync(x => x.ScheduledMovieShowId == request.ScheduledMovieShowId)).ToList();
+
+
+
 
 
         foreach (var seat in request.SeatPosition.Where(seat =>

@@ -3,10 +3,12 @@ using CinemaTicketingSystem.API.Account;
 using CinemaTicketingSystem.API.Catalog;
 using CinemaTicketingSystem.API.Extensions;
 using CinemaTicketingSystem.API.Schedule;
+using CinemaTicketingSystem.API.Ticketing;
 using CinemaTicketingSystem.Application;
 using CinemaTicketingSystem.Application.Abstraction;
 using CinemaTicketingSystem.Domain;
 using CinemaTicketingSystem.Host.Extensions;
+using CinemaTicketingSystem.Host.Identities;
 using CinemaTicketingSystem.Identity;
 using CinemaTicketingSystem.Persistence;
 using FluentValidation;
@@ -18,7 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 
-builder.Services.RegisterIdentity(builder.Configuration);
+
 builder.Services.RegisterLocalization();
 builder.Services.RegisterCaching();
 builder.Services.AddOptions(builder.Configuration);
@@ -40,7 +42,7 @@ builder.Services.AddVersioningExt();
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<BusinessExceptionHandler>().AddExceptionHandler<UserFriendlyExceptionHandler>()
     .AddExceptionHandler<GlobalExceptionHandler>();
-
+builder.Services.RegisterIdentity(builder.Configuration);
 var app = builder.Build();
 app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
@@ -49,12 +51,20 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
+
+
+
+
 var locOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>();
 app.UseRequestLocalization(locOptions.Value);
-//app.UseAuthentication();
-//app.UseAuthorization();
 app.AddCatalogGroupEndpointExt(app.AddVersionSetExt());
 app.AddScheduleGroupEndpointExt(app.AddVersionSetExt());
 app.AddAccountGroupEndpointExt(app.AddVersionSetExt());
+app.AddTicketingGroupEndpointExt(app.AddVersionSetExt());
 
+
+
+
+app.UseAuthentication();
+app.UseAuthorization();
 app.Run();

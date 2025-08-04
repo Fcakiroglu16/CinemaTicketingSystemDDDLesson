@@ -18,10 +18,10 @@ namespace CinemaTicketingSystem.Persistence.Migrations
                 name: "scheduling");
 
             migrationBuilder.EnsureSchema(
-                name: "Ticketing");
+                name: "accounts");
 
             migrationBuilder.EnsureSchema(
-                name: "accounts");
+                name: "Ticketing");
 
             migrationBuilder.CreateTable(
                 name: "CinemaHallSnapshots",
@@ -93,6 +93,37 @@ namespace CinemaTicketingSystem.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                schema: "accounts",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Token = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
+                    Expiration = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.UserId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reservations",
+                schema: "Ticketing",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ScheduledMovieShowId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ReservationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExpirationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reservations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Roles",
                 schema: "accounts",
                 columns: table => new
@@ -126,20 +157,20 @@ namespace CinemaTicketingSystem.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SeatHold",
+                name: "SeatHolds",
                 schema: "Ticketing",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ScheduledMovieShowId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReservationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ExpirationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Row = table.Column<string>(type: "char(1)", unicode: false, fixedLength: true, maxLength: 1, nullable: false),
+                    Number = table.Column<int>(type: "int", nullable: false),
+                    ExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SeatHold", x => x.Id);
+                    table.PrimaryKey("PK_SeatHolds", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -212,6 +243,28 @@ namespace CinemaTicketingSystem.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ReservationSeats",
+                schema: "Ticketing",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Row = table.Column<string>(type: "char(1)", unicode: false, fixedLength: true, maxLength: 1, nullable: false),
+                    Number = table.Column<int>(type: "int", nullable: false),
+                    ReservationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReservationSeats", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ReservationSeats_Reservations_ReservationId",
+                        column: x => x.ReservationId,
+                        principalSchema: "Ticketing",
+                        principalTable: "Reservations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RoleClaims",
                 schema: "accounts",
                 columns: table => new
@@ -235,29 +288,7 @@ namespace CinemaTicketingSystem.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ReservedSeats",
-                schema: "Ticketing",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Row = table.Column<string>(type: "char(1)", unicode: false, fixedLength: true, maxLength: 1, nullable: false),
-                    Number = table.Column<int>(type: "int", nullable: false),
-                    ReservationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ReservedSeats", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ReservedSeats_SeatHold_ReservationId",
-                        column: x => x.ReservationId,
-                        principalSchema: "Ticketing",
-                        principalTable: "SeatHold",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TicketSales",
+                name: "Ticket",
                 schema: "Ticketing",
                 columns: table => new
                 {
@@ -273,9 +304,9 @@ namespace CinemaTicketingSystem.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TicketSales", x => x.Id);
+                    table.PrimaryKey("PK_Ticket", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TicketSales_TicketPurchases_PurchaseId",
+                        name: "FK_Ticket_TicketPurchases_PurchaseId",
                         column: x => x.PurchaseId,
                         principalSchema: "Ticketing",
                         principalTable: "TicketPurchases",
@@ -408,9 +439,16 @@ namespace CinemaTicketingSystem.Persistence.Migrations
                 column: "CinemaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReservedSeats_ReservationId",
+                name: "IX_RefreshTokens_Token",
+                schema: "accounts",
+                table: "RefreshTokens",
+                column: "Token",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReservationSeats_ReservationId",
                 schema: "Ticketing",
-                table: "ReservedSeats",
+                table: "ReservationSeats",
                 column: "ReservationId");
 
             migrationBuilder.CreateIndex(
@@ -434,9 +472,9 @@ namespace CinemaTicketingSystem.Persistence.Migrations
                 column: "CinemaHallId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TicketSales_PurchaseId",
+                name: "IX_Ticket_PurchaseId",
                 schema: "Ticketing",
-                table: "TicketSales",
+                table: "Ticket",
                 column: "PurchaseId");
 
             migrationBuilder.CreateIndex(
@@ -488,7 +526,11 @@ namespace CinemaTicketingSystem.Persistence.Migrations
                 schema: "scheduling");
 
             migrationBuilder.DropTable(
-                name: "ReservedSeats",
+                name: "RefreshTokens",
+                schema: "accounts");
+
+            migrationBuilder.DropTable(
+                name: "ReservationSeats",
                 schema: "Ticketing");
 
             migrationBuilder.DropTable(
@@ -500,11 +542,15 @@ namespace CinemaTicketingSystem.Persistence.Migrations
                 schema: "scheduling");
 
             migrationBuilder.DropTable(
+                name: "SeatHolds",
+                schema: "Ticketing");
+
+            migrationBuilder.DropTable(
                 name: "Seats",
                 schema: "catalogs");
 
             migrationBuilder.DropTable(
-                name: "TicketSales",
+                name: "Ticket",
                 schema: "Ticketing");
 
             migrationBuilder.DropTable(
@@ -524,7 +570,7 @@ namespace CinemaTicketingSystem.Persistence.Migrations
                 schema: "accounts");
 
             migrationBuilder.DropTable(
-                name: "SeatHold",
+                name: "Reservations",
                 schema: "Ticketing");
 
             migrationBuilder.DropTable(

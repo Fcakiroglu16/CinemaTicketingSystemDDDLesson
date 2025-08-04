@@ -11,8 +11,8 @@ public class SeatPosition : ValueObject
         Number = Guard.Against.NegativeOrZero(number, nameof(number), "Seat number must be positive.");
     }
 
-    public string Row { get; }
-    public int Number { get; }
+    public string Row { get; private set; }
+    public int Number { get; private set; }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {

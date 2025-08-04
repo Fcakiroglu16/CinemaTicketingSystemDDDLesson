@@ -4,12 +4,18 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace CinemaTicketingSystem.Persistence.Interceptors;
 
-internal class DomainEventsInterceptor(IIntegrationEventBus integrationEventBus, IDomainEventBus domainEventBus) : SaveChangesInterceptor
+
+
+
+
+
+internal class DomainEventsInterceptor(IIntegrationEventBus integrationEventBus, IDomainEventMediator domainEventMediator) : SaveChangesInterceptor
 {
-    public override async ValueTask<int> SavedChangesAsync(SaveChangesCompletedEventData eventData, int result,
-        CancellationToken cancellationToken = new())
+    public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result,
+        CancellationToken cancellationToken = new CancellationToken())
     {
-        if (eventData.Context is null) return await base.SavedChangesAsync(eventData, result, cancellationToken);
+
+        if (eventData.Context is null) return await base.SavingChangesAsync(eventData, result, cancellationToken);
 
 
         var aggregates = eventData.Context.ChangeTracker
@@ -25,10 +31,29 @@ internal class DomainEventsInterceptor(IIntegrationEventBus integrationEventBus,
             aggr.ClearDomainEvents();
         }
 
-        foreach (var ev in events) await domainEventBus.PublishAsync(ev, cancellationToken);
+        foreach (var ev in events) await domainEventMediator.PublishAsync(ev, cancellationToken);
 
 
-        var savedChangesResult = await base.SavedChangesAsync(eventData, result, cancellationToken);
+
+        return await base.SavingChangesAsync(eventData, result, cancellationToken);
+    }
+
+
+
+    public override async ValueTask<int> SavedChangesAsync(SaveChangesCompletedEventData eventData, int result,
+        CancellationToken cancellationToken = new())
+    {
+
+
+        if (eventData.Context is null) return await base.SavedChangesAsync(eventData, result, cancellationToken);
+
+        var aggregates = eventData.Context.ChangeTracker
+            .Entries<IAggregateRoot>()
+            .Where(e => e.Entity.DomainEvents.Any())
+            .Select(e => e.Entity)
+            .ToList();
+
+
 
 
 
@@ -44,7 +69,7 @@ internal class DomainEventsInterceptor(IIntegrationEventBus integrationEventBus,
 
 
 
-        return savedChangesResult;
+        return await base.SavedChangesAsync(eventData, result, cancellationToken);
 
     }
 }

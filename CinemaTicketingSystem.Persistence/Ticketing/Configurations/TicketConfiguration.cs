@@ -9,7 +9,7 @@ internal class TicketConfiguration : IEntityTypeConfiguration<Ticket>
     public void Configure(EntityTypeBuilder<Ticket> builder)
     {
         // Basic entity configuration
-        builder.ToTable("TicketSales", "Ticketing");
+        builder.ToTable("Ticket", "Ticketing");
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedNever();
 

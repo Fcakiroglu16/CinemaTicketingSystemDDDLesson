@@ -52,8 +52,4 @@ internal class AccountRepository(UserManager<AppUser> userManager) : IAccountRep
             userFromDb.FirstName!, userFromDb.LastName!, userFromDb.CreatedAt);
     }
 
-    Task IAccountRepository.CreateAsync(User user)
-    {
-        throw new NotImplementedException();
-    }
 }

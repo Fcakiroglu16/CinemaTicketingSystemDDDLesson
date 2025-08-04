@@ -7,6 +7,6 @@ internal class PurchaseRepository(AppDbContext context)
 {
     public List<Purchase> GetTicketsPurchaseByScheduleId(Guid scheduleId)
     {
-        return _context.TicketPurchases.Where(x => x.ScheduledMovieShowId == scheduleId).ToList();
+        return _context.Purchases.Where(x => x.ScheduledMovieShowId == scheduleId).ToList();
     }
 }

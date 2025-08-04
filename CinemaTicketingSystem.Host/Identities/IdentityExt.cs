@@ -1,4 +1,5 @@
 ﻿using CinemaTicketingSystem.Identity;
+using CinemaTicketingSystem.SharedKernel;
 using CinemaTicketingSystem.SharedKernel.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
@@ -8,8 +9,11 @@ namespace CinemaTicketingSystem.Host.Identities;
 
 public static class IdentityExt
 {
-    public static IServiceCollection AddIdentityExt(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection RegisterIdentity(this IServiceCollection services, IConfiguration configuration)
     {
+
+        services.AddScoped<IUserContext, UserContext>();
+
         services.Configure<List<ClientOption>>(configuration.GetSection("Clients"));
 
 
@@ -74,11 +78,17 @@ public static class IdentityExt
         });
         services.AddAuthorization(options =>
         {
-            options.AddPolicy("ClientCredential", policy =>
-            {
-                policy.AuthenticationSchemes.Add("ClientCredentialSchema"); // "Bearer"
-                policy.RequireAuthenticatedUser();
-            });
+            //options.AddPolicy("ClientCredential", policy =>
+            //{
+            //    policy.AuthenticationSchemes.Add("ClientCredentialSchema"); // "Bearer"
+            //    policy.RequireAuthenticatedUser();
+            //});
+
+
+
+
+
+
         });
         return services;
     }

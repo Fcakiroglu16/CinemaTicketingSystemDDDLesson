@@ -1,4 +1,4 @@
-using CinemaTicketingSystem.Domain.Scheduling;
+using CinemaTicketingSystem.Domain.BoundedContexts.Scheduling;
 using CinemaTicketingSystem.SharedKernel.ValueObjects;
 
 namespace CinemaTicketingSystem.Application.Schedules.ICL;

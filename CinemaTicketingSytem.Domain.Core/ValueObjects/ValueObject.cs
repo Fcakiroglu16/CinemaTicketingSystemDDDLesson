@@ -6,8 +6,8 @@ public abstract class ValueObject
 
     public override bool Equals(object? obj)
     {
-        if (obj is null || obj.GetType() != GetType())
-            return false;
+        //if (obj is null || obj.GetType() != GetType())
+        //    return false;
 
         var other = (ValueObject)obj;
 
@@ -22,7 +22,7 @@ public abstract class ValueObject
             {
                 unchecked
                 {
-                    return current * 23 + (obj?.GetHashCode() ?? 0);
+                    return (current * 23) + (obj?.GetHashCode() ?? 0);
                 }
             });
     }

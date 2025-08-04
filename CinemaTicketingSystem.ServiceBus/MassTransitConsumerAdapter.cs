@@ -12,12 +12,3 @@ public class MassTransitConsumerAdapter<TMessage>(IIntegrationEventHandler<TMess
         await handler.HandleAsync(context.Message, context.CancellationToken);
     }
 }
-
-public class MassTransitDomainEventConsumerAdapter<TMessage>(IDomainEventHandler<TMessage> handler) : IConsumer<TMessage>
-    where TMessage : class, IDomainEvent
-{
-    public async Task Consume(ConsumeContext<TMessage> context)
-    {
-        await handler.HandleAsync(context.Message, context.CancellationToken);
-    }
-}

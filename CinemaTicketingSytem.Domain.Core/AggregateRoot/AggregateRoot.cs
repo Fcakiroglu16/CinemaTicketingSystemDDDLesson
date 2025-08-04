@@ -19,7 +19,7 @@ public abstract class AggregateRootBase : EntityBase
 
 public abstract class AggregateRoot<T> : AggregateRootBase, IAggregateRoot where T : notnull
 {
-    public T Id { get; set; } = default!;
+    public T Id { get; protected set; } = default!;
 
     protected override object?[] GetKeys()
     {

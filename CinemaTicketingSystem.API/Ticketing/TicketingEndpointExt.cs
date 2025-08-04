@@ -12,7 +12,9 @@ public static class TicketingEndpointExt
     public static void AddTicketingGroupEndpointExt(this WebApplication app, ApiVersionSet apiVersionSet)
     {
         app.MapGroup("api/v{version:apiVersion}/ticketing").WithTags("ticketing")
-            .WithApiVersionSet(apiVersionSet).CreateSeatHoldGroupItemEndpoint().ReserveSeatsGroupItemEndpoint()
-            .PurchaseTicketsGroupItemEndpoint();
+            .WithApiVersionSet(apiVersionSet)
+            .CreateSeatHoldGroupItemEndpoint()
+            .ReserveSeatsGroupItemEndpoint()
+            .PurchaseTicketsGroupItemEndpoint().RequireAuthorization();
     }
 }

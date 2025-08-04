@@ -8,7 +8,7 @@ internal class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
 {
     public void Configure(EntityTypeBuilder<Reservation> builder)
     {
-        builder.ToTable("SeatHold", "Ticketing");
+        builder.ToTable("Reservations", "Ticketing");
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedNever();
 
