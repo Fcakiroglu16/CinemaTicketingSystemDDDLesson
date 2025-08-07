@@ -135,7 +135,7 @@ Content-Type: application/json
   "password": "Password12*"
 }
 ###
-POST {{HostAddress}}/api/v1/ticketing/seathold
+POST {{HostAddress}}/api/v1/ticketing/seatholds
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}

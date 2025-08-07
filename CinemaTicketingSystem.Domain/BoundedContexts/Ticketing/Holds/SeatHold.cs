@@ -11,6 +11,8 @@ namespace CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds;
 
 public class SeatHold : AggregateRoot<Guid>
 {
+    private const int DefaultHoldDurationMinutes = 5;
+
     protected SeatHold()
     {
     } // For EF Core
@@ -21,7 +23,7 @@ public class SeatHold : AggregateRoot<Guid>
         ScheduledMovieShowId = scheduledMovieShowId;
         CustomerId = customerId;
         SeatPosition = seatPosition;
-        ExpiresAt = DateTime.UtcNow.Add(TimeSpan.FromMinutes(5));
+        ExpiresAt = DateTime.UtcNow.Add(TimeSpan.FromMinutes(DefaultHoldDurationMinutes));
     }
 
     public Guid ScheduledMovieShowId { get; private set; }

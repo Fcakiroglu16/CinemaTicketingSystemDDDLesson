@@ -33,6 +33,7 @@ public static class ErrorCodes
     public const string SeatHoldExpired = "Ticketing:SeatHoldExpired";
     public const string SeatAlreadyHeld = "Ticketing:SeatAlreadyHeld";
     public const string SeatHoldNotFound = "Ticketing:SeatHoldNotFound";
+    public const string ReservationTooLate = "Ticketing:ReservationTooLate";
 
 
     public const string InvalidCredentials = "Account.InvalidCredentials";

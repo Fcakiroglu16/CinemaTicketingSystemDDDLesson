@@ -1,11 +1,11 @@
 ﻿#region
 
-using CinemaTicketingSystem.Application.Abstraction.Schedule;
+using CinemaTicketingSystem.Application.Contracts.Schedule;
 using FluentValidation;
 
 #endregion
 
-namespace CinemaTicketingSystem.API.Schedule.AddMovieToHall;
+namespace CinemaTicketingSystem.Presentation.API.Schedule.AddMovieToHall;
 
 public class AddMovieToHallValidator : AbstractValidator<AddMovieToHallRequest>
 {

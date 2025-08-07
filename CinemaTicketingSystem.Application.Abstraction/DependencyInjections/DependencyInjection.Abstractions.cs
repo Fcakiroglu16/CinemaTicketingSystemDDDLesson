@@ -1,4 +1,4 @@
-namespace CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
+namespace CinemaTicketingSystem.Application.Contracts.DependencyInjections;
 
 public interface ITransientDependency;
 

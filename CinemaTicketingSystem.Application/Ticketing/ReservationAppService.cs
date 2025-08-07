@@ -1,10 +1,11 @@
 ﻿#region
 
 using CinemaTicketingSystem.Application.Abstraction;
-using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
 using CinemaTicketingSystem.Application.Abstraction.Ticketing;
 using CinemaTicketingSystem.Application.Catalog.ICL;
+using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
 using CinemaTicketingSystem.Application.Schedules.ICL;
+using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Reservations;
 using CinemaTicketingSystem.SharedKernel;
 using CinemaTicketingSystem.SharedKernel.ValueObjects;
@@ -18,13 +19,24 @@ public class ReservationAppService(
     IScheduleQueryService iScheduleQueryService,
     ICatalogQueryService catalogQueryService,
     IReservationRepository reservationRepository,
-    IUserContext userContext) : IScopedDependency, IReservationAppService
+    ISeatHoldRepository seatHoldRepository,
+    IUserContext userContext,
+    ReservationEligibilityPolicy reservationEligibilityPolicy) : IScopedDependency, IReservationAppService
 {
     public async Task<AppResult> ReserveSeats(ReserveSeatsRequest request)
     {
         var scheduleInfo = await iScheduleQueryService.GetScheduleInfo(request.ScheduledMovieShowId);
 
         if (scheduleInfo.IsFail) return scheduleInfo;
+
+
+        var isReservationTooLate =
+            reservationEligibilityPolicy.IsReservationTooLate(scheduleInfo.Data!.showTime.StartTime, DateTime.UtcNow);
+
+
+        if (!isReservationTooLate.IsSuccess)
+            return appDependencyService.LocalizeError.Error(isReservationTooLate.Error!,
+                isReservationTooLate.ErrorData);
 
 
         var catalogInfo =
@@ -50,15 +62,33 @@ public class ReservationAppService(
             return appDependencyService.LocalizeError.Error(ErrorCodes.NotEnoughSeatsAvailable, [availableSeatCount]);
 
 
+        var seatHoldList = (await seatHoldRepository.WhereAsync(x =>
+            x.ScheduledMovieShowId == request.ScheduledMovieShowId &&
+            x.CustomerId == userContext.UserId)).ToList();
+
+
+        var IsValidateOwnershipAndValidityResult = reservationEligibilityPolicy.ValidateOwnershipAndValidity(
+            seatHoldList,
+            request.SeatPositionList.Select(x => new SeatPosition(x.Row, x.Number)).ToList());
+
+
+        if (!IsValidateOwnershipAndValidityResult.IsSuccess)
+            return appDependencyService.LocalizeError.Error(IsValidateOwnershipAndValidityResult.Error!,
+                IsValidateOwnershipAndValidityResult.ErrorData);
+
+
         foreach (var seatPosition in from seatPosition in request.SeatPositionList
-                 let seatNumber = new SeatPosition(seatPosition.Row, seatPosition.Number)
-                 let hasSeat = reservationList.Any(r => r.HasSeat(seatNumber))
-                 where hasSeat
-                 select seatPosition)
+                                     let seatNumber = new SeatPosition(seatPosition.Row, seatPosition.Number)
+                                     let hasSeat = reservationList.Any(r => r.HasSeat(seatNumber))
+                                     where hasSeat
+                                     select seatPosition)
             return appDependencyService.LocalizeError.Error(ErrorCodes.SeatAlreadyReserved,
                 [seatPosition.Row, seatPosition.Number]);
 
+
         var reservation = new Reservation(request.ScheduledMovieShowId, userContext.UserId);
+
+
         foreach (var seatPosition in request.SeatPositionList.Select(seatPositionDto =>
                      new SeatPosition(seatPositionDto.Row, seatPositionDto.Number)))
             reservation.AddSeat(new ReservationSeat(seatPosition));

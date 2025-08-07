@@ -21,12 +21,9 @@
   "Ticketing:SeatAlreadyReserved": "Seat {0}{1} is already reserved.",
   "Ticketing:ReservedSeatNotFound": "Reserved seat {0}{1} not found.",
   "Ticketing:SeatHoldExpired": "Seat hold for {0}{1} has expired. Please select seats again.",
+  "Ticketing:ReservationTooLate": "Reservations cannot be made less than 2 hours before the show time.",
   "Common:ServerErrorTitle": "An unexpected error occurred",
   "Common:ServerErrorDetail": "Please try again later or contact support if the issue persists.",
   "Account.InvalidCredentials": "The credentials you provided are invalid.",
   "Account.EmailOrPasswordWrong": "The email address or password you provided is incorrect."
-
-
-
-
 }

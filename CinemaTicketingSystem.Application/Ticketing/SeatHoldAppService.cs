@@ -1,8 +1,9 @@
 #region
 
 using CinemaTicketingSystem.Application.Abstraction;
-using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
 using CinemaTicketingSystem.Application.Abstraction.Ticketing;
+using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
+using CinemaTicketingSystem.Application.Contracts.Ticketing;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds;
 using CinemaTicketingSystem.SharedKernel;
 using CinemaTicketingSystem.SharedKernel.ValueObjects;
@@ -36,6 +37,18 @@ public class SeatHoldAppService(AppDependencyService appDependencyService, ISeat
 
         await appDependencyService.UnitOfWork.SaveChangesAsync();
 
+        return AppResult.SuccessAsNoContent();
+    }
+
+
+    public async Task<AppResult> CancelSeatHold()
+    {
+        var customerId = appDependencyService.UserContext.UserId;
+
+        var seatHolds = (await seatHoldRepository.WhereAsync(x => x.CustomerId == customerId)).ToList();
+
+        await seatHoldRepository.DeleteRangeAsync(seatHolds);
+        await appDependencyService.UnitOfWork.SaveChangesAsync();
         return AppResult.SuccessAsNoContent();
     }
 }

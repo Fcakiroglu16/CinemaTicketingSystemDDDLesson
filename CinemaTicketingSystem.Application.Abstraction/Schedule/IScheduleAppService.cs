@@ -1,4 +1,7 @@
-﻿namespace CinemaTicketingSystem.Application.Abstraction.Schedule;
+﻿using CinemaTicketingSystem.Application.Abstraction;
+using CinemaTicketingSystem.Application.Abstraction.Schedule;
+
+namespace CinemaTicketingSystem.Application.Contracts.Schedule;
 
 public interface IScheduleAppService
 {

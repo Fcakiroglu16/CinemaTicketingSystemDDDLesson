@@ -3,7 +3,7 @@
 using System.Reflection;
 using CinemaTicketingSystem.API.Localization;
 using CinemaTicketingSystem.Application.Abstraction.Contracts;
-using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
+using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
 using CinemaTicketingSystem.Application.Schedules.IntegrationEventHandlers;
 using CinemaTicketingSystem.Caching;
 using CinemaTicketingSystem.Domain.BoundedContexts.Catalog.IntegrationEvents;

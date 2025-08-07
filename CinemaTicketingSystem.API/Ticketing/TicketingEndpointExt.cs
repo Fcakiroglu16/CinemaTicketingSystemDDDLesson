@@ -3,13 +3,14 @@
 using Asp.Versioning.Builder;
 using CinemaTicketingSystem.API.Ticketing.Purchase.Purchase;
 using CinemaTicketingSystem.API.Ticketing.Reservation.Reserve;
-using CinemaTicketingSystem.API.Ticketing.SeatHold.Create;
+using CinemaTicketingSystem.Presentation.API.Ticketing.SeatHold.Cancel;
+using CinemaTicketingSystem.Presentation.API.Ticketing.SeatHold.Create;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
 #endregion
 
-namespace CinemaTicketingSystem.API.Ticketing;
+namespace CinemaTicketingSystem.Presentation.API.Ticketing;
 
 public static class TicketingEndpointExt
 {
@@ -19,6 +20,7 @@ public static class TicketingEndpointExt
             .WithApiVersionSet(apiVersionSet)
             .CreateSeatHoldGroupItemEndpoint()
             .ReserveSeatsGroupItemEndpoint()
-            .PurchaseTicketsGroupItemEndpoint().RequireAuthorization();
+            .PurchaseTicketsGroupItemEndpoint()
+            .CancelSeatHoldGroupItemEndpoint().RequireAuthorization();
     }
 }

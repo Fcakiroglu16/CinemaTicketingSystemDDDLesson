@@ -9,5 +9,6 @@
   "Schedule:HallTechnologyNotSupported": "Salon, filmin gerektirdiği teknolojiyi desteklememektedir.",
   "Schedule:IMAXRequiresMinimumSeats": "IMAX filmleri en az {0} koltuk gerektirir.",
   "Schedule:MovieDurationMismatch": "Belirtilen gösterim süresi filmin süresiyle eşleşmemektedir.",
-  "Schedule:ShowTimeConflict": "Gösterim saati mevcut programla çakışmaktadır. Çakışan gösterim saatleri: {0}"
+  "Schedule:ShowTimeConflict": "Gösterim saati mevcut programla çakışmaktadır. Çakışan gösterim saatleri: {0}",
+  "Ticketing:ReservationTooLate": "Gösterim saatinden 2 saat öncesine kadar rezervasyon yapılabilir."
 }

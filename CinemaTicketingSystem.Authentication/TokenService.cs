@@ -3,7 +3,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using CinemaTicketingSystem.Application.Abstraction.Accounts;
-using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
+using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
 using CinemaTicketingSystem.SharedKernel.Identities;
 using CinemaTicketingSystem.SharedKernel.Options;
 using Microsoft.IdentityModel.Tokens;

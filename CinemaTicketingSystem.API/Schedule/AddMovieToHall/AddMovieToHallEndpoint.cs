@@ -2,7 +2,7 @@
 
 using CinemaTicketingSystem.API.Extensions;
 using CinemaTicketingSystem.API.Filters;
-using CinemaTicketingSystem.Application.Abstraction.Schedule;
+using CinemaTicketingSystem.Application.Contracts.Schedule;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Routing;
 
 #endregion
 
-namespace CinemaTicketingSystem.API.Schedule.AddMovieToHall;
+namespace CinemaTicketingSystem.Presentation.API.Schedule.AddMovieToHall;
 
 public static class AddMovieToHallEndpoint
 {

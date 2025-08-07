@@ -1,10 +1,11 @@
 #region
 
 using CinemaTicketingSystem.Application.Abstraction;
-using CinemaTicketingSystem.Application.Abstraction.DependencyInjections;
 using CinemaTicketingSystem.Application.Abstraction.Ticketing;
 using CinemaTicketingSystem.Application.Catalog.ICL;
+using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
 using CinemaTicketingSystem.Application.Schedules.ICL;
+using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Purchases;
 using CinemaTicketingSystem.SharedKernel;
 using CinemaTicketingSystem.SharedKernel.ValueObjects;
@@ -18,7 +19,8 @@ public class PurchaseAppService(
     IPurchaseRepository purchaseRepository,
     IUserContext userContext,
     ICatalogQueryService catalogQueryService,
-    IScheduleQueryService iScheduleQueryService) : IScopedDependency, ITicketPurchaseAppService
+    IScheduleQueryService iScheduleQueryService,
+    ISeatHoldRepository seatHoldRepository) : IScopedDependency, ITicketPurchaseAppService
 {
     public async Task<AppResult> Purchase(PurchaseTicketRequest request)
     {
@@ -51,6 +53,37 @@ public class PurchaseAppService(
             var hasTicket = ticketPurchaseList.Any(x => x.HasTicketForSeat(seatNumber));
             if (hasTicket)
                 return appDependencyService.LocalizeError.Error(ErrorCodes.DuplicateSeat, [seat.Row, seat.Number]);
+        }
+
+
+        var seatHoldList = (await seatHoldRepository.WhereAsync(x =>
+            x.ScheduledMovieShowId == request.ScheduledMovieShowId &&
+            x.CustomerId == userContext.UserId)).ToList();
+
+
+        if (seatHoldList.Count() != request.SeatPositionList.Count)
+        {
+            return appDependencyService.LocalizeError.Error(ErrorCodes.SeatHoldNotFound);
+        }
+
+        foreach (var seatHold in seatHoldList)
+        {
+            var exist = request.SeatPositionList.Any(seat =>
+                seatHold.SeatPosition == new SeatPosition(seat.Row, seat.Number));
+
+
+            if (!exist)
+            {
+                return appDependencyService.LocalizeError.Error(ErrorCodes.SeatHoldNotFound,
+                    [seatHold.SeatPosition.Row, seatHold.SeatPosition.Number]);
+            }
+
+
+            if (!seatHold.CanBeConvertedToReservationOrPurchase())
+            {
+                return appDependencyService.LocalizeError.Error(ErrorCodes.SeatHoldExpired,
+                    [seatHold.SeatPosition.Row, seatHold.SeatPosition.Number]);
+            }
         }
 
 
