@@ -21,17 +21,20 @@ public class Purchase : AggregateRoot<Guid>
     {
     }
 
-    public Purchase(Guid scheduleId, Guid customerId)
+    public Purchase(Guid scheduleId, Guid customerId, DateOnly screeningDate)
     {
         Id = Guid.CreateVersion7();
         ScheduledMovieShowId = scheduleId;
         CustomerId = customerId;
+        ScreeningDate = screeningDate;
     }
 
 
     public Guid? CustomerId { get; }
     public Guid ScheduledMovieShowId { get; }
     public bool IsDiscountApplied { get; private set; }
+
+    public DateOnly ScreeningDate { get; private set; }
 
     public virtual IReadOnlyCollection<Ticket> TicketList => _ticketList.AsReadOnly();
 

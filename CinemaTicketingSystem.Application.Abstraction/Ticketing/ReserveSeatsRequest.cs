@@ -1,3 +1,8 @@
-﻿namespace CinemaTicketingSystem.Application.Abstraction.Ticketing;
+﻿using CinemaTicketingSystem.Application.Abstraction;
 
-public record ReserveSeatsRequest(List<SeatPositionDto> SeatPositionList, Guid ScheduledMovieShowId);
+namespace CinemaTicketingSystem.Application.Contracts.Ticketing;
+
+public record ReserveSeatsRequest(
+    List<SeatPositionDto> SeatPositionList,
+    Guid ScheduledMovieShowId,
+    DateOnly ScreeningDate);

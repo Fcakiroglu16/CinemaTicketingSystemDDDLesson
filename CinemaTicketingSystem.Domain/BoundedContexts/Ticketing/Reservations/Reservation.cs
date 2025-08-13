@@ -15,7 +15,6 @@ public class Reservation : AggregateRoot<Guid>
 {
     private const int MaxSeatCountPerReservation = 10;
 
-    private const int ReservationExpiryMinutes = 60;
     private readonly List<ReservationSeat> _reservationSeatList = [];
 
 
@@ -24,20 +23,26 @@ public class Reservation : AggregateRoot<Guid>
     }
 
 
-    public Reservation(Guid scheduleId, Guid customerId)
+    public Reservation(Guid scheduleId, Guid customerId, DateOnly screeningDate, TimeOnly MovieStartTime)
     {
         Id = Guid.CreateVersion7();
         ScheduledMovieShowId = scheduleId;
         CustomerId = customerId;
         ReservationTime = DateTime.UtcNow;
-        ExpirationTime = ReservationTime.AddMinutes(ReservationExpiryMinutes);
+
         AddDomainEvent(new ReservationCreatedEvent(Id, CustomerId, scheduleId, ReservationTime));
+        ScreeningDate = screeningDate;
+
+        var movieDateTime = screeningDate.ToDateTime(MovieStartTime);
+        ExpirationTime = movieDateTime.AddHours(-4);
     }
 
     public Guid CustomerId { get; }
     public Guid ScheduledMovieShowId { get; }
     public DateTime ReservationTime { get; }
     public DateTime ExpirationTime { get; }
+
+    public DateOnly ScreeningDate { get; private set; }
     public ReservationStatus Status { get; private set; }
 
     public virtual IReadOnlyCollection<ReservationSeat> ReservationSeatList => _reservationSeatList.AsReadOnly();

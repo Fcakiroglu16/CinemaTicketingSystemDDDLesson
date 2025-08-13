@@ -7,6 +7,8 @@ namespace CinemaTicketingSystem.Application.Ticketing
 {
     public class ReservationEligibilityPolicy : IDomainService
     {
+        private const int ReservationCutoffHours = 2;
+
         public DomainResult ValidateOwnershipAndValidity(
             List<SeatHold> seatHolds,
             List<SeatPosition> requestedSeats)
@@ -37,12 +39,24 @@ namespace CinemaTicketingSystem.Application.Ticketing
             return DomainResult.Success();
         }
 
-        public DomainResult IsReservationTooLate(TimeOnly movieStartTime, DateTime now)
+        public DomainResult IsReservationTooLate(TimeOnly movieStartTime, DateOnly screeningDate)
         {
-            var todayStartTime = now.Date + movieStartTime.ToTimeSpan();
-            var result = (todayStartTime - now).TotalHours < 2;
+            var now = DateTime.UtcNow;
+            var screeningDateTime = new DateTime(
+                screeningDate.Year,
+                screeningDate.Month,
+                screeningDate.Day,
+                movieStartTime.Hour,
+                movieStartTime.Minute,
+                movieStartTime.Second);
 
-            return result ? DomainResult.Failure(ErrorCodes.ReservationTooLate) : DomainResult.Success();
+            var timeSpan = screeningDateTime - now;
+            var cutoff = TimeSpan.FromHours(ReservationCutoffHours);
+
+            if (timeSpan < cutoff)
+                return DomainResult.Failure(ErrorCodes.ReservationTooLate);
+
+            return DomainResult.Success();
         }
     }
 }

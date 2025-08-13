@@ -16,7 +16,7 @@ public static class CancelSeatHoldEndpoint
     {
         group.MapPost("/seatholds/cancel",
                 async ([FromServices] ISeatHoldAppService seatHoldAppService) =>
-                (await seatHoldAppService.CancelSeatHold()).ToGenericResult())
+                (await seatHoldAppService.Cancel()).ToGenericResult())
             .WithName("CancelSeatHold")
             .MapToApiVersion(1, 0);
 

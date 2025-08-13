@@ -19,7 +19,7 @@ public static class CreateSeatHoldEndpoint
     {
         group.MapPost("/seatholds",
                 async (CreateSeatHoldRequest request, [FromServices] ISeatHoldAppService seatHoldAppService) =>
-                (await seatHoldAppService.CreateSeatHoldAsync(request)).ToGenericResult())
+                (await seatHoldAppService.CreateAsync(request)).ToGenericResult())
             .WithName("CreateSeatHold")
             .MapToApiVersion(1, 0)
             .AddEndpointFilter<ValidationFilter<CreateSeatHoldRequest>>();

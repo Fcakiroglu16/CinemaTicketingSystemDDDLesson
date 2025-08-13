@@ -15,7 +15,7 @@ namespace CinemaTicketingSystem.Application.Ticketing;
 public class SeatHoldAppService(AppDependencyService appDependencyService, ISeatHoldRepository seatHoldRepository)
     : IScopedDependency, ISeatHoldAppService
 {
-    public async Task<AppResult> CreateSeatHoldAsync(CreateSeatHoldRequest request)
+    public async Task<AppResult> CreateAsync(CreateSeatHoldRequest request)
     {
         var customerId = appDependencyService.UserContext.UserId;
 
@@ -41,7 +41,7 @@ public class SeatHoldAppService(AppDependencyService appDependencyService, ISeat
     }
 
 
-    public async Task<AppResult> CancelSeatHold()
+    public async Task<AppResult> Cancel()
     {
         var customerId = appDependencyService.UserContext.UserId;
 

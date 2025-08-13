@@ -4,9 +4,11 @@ using CinemaTicketingSystem.Application.Abstraction;
 using CinemaTicketingSystem.Application.Abstraction.Ticketing;
 using CinemaTicketingSystem.Application.Catalog.ICL;
 using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
+using CinemaTicketingSystem.Application.Contracts.Ticketing;
 using CinemaTicketingSystem.Application.Schedules.ICL;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Purchases;
+using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Reservations;
 using CinemaTicketingSystem.SharedKernel;
 using CinemaTicketingSystem.SharedKernel.ValueObjects;
 
@@ -20,9 +22,10 @@ public class PurchaseAppService(
     IUserContext userContext,
     ICatalogQueryService catalogQueryService,
     IScheduleQueryService iScheduleQueryService,
-    ISeatHoldRepository seatHoldRepository) : IScopedDependency, ITicketPurchaseAppService
+    ISeatHoldRepository seatHoldRepository,
+    IReservationRepository reservationRepository) : IScopedDependency, ITicketPurchaseAppService
 {
-    public async Task<AppResult> Purchase(PurchaseTicketRequest request)
+    public async Task<AppResult> Create(PurchaseTicketRequest request)
     {
         var scheduleInfo = await iScheduleQueryService.GetScheduleInfo(request.ScheduledMovieShowId);
 
@@ -33,7 +36,9 @@ public class PurchaseAppService(
             await catalogQueryService.GetCinemaInfo(scheduleInfo.Data!.CinemaHallId, scheduleInfo.Data.MovieId);
 
 
-        var ticketPurchaseList = purchaseRepository.GetTicketsPurchaseByScheduleId(request.ScheduledMovieShowId);
+        var ticketPurchaseList =
+            purchaseRepository.GetTicketsPurchaseByScheduleIdAndScreeningDate(request.ScheduledMovieShowId,
+                request.ScreeningDate);
 
 
         var purchasedTicketCount = ticketPurchaseList.SelectMany(x => x.TicketList).Count();
@@ -87,7 +92,7 @@ public class PurchaseAppService(
         }
 
 
-        var purchase = new Purchase(request.ScheduledMovieShowId, userContext.UserId);
+        var purchase = new Purchase(request.ScheduledMovieShowId, userContext.UserId, request.ScreeningDate);
 
         foreach (var seat in request.SeatPositionList)
         {
@@ -100,6 +105,37 @@ public class PurchaseAppService(
 
         await appDependencyService.UnitOfWork.SaveChangesAsync();
 
+        return AppResult.SuccessAsNoContent();
+    }
+
+
+    public async Task<AppResult> CreateFromReservation(Guid ReservationId)
+    {
+        var reservation = await reservationRepository.GetByIdAsync(ReservationId);
+
+
+        if (reservation!.IsExpired())
+        {
+            return appDependencyService.LocalizeError.Error(ErrorCodes.ReservationExpired);
+        }
+
+        var purchase = new Purchase(reservation.ScheduledMovieShowId, reservation.CustomerId,
+            reservation.ScreeningDate);
+
+
+        var scheduleInfo = await iScheduleQueryService.GetScheduleInfo(reservation.ScheduledMovieShowId);
+
+        if (scheduleInfo.IsFail) return scheduleInfo;
+
+        foreach (var seat in reservation.ReservationSeatList)
+        {
+            var newTicket = new Ticket(seat.SeatPosition, scheduleInfo.Data!.TicketPrice);
+            purchase.AddTicket(newTicket);
+        }
+
+
+        await purchaseRepository.AddAsync(purchase);
+        await appDependencyService.UnitOfWork.SaveChangesAsync();
         return AppResult.SuccessAsNoContent();
     }
 }

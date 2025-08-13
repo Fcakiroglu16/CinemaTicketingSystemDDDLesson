@@ -5,6 +5,6 @@ namespace CinemaTicketingSystem.Application.Contracts.Ticketing;
 
 public interface ISeatHoldAppService
 {
-    Task<AppResult> CreateSeatHoldAsync(CreateSeatHoldRequest request);
-    Task<AppResult> CancelSeatHold();
+    Task<AppResult> CreateAsync(CreateSeatHoldRequest request);
+    Task<AppResult> Cancel();
 }

@@ -1,9 +1,9 @@
 ﻿#region
 
 using CinemaTicketingSystem.Application.Abstraction;
-using CinemaTicketingSystem.Application.Abstraction.Ticketing;
 using CinemaTicketingSystem.Application.Catalog.ICL;
 using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
+using CinemaTicketingSystem.Application.Contracts.Ticketing;
 using CinemaTicketingSystem.Application.Schedules.ICL;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Reservations;
@@ -22,7 +22,7 @@ public class ReservationAppService(
     ISeatHoldRepository seatHoldRepository,
     ReservationEligibilityPolicy reservationEligibilityPolicy) : IScopedDependency, IReservationAppService
 {
-    public async Task<AppResult> ReserveSeats(ReserveSeatsRequest request)
+    public async Task<AppResult> Create(ReserveSeatsRequest request)
     {
         var scheduleInfo = await iScheduleQueryService.GetScheduleInfo(request.ScheduledMovieShowId);
 
@@ -30,7 +30,8 @@ public class ReservationAppService(
 
 
         var isReservationTooLate =
-            reservationEligibilityPolicy.IsReservationTooLate(scheduleInfo.Data!.showTime.StartTime, DateTime.UtcNow);
+            reservationEligibilityPolicy.IsReservationTooLate(scheduleInfo.Data!.showTime.StartTime,
+                request.ScreeningDate);
 
 
         if (!isReservationTooLate.IsSuccess)
@@ -45,7 +46,8 @@ public class ReservationAppService(
 
 
         var reservationList =
-            (await reservationRepository.WhereAsync(x => x.ScheduledMovieShowId == request.ScheduledMovieShowId))
+            (await reservationRepository.WhereAsync(x =>
+                x.ScheduledMovieShowId == request.ScheduledMovieShowId && x.ScreeningDate == request.ScreeningDate))
             .ToList();
 
 
@@ -77,15 +79,16 @@ public class ReservationAppService(
 
 
         foreach (var seatPosition in from seatPosition in request.SeatPositionList
-                                     let seatNumber = new SeatPosition(seatPosition.Row, seatPosition.Number)
-                                     let hasSeat = reservationList.Any(r => r.HasSeat(seatNumber))
-                                     where hasSeat
-                                     select seatPosition)
+                 let seatNumber = new SeatPosition(seatPosition.Row, seatPosition.Number)
+                 let hasSeat = reservationList.Any(r => r.HasSeat(seatNumber))
+                 where hasSeat
+                 select seatPosition)
             return appDependencyService.LocalizeError.Error(ErrorCodes.SeatAlreadyReserved,
                 [seatPosition.Row, seatPosition.Number]);
 
 
-        var reservation = new Reservation(request.ScheduledMovieShowId, appDependencyService.UserContext.UserId);
+        var reservation = new Reservation(request.ScheduledMovieShowId, appDependencyService.UserContext.UserId,
+            request.ScreeningDate, scheduleInfo.Data.showTime.StartTime);
 
 
         foreach (var seatPosition in request.SeatPositionList.Select(seatPositionDto =>
