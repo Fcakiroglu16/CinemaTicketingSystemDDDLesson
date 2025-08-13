@@ -14,6 +14,7 @@ namespace CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Reservations;
 public class Reservation : AggregateRoot<Guid>
 {
     private const int MaxSeatCountPerReservation = 10;
+    private const int ReservationCutoffHours = -4;
 
     private readonly List<ReservationSeat> _reservationSeatList = [];
 
@@ -33,8 +34,8 @@ public class Reservation : AggregateRoot<Guid>
         AddDomainEvent(new ReservationCreatedEvent(Id, CustomerId, scheduleId, ReservationTime));
         ScreeningDate = screeningDate;
 
-        var movieDateTime = screeningDate.ToDateTime(MovieStartTime);
-        ExpirationTime = movieDateTime.AddHours(-4);
+        var movieStartDateTime = screeningDate.ToDateTime(MovieStartTime);
+        ExpirationTime = movieStartDateTime.AddHours(ReservationCutoffHours);
     }
 
     public Guid CustomerId { get; }

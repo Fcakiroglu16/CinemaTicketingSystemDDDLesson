@@ -7,7 +7,7 @@ namespace CinemaTicketingSystem.Application.Ticketing
 {
     public class ReservationEligibilityPolicy : IDomainService
     {
-        private const int ReservationCutoffHours = 2;
+        private const int ReservationCutoffHours = 6;
 
         public DomainResult ValidateOwnershipAndValidity(
             List<SeatHold> seatHolds,
