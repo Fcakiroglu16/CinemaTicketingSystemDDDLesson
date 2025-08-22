@@ -6,8 +6,8 @@ using CinemaTicketingSystem.Domain.BoundedContexts.Scheduling;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Issuance;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Reservations;
+using CinemaTicketingSystem.Infrastructure.Persistence.Interceptors;
 using CinemaTicketingSystem.Persistence.Accounts;
-using CinemaTicketingSystem.Persistence.Interceptors;
 using CinemaTicketingSystem.SharedKernel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -55,12 +55,12 @@ public class AppDbContext(
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-        foreach (var mutableProperty in entityType.GetProperties())
-        {
-            if (!ReferenceEquals(mutableProperty.ClrType, typeof(decimal))) continue;
-            mutableProperty.SetPrecision(9);
-            mutableProperty.SetScale(2);
-        }
+            foreach (var mutableProperty in entityType.GetProperties())
+            {
+                if (!ReferenceEquals(mutableProperty.ClrType, typeof(decimal))) continue;
+                mutableProperty.SetPrecision(9);
+                mutableProperty.SetScale(2);
+            }
 
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

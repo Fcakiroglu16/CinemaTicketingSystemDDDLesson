@@ -1,8 +1,3 @@
-using CinemaTicketingSystem.Application.Abstraction;
-
 namespace CinemaTicketingSystem.Application.Contracts.Ticketing;
 
-public record CreateTicketIssuanceRequest(
-    List<SeatPositionDto> SeatPositionList,
-    Guid ScheduledMovieShowId,
-    DateOnly ScreeningDate);
+public record CreateTicketIssuanceRequest(Guid ScheduledMovieShowId, DateOnly ScreeningDate);

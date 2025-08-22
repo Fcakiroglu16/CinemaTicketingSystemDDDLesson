@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 #endregion
 
-namespace CinemaTicketingSystem.Persistence.Interceptors;
+namespace CinemaTicketingSystem.Infrastructure.Persistence.Interceptors;
 
 internal class DomainEventsInterceptor(
     IIntegrationEventBus integrationEventBus,
@@ -46,7 +46,7 @@ internal class DomainEventsInterceptor(
 
         var aggregates = eventData.Context.ChangeTracker
             .Entries<IAggregateRoot>()
-            .Where(e => e.Entity.DomainEvents.Any())
+            .Where(e => e.Entity.IntegrationEvents.Any())
             .Select(e => e.Entity)
             .ToList();
 

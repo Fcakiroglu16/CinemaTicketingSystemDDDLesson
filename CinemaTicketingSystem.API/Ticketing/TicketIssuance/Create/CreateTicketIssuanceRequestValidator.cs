@@ -11,9 +11,6 @@ public class CreateTicketIssuanceRequestValidator : AbstractValidator<CreateTick
 {
     public CreateTicketIssuanceRequestValidator()
     {
-        RuleFor(x => x.SeatPositionList).NotEmpty();
         RuleFor(x => x.ScheduledMovieShowId).NotEmpty();
-
-        RuleFor(x => x.SeatPositionList).Must(x => x.Count > 0).WithMessage("Please select at least one seat.");
     }
 }

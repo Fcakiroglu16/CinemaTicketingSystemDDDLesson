@@ -9,7 +9,6 @@ using CinemaTicketingSystem.SharedKernel.ValueObjects;
 
 namespace CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Issuance;
 
-
 public class Ticket : Entity<Guid>
 {
     public Ticket(SeatPosition seatPosition, Price price)
@@ -25,11 +24,11 @@ public class Ticket : Entity<Guid>
     {
     }
 
-    public virtual TicketIssuance TicketIssuance { get; private set; } = null!;
+    public virtual TicketIssuance TicketIssuance { get; private set; }
 
-    public SeatPosition SeatPosition { get; } = null!;
-    public Price Price { get; } = null!;
-    public string TicketCode { get; } = null!;
+    public SeatPosition SeatPosition { get; private set; }
+    public Price Price { get; private set; }
+    public string TicketCode { get; private set; }
     public bool IsUsed { get; private set; }
     public DateTime? UsedAt { get; private set; }
 

@@ -35,7 +35,7 @@ public class SeatHold : AggregateRoot<Guid>
     public DateOnly ScreeningDate { get; private set; }
     public Guid CustomerId { get; private set; }
     public SeatPosition SeatPosition { get; private set; }
-    public DateTime ExpiresAt { get; private set; }
+    public DateTime? ExpiresAt { get; private set; }
 
     public HoldStatus Status { get; private set; }
 
@@ -54,10 +54,10 @@ public class SeatHold : AggregateRoot<Guid>
         if (IsExpired())
             throw new BusinessException(ErrorCodes.SeatHoldExpired);
 
-        ExpiresAt = ExpiresAt.Add(additionalTime);
+        ExpiresAt = ExpiresAt?.Add(additionalTime);
     }
 
-    private bool IsExpired()
+    public bool IsExpired()
     {
         return DateTime.UtcNow > ExpiresAt;
     }
@@ -65,5 +65,10 @@ public class SeatHold : AggregateRoot<Guid>
     public bool CanBeConvertedToReservationOrPurchase()
     {
         return !IsExpired();
+    }
+
+    public bool IsHold()
+    {
+        return Status == HoldStatus.Confirm && !IsExpired();
     }
 }

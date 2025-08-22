@@ -4,7 +4,5 @@ public enum HoldStatus
 {
     Active,
     Confirm,
-    Expired,
-    ConvertedToReservation,
-    ConvertedToPurchase
+    Expired
 }

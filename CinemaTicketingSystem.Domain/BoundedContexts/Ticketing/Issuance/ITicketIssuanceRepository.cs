@@ -8,5 +8,9 @@ namespace CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Issuance;
 
 public interface ITicketIssuanceRepository : IGenericRepository<TicketIssuance>
 {
-    List<TicketIssuance> GetTicketsIssuanceByScheduleIdAndScreeningDate(Guid scheduleId, DateOnly ScreeningDate);
+    Task<List<TicketIssuance>> GetConfirmedTicketsIssuanceByScheduleIdAndScreeningDate(Guid scheduleId,
+        DateOnly ScreeningDate);
+
+
+    Task<TicketIssuance?> Get(Guid CustomerId, DateOnly ScreeningDate, Guid ScheduledMovieShowId);
 }

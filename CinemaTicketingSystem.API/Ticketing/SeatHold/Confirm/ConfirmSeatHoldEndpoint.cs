@@ -16,7 +16,7 @@ public static class ConfirmSeatHoldEndpoint
 {
     public static RouteGroupBuilder confirmSeatHoldGroupItemEndpoint(this RouteGroupBuilder group)
     {
-        group.MapPost("/seathold/confirm",
+        group.MapPost("/seatholds/confirm",
                 async (ConfirmSeatHoldRequest request, [FromServices] ISeatHoldAppService seatHoldAppService) =>
                 (await seatHoldAppService.ConfirmAsync(request)).ToGenericResult())
             .WithName("ConfirmSeatHold")

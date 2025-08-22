@@ -1,12 +1,12 @@
 ﻿@HostAddress = http://localhost:5094
-@accessToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOTg3NGZmLTFjZDUtNzZkNC04NmM2LTdjZDY5OWNjZTk1YSIsImVtYWlsIjoiZi1jYWtpcm9nbHVAb3V0bG9vay5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiZmNha2lyb2dsdTM4MTEiLCJqdGkiOiI5NmVjNjQ3Ny1lMWJkLTQ2NWQtYjcyYy05YTQxMzlmYTNkY2IiLCJuYmYiOjE3NTQzNDI2MTMsImV4cCI6MTc1NDM1NzAxMywiaXNzIjoiYXBpLmNpbmVtYS10aWNrZXRpbmctc3l0ZW0uY29tIn0.mfEs80_hQVGDIIYvSd6wIgc8FTbAWreb0CuP1MvmMAw
+@accessToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOThkMGFmLWNiODktNzQ5Ni04NTY3LWNjNTVhNWU5MDBkZiIsImVtYWlsIjoiZi1jYWtpcm9nbHVAb3V0bG9vay5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiZmNha2lyb2dsdTYxODAiLCJqdGkiOiIwNjY2NDhjYS05OTc3LTQwNDItOTczYS00YmMyODZkYWMwYmYiLCJuYmYiOjE3NTU4NzA4ODAsImV4cCI6MTc1NTg4NTI4MCwiaXNzIjoiYXBpLmNpbmVtYS10aWNrZXRpbmctc3l0ZW0uY29tIn0.rcIrs9IGpvWKL-0esaxopuM8dOHOSVHlXrG7B1ogpHI
 ###
 POST {{HostAddress}}/api/v1/catalogs/movies
 Accept: application/json
 Content-Type: application/json
 
 {
-  "title": "Inception 1",
+  "title": "Inception 3",
   "originalTitle": "Inception",
   "description": "A mind-bending thriller that delves into the world of dreams.",
   "EarliestShowingDate": "2026-07-16T00:00:00Z",
@@ -43,14 +43,14 @@ Accept-Language: tr
 ###
 
 
-POST {{HostAddress}}/api/v1/catalogs/cinemas/019874ff-bd7d-7982-96f5-07696c31dc0d/hall
+POST {{HostAddress}}/api/v1/catalogs/cinemas/0198d08e-2bd3-70a8-b586-0c5ca6a9bf77/hall
 Accept: application/json
 Content-Type: application/json
 Accept-Language: en
 
 {
   "cinemaId": "f93795b0-e16f-4d00-9fbf-7657e9257945",
-  "name": "Hall 5 - Strandart Premium",
+  "name": "Hall 5 - Strandart Premium 2",
   "technologies": [1, 2],
   "seatList": [
     {
@@ -91,28 +91,28 @@ Accept-Language: en
   ]
 }
 ###
-GET {{HostAddress}}/api/v1/catalogs/cinemas/019874ff-bd7d-7982-96f5-07696c31dc0d/hall
+GET {{HostAddress}}/api/v1/catalogs/cinemas/0198d08e-2bd3-70a8-b586-0c5ca6a9bf77/hall
 Accept: application/json
 
 ###
-GET {{HostAddress}}/api/v1/schedules/halls/01987042-86bf-762d-a34a-a0dc299d77fc/movies
+GET {{HostAddress}}/api/v1/schedules/halls/0198d08e-2bd3-70a8-b586-0c5ca6a9bf77/movies
 Accept: application/json
 
 ###
 
-POST {{HostAddress}}/api/v1/schedules/halls/019874ff-ea96-790a-a2ff-1feaad31ecd7/movies
+POST {{HostAddress}}/api/v1/schedules/halls/0198d098-040c-7281-911a-adf62d676ffe/movies
 Accept: application/json
 Content-Type: application/json
 {
-  "movieId": "019874ff-96d8-7e58-9da2-7e664a27d07f",
-  "startTime": "19:05:00",
+  "movieId": "0198d096-d4c0-72b1-8f59-035c7e603523",
+  "startTime": "19:00:00",
   "Price": {
     "Amount": 100,
     "Currency": "TRY"
   }
 }
 ###
-GET {{HostAddress}}/api/v1/schedules/halls/019874ff-ea96-790a-a2ff-1feaad31ecd7/movies
+GET {{HostAddress}}/api/v1/schedules/halls/0198d098-040c-7281-911a-adf62d676ffe/movies
 Accept: application/json
 ###
 POST {{HostAddress}}/api/v1/accounts/auth/signup
@@ -141,29 +141,38 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-  "seatPosition": [
+  "seatPositions": [
     {
-      "row": "C",
+      "row": "A",
+      "number": 1
+    },
+      {
+      "row": "B",
       "number": 1
     }
   ],
-  "scheduledMovieShowId": "01987510-c5ec-7a23-905d-44a519a20774"
+  "ScreeningDate": "2025-10-10",
+  "scheduledMovieShowId": "0198d099-23eb-7568-9b05-19353f6a54e5"
 }
-
 ###
-POST {{HostAddress}}/api/v1/ticketing/purchases
+POST {{HostAddress}}/api/v1/ticketing/seatholds/confirm
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-  "seatPositionList": [
-    {
-      "row": "B",
-      "number": 1
-    }
-  ],
-  "scheduledMovieShowId": "01987510-c5ec-7a23-905d-44a519a20774"
+  "ScreeningDate": "2025-10-10",
+  "scheduledMovieShowId": "0198d099-23eb-7568-9b05-19353f6a54e5"
+}
+###
+POST {{HostAddress}}/api/v1/ticketing/issuance
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "ScreeningDate": "2025-10-10",
+  "scheduledMovieShowId": "0198d099-23eb-7568-9b05-19353f6a54e5"
 }
 ###
 POST {{HostAddress}}/api/v1/ticketing/reservations

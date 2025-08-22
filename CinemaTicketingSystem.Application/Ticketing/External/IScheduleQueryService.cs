@@ -4,7 +4,7 @@ using CinemaTicketingSystem.Application.Abstraction;
 
 #endregion
 
-namespace CinemaTicketingSystem.Application.Schedules.ICL;
+namespace CinemaTicketingSystem.Application.Ticketing.External;
 
 public interface IScheduleQueryService
 {

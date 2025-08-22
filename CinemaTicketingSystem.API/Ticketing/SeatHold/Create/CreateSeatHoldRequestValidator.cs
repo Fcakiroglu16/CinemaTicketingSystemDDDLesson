@@ -5,13 +5,13 @@ using FluentValidation;
 
 #endregion
 
-namespace CinemaTicketingSystem.API.Ticketing.SeatHold.Create;
+namespace CinemaTicketingSystem.Presentation.API.Ticketing.SeatHold.Create;
 
 public class CreateSeatHoldRequestValidator : AbstractValidator<CreateSeatHoldRequest>
 {
     public CreateSeatHoldRequestValidator()
     {
-        RuleFor(x => x.SeatPosition).NotEmpty();
+        RuleFor(x => x.SeatPositions).NotEmpty();
         RuleFor(x => x.ScheduledMovieShowId).NotEmpty();
     }
 }

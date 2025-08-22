@@ -43,7 +43,7 @@ internal class TicketConfiguration : IEntityTypeConfiguration<Ticket>
         {
             priceBuilder.Property(p => p.Amount)
                 .HasColumnName("Amount")
-                .HasPrecision(9, 2)
+                //.HasPrecision(9, 2)
                 .IsRequired();
 
             priceBuilder.Property(p => p.Currency)

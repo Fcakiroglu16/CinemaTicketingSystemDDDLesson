@@ -3,7 +3,7 @@ using CinemaTicketingSystem.SharedKernel.ValueObjects;
 
 namespace CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds.DomainEvents
 {
-    internal record SeatHoldConfirmed(
+    public record SeatHoldConfirmed(
         Guid ScheduledMovieShowId,
         Guid CustomerId,
         DateOnly ScreeningDate,

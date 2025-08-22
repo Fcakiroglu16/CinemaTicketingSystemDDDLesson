@@ -19,24 +19,43 @@ public class SeatHoldAppService(AppDependencyService appDependencyService, ISeat
         var customerId = appDependencyService.UserContext.UserId;
 
 
-        //TODO: redis lock eklenebilir
+        //TODO: redis lock can add here for concurrency handling
         var seatHold =
             (await seatHoldRepository.WhereAsync(x =>
                 x.ScheduledMovieShowId == request.ScheduledMovieShowId && x.ScreeningDate == request.ScreeningDate &&
-                x.Status == HoldStatus.Confirm))
-            .ToList();
+                x.Status == HoldStatus.Confirm && x.ExpiresAt < DateTime.UtcNow)).ToList();
 
 
-        foreach (var seat in request.SeatPosition.Where(seat =>
-                     seatHold.Any(x => x.SeatPosition == new SeatPosition(seat.Row, seat.Number))))
+        foreach (var seat in request.SeatPositions.Where(seat =>
+                     seatHold.Any(x => x.SeatPosition.Equals(new SeatPosition(seat.Row, seat.Number)))))
+        {
             return appDependencyService.LocalizeError.Error(ErrorCodes.SeatAlreadyHeld, [seat.Row, seat.Number]);
+        }
 
 
-        foreach (var newSeatHold in request.SeatPosition.Select(seat =>
+        var customerSeatHolds = await seatHoldRepository.WhereAsync(x =>
+            x.CustomerId == customerId && x.ScreeningDate.Equals(request.ScreeningDate) &&
+            x.ScheduledMovieShowId == request.ScheduledMovieShowId);
+
+
+        //idempotency check
+
+        var newSeats = request.SeatPositions.ToList();
+
+
+        foreach (var seat in request.SeatPositions.Where(seat =>
+                     customerSeatHolds.Any(x => x.SeatPosition.Equals(new SeatPosition(seat.Row, seat.Number)))))
+        {
+            newSeats.Remove(seat);
+        }
+
+
+        foreach (var newSeatHold in newSeats.Select(seat =>
                      new SeatHold(request.ScheduledMovieShowId, customerId, new SeatPosition(seat.Row, seat.Number),
                          request.ScreeningDate)))
-
+        {
             await seatHoldRepository.AddAsync(newSeatHold);
+        }
 
 
         await appDependencyService.UnitOfWork.SaveChangesAsync();

@@ -21,7 +21,7 @@ public class TicketIssuance : AggregateRoot<Guid>
 {
     private const int MaxTicketsPerPurchase = 10;
 
-    private readonly List<Ticket> _ticketList = [];
+    private List<Ticket> _ticketList = [];
 
     protected TicketIssuance()
     {
@@ -69,8 +69,6 @@ public class TicketIssuance : AggregateRoot<Guid>
                 .AddData(ticket.SeatPosition.Number);
         _ticketList.Add(ticket);
         ApplyBulkDiscountIfEligible();
-        AddDomainEvent(new TicketIssuedEvent(ticket.Id, ScheduledMovieShowId, CustomerId!.Value, ticket.SeatPosition,
-            ticket.Price));
     }
 
     public void RemoveTicket(SeatPosition seatPosition)
