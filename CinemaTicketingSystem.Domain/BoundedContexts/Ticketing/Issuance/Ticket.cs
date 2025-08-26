@@ -26,9 +26,9 @@ public class Ticket : Entity<Guid>
 
     public virtual TicketIssuance TicketIssuance { get; private set; }
 
-    public SeatPosition SeatPosition { get; }
-    public Price Price { get; }
-    public string TicketCode { get; }
+    public SeatPosition SeatPosition { get; private set; }
+    public Price Price { get; private set; }
+    public string TicketCode { get; private set; }
     public bool IsUsed { get; private set; }
     public DateTime? UsedAt { get; private set; }
 

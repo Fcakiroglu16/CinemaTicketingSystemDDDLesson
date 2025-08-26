@@ -15,8 +15,12 @@ public class Price : ValueObject
             .ToUpperInvariant(); // Örn: "TRY", "USD"
     }
 
-    public decimal Amount { get; }
-    public string Currency { get; }
+    protected Price()
+    {
+    }
+
+    public decimal Amount { get; private set; }
+    public string Currency { get; private set; }
 
     protected override IEnumerable<object?> GetEqualityComponents()
     {

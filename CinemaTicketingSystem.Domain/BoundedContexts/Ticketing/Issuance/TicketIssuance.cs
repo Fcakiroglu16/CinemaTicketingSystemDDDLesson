@@ -59,15 +59,15 @@ public class TicketIssuance : AggregateRoot<Guid>
         Status = TicketIssuanceStatus.Cancelled;
     }
 
-    public void AddTicket(Ticket ticket)
+    public void AddTicket(SeatPosition seatPosition, Price price)
     {
         if (_ticketList.Count >= MaxTicketsPerPurchase)
             throw new BusinessException(ErrorCodes.MaxTicketsExceeded).AddData(MaxTicketsPerPurchase);
 
-        if (_ticketList.Any(t => t.SeatPosition == ticket.SeatPosition))
-            throw new BusinessException(ErrorCodes.DuplicateSeat).AddData(ticket.SeatPosition.Row)
-                .AddData(ticket.SeatPosition.Number);
-        _ticketList.Add(ticket);
+        if (_ticketList.Any(t => t.SeatPosition == seatPosition))
+            throw new BusinessException(ErrorCodes.DuplicateSeat).AddData(seatPosition.Row)
+                .AddData(seatPosition.Number);
+        _ticketList.Add(new Ticket(seatPosition, price));
         ApplyBulkDiscountIfEligible();
     }
 
@@ -84,11 +84,6 @@ public class TicketIssuance : AggregateRoot<Guid>
         ApplyBulkDiscountIfEligible();
     }
 
-    public void AddTickets(IEnumerable<Ticket> tickets)
-    {
-        foreach (var ticket in tickets) AddTicket(ticket);
-        ApplyBulkDiscountIfEligible();
-    }
 
     private void ApplyBulkDiscountIfEligible()
     {

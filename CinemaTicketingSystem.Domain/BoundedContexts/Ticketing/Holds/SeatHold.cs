@@ -30,11 +30,11 @@ public class SeatHold : AggregateRoot<Guid>
         AddDomainEvent(new SeatHoldStarted(ScheduledMovieShowId, CustomerId, screeningDate, SeatPosition));
     }
 
-    public Guid ScheduledMovieShowId { get; }
+    public Guid ScheduledMovieShowId { get; private set; }
 
-    public DateOnly ScreeningDate { get; }
+    public DateOnly ScreeningDate { get; private set; }
     public Guid CustomerId { get; }
-    public SeatPosition SeatPosition { get; }
+    public SeatPosition SeatPosition { get; private set; }
     public DateTime? ExpiresAt { get; private set; }
 
     public HoldStatus Status { get; private set; }
@@ -44,7 +44,7 @@ public class SeatHold : AggregateRoot<Guid>
     {
         if (IsExpired())
             throw new BusinessException(ErrorCodes.SeatHoldExpired);
-        Status = HoldStatus.Confirm;
+        Status = HoldStatus.Hold;
         ExpiresAt = DateTime.UtcNow.Add(TimeSpan.FromMinutes(DefaultHoldDurationMinutes));
         AddDomainEvent(new SeatHoldConfirmed(ScheduledMovieShowId, CustomerId, ScreeningDate, SeatPosition));
     }
@@ -69,6 +69,6 @@ public class SeatHold : AggregateRoot<Guid>
 
     public bool IsHold()
     {
-        return Status == HoldStatus.Confirm && !IsExpired();
+        return Status == HoldStatus.Hold && !IsExpired();
     }
 }

@@ -44,9 +44,9 @@ public class TicketIssuanceAppService(
             .ToList();
 
 
-        var isSeatHoldExpired = userSeatHoldList.First().IsExpired();
+        //var isSeatHoldExpired = userSeatHoldList.First().IsExpired();
 
-        if (isSeatHoldExpired) return appDependencyService.LocalizeError.Error(ErrorCodes.SeatHoldExpired);
+        //if (isSeatHoldExpired) return appDependencyService.LocalizeError.Error(ErrorCodes.SeatHoldExpired);
 
 
         var confirmedTicketList =
@@ -80,8 +80,7 @@ public class TicketIssuanceAppService(
 
         foreach (var seat in userSeatHoldList)
         {
-            var newTicket = new Ticket(seat.SeatPosition, scheduleInfo.Data.TicketPrice);
-            newTicketIssuance.AddTicket(newTicket);
+            newTicketIssuance.AddTicket(seat.SeatPosition, scheduleInfo.Data.TicketPrice);
         }
 
 
@@ -110,8 +109,7 @@ public class TicketIssuanceAppService(
 
         foreach (var seat in reservation.ReservationSeatList)
         {
-            var newTicket = new Ticket(seat.SeatPosition, scheduleInfo.Data!.TicketPrice);
-            purchase.AddTicket(newTicket);
+            purchase.AddTicket(seat.SeatPosition, scheduleInfo.Data!.TicketPrice);
         }
 
 

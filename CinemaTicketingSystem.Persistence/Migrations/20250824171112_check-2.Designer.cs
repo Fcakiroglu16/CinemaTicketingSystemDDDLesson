@@ -4,6 +4,7 @@ using CinemaTicketingSystem.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaTicketingSystem.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250824171112_check-2")]
+    partial class check2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -249,7 +252,7 @@ namespace CinemaTicketingSystem.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("TicketIssuanceId");
 
-                    b.ToTable("Tickets", "Ticketing");
+                    b.ToTable("Ticket", "Ticketing");
                 });
 
             modelBuilder.Entity("CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Issuance.TicketIssuance", b =>
@@ -787,16 +790,18 @@ namespace CinemaTicketingSystem.Infrastructure.Persistence.Migrations
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<decimal>("Amount")
-                                .HasPrecision(9, 2)
-                                .HasColumnType("decimal(9,2)");
+                                .HasColumnType("decimal(18,2)")
+                                .HasColumnName("Amount");
 
                             b1.Property<string>("Currency")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)");
+                                .HasMaxLength(3)
+                                .HasColumnType("nvarchar(3)")
+                                .HasColumnName("Currency");
 
                             b1.HasKey("TicketId");
 
-                            b1.ToTable("Tickets", "Ticketing");
+                            b1.ToTable("Ticket", "Ticketing");
 
                             b1.WithOwner()
                                 .HasForeignKey("TicketId");
@@ -821,7 +826,7 @@ namespace CinemaTicketingSystem.Infrastructure.Persistence.Migrations
 
                             b1.HasKey("TicketId");
 
-                            b1.ToTable("Tickets", "Ticketing");
+                            b1.ToTable("Ticket", "Ticketing");
 
                             b1.WithOwner()
                                 .HasForeignKey("TicketId");

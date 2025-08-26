@@ -18,9 +18,8 @@ internal class TicketIssuanceConfigurations : IEntityTypeConfiguration<TicketIss
         builder.Property(x => x.Id).ValueGeneratedNever();
 
         // Configure properties
-        builder.Property(x => x.CustomerId);
-        builder.Property(x => x.ScheduledMovieShowId);
-        builder.Property(x => x.IsDiscountApplied);
+        builder.Property(x => x.CustomerId).IsRequired();
+        builder.Property(x => x.ScheduledMovieShowId).IsRequired();
 
 
         //builder.Metadata.FindNavigation(nameof(MovieTicket.TicketSales))!.SetPropertyAccessMode(

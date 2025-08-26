@@ -18,8 +18,8 @@ internal class SeatHoldConfiguration : IEntityTypeConfiguration<SeatHold>
 
 
         builder.Property(x => x.ScheduledMovieShowId).IsRequired();
+        builder.Property(x => x.ScreeningDate).IsRequired();
         builder.Property(x => x.CustomerId).IsRequired();
-        builder.Property(x => x.ExpiresAt);
         builder.OwnsOne(x => x.SeatPosition, seatBuilder =>
         {
             seatBuilder.Property(s => s.Number)

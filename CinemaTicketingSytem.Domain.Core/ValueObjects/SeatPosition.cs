@@ -8,6 +8,10 @@ namespace CinemaTicketingSystem.SharedKernel.ValueObjects;
 
 public class SeatPosition : ValueObject
 {
+    protected SeatPosition()
+    {
+    }
+
     public SeatPosition(string row, int number)
     {
         Row = Guard.Against.NullOrWhiteSpace(row, nameof(row), "Row cannot be empty.")
