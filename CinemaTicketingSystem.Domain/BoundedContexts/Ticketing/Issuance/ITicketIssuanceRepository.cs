@@ -13,4 +13,6 @@ public interface ITicketIssuanceRepository : IGenericRepository<TicketIssuance>
 
 
     Task<TicketIssuance?> Get(Guid CustomerId, DateOnly ScreeningDate, Guid ScheduledMovieShowId);
+
+    Task<TicketIssuance> Get(Guid customerId, Guid TicketIssuanceId);
 }

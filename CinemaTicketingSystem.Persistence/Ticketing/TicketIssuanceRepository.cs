@@ -32,10 +32,21 @@ internal class TicketIssuanceRepository(AppDbContext context)
             x.ScheduledMovieShowId == ScheduledMovieShowId);
     }
 
+
+    public Task<TicketIssuance> Get(Guid customerId, Guid TicketIssuanceId)
+    {
+        return _context.TicketIssuance.SingleAsync(x => x.CustomerId == customerId && x.Id == TicketIssuanceId);
+    }
+
     public List<TicketIssuance> GetTicketsPurchaseByScheduleIdAndScreeningDate(Guid scheduleId, DateOnly ScreeningDate)
     {
         return _context.TicketIssuance
             .Where(x => x.ScheduledMovieShowId == scheduleId && x.ScreeningDate == ScreeningDate)
             .ToList();
+    }
+
+    public Task Confirm(Guid customerId, Guid TicketIssuanceId)
+    {
+        throw new NotImplementedException();
     }
 }

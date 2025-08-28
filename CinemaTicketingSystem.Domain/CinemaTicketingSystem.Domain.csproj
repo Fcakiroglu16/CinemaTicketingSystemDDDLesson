@@ -21,8 +21,4 @@
         <ProjectReference Include="..\CinemaTicketingSytem.Domain.Core\CinemaTicketingSystem.SharedKernel.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="BoundedContexts\Purchases\" />
-    </ItemGroup>
-
 </Project>

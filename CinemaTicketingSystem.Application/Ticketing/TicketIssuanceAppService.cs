@@ -44,9 +44,9 @@ public class TicketIssuanceAppService(
             .ToList();
 
 
-        //var isSeatHoldExpired = userSeatHoldList.First().IsExpired();
+        var isSeatHoldExpired = userSeatHoldList.First().IsExpired();
 
-        //if (isSeatHoldExpired) return appDependencyService.LocalizeError.Error(ErrorCodes.SeatHoldExpired);
+        if (isSeatHoldExpired) return appDependencyService.LocalizeError.Error(ErrorCodes.SeatHoldExpired);
 
 
         var confirmedTicketList =

@@ -41,7 +41,6 @@ public class TicketIssuance : AggregateRoot<Guid>
     public Guid ScheduledMovieShowId { get; }
     public DateOnly ScreeningDate { get; private set; }
 
-    public Guid? PurchaseId { get; set; }
 
     public bool IsDiscountApplied { get; private set; }
 

@@ -1,6 +1,6 @@
 ﻿#region
 
-using CinemaTicketingSystem.Application.Abstraction.Ticketing;
+using CinemaTicketingSystem.Application.Contracts.Ticketing;
 
 #endregion
 

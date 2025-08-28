@@ -6,4 +6,11 @@ using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds;
 
 namespace CinemaTicketingSystem.Infrastructure.Persistence.Ticketing;
 
-public class SeatHoldRepository(AppDbContext context) : GenericRepository<SeatHold>(context), ISeatHoldRepository;
+public class SeatHoldRepository(AppDbContext context) : GenericRepository<SeatHold>(context), ISeatHoldRepository
+{
+
+    private Task Confirm()
+
+
+
+}
