@@ -5,6 +5,7 @@ using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
 using CinemaTicketingSystem.Application.Contracts.Ticketing;
 using CinemaTicketingSystem.Application.Ticketing.External;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds;
+using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Issuance;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Reservations;
 using CinemaTicketingSystem.SharedKernel;
 
@@ -18,6 +19,7 @@ public class ReservationAppService(
     ICatalogQueryService catalogQueryService,
     IReservationRepository reservationRepository,
     ISeatHoldRepository seatHoldRepository,
+    ITicketIssuanceRepository ticketIssuanceRepository,
     ReservationEligibilityPolicy reservationEligibilityPolicy) : IScopedDependency, IReservationAppService
 {
     public async Task<AppResult<CreateReservationResponse>> Create(CreateReservationRequest request)
@@ -35,6 +37,45 @@ public class ReservationAppService(
 
         foreach (var seatPosition in seatHoldList.Select(x => x.SeatPosition))
             reservation.AddSeat(new ReservationSeat(seatPosition));
+
+
+        var isSeatHoldExpired = seatHoldList.First().IsExpired();
+
+        if (isSeatHoldExpired)
+            return appDependencyService.LocalizeError.Error<CreateReservationResponse>(ErrorCodes.SeatHoldExpired);
+
+
+        // Fetch confirmed seats from tickets
+        var confirmedTicketSeatPositions =
+            (await ticketIssuanceRepository.GetConfirmedTicketsIssuanceByScheduleIdAndScreeningDate(
+                request.ScheduledMovieShowId,
+                request.ScreeningDate))
+            .SelectMany(x => x.TicketList)
+            .Select(x => x.SeatPosition)
+            .ToList();
+
+        // Fetch confirmed seats from holds
+        var confirmedSeatHoldSeatPositions =
+            (await seatHoldRepository.GetConfirmedListByScheduleIdAndScreeningDate(request.ScheduledMovieShowId,
+                request.ScreeningDate))
+            .Select(x => x.SeatPosition)
+            .ToList();
+
+        // Merge uniquely by seat coordinates
+        var occupiedSeatPositions = confirmedTicketSeatPositions
+            .Concat(confirmedSeatHoldSeatPositions)
+            .DistinctBy(sp => (sp.Row, sp.Number))
+            .ToList();
+
+
+        foreach (var seat in seatHoldList)
+        {
+            var seatTaken = occupiedSeatPositions.Any(x =>
+                x.Row == seat.SeatPosition.Row && x.Number == seat.SeatPosition.Number);
+            if (seatTaken)
+                return appDependencyService.LocalizeError.Error<CreateReservationResponse>(ErrorCodes.DuplicateSeat,
+                    [seat.SeatPosition.Row, seat.SeatPosition.Number]);
+        }
 
 
         await reservationRepository.AddAsync(reservation);

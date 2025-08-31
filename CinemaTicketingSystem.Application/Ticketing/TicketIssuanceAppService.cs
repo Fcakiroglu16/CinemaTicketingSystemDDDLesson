@@ -21,8 +21,21 @@ public class TicketIssuanceAppService(
     ISeatHoldRepository seatHoldRepository,
     IReservationRepository reservationRepository) : IScopedDependency, ITicketPurchaseAppService
 {
+    // Pseudocode:
+    // - Fetch confirmed ticket seat positions for the schedule/date.
+    // - Fetch confirmed seat-hold positions for the schedule/date.
+    // - Merge both lists with unique items only (by Row and Number).
+    // - Use the merged unique list to check if user's held seats conflict.
+    // - Proceed with ticket issuance if no conflicts.
+    //
+    // Implementation notes:
+    // - Use Concat + DistinctBy((Row, Number)) to union uniquely.
+    // - Compare seats by Row and Number when checking conflicts.
+
     public async Task<AppResult<CreateTicketIssuanceResponse>> Create(CreateTicketIssuanceRequest request)
     {
+        var userId = appDependencyService.UserContext.UserId;
+
         var scheduleInfo = await iScheduleQueryService.GetScheduleInfo(request.ScheduledMovieShowId);
 
         if (scheduleInfo.IsFail)
@@ -35,47 +48,48 @@ public class TicketIssuanceAppService(
         if (catalogInfo.IsFail) return AppResult<CreateTicketIssuanceResponse>.Error(catalogInfo.ProblemDetails!);
 
 
-        var userId = appDependencyService.UserContext.UserId;
-
-
         var userSeatHoldList = (await seatHoldRepository.WhereAsync(x =>
                 x.CustomerId == userId &&
                 x.ScheduledMovieShowId == request.ScheduledMovieShowId && x.ScreeningDate == request.ScreeningDate))
             .ToList();
 
 
-        //var isSeatHoldExpired = userSeatHoldList.First().IsExpired();
+        var isSeatHoldExpired = userSeatHoldList.First().IsExpired();
 
-        //if (isSeatHoldExpired)
-        //    return appDependencyService.LocalizeError.Error<CreateTicketIssuanceResponse>(ErrorCodes.SeatHoldExpired);
+        if (isSeatHoldExpired)
+            return appDependencyService.LocalizeError.Error<CreateTicketIssuanceResponse>(ErrorCodes.SeatHoldExpired);
 
-
-        var confirmedTicketList =
-            await ticketIssuanceRepository.GetConfirmedTicketsIssuanceByScheduleIdAndScreeningDate(
+        // Fetch confirmed seats from tickets
+        var confirmedTicketSeatPositions =
+            (await ticketIssuanceRepository.GetConfirmedTicketsIssuanceByScheduleIdAndScreeningDate(
                 request.ScheduledMovieShowId,
-                request.ScreeningDate);
+                request.ScreeningDate))
+            .SelectMany(x => x.TicketList)
+            .Select(x => x.SeatPosition)
+            .ToList();
 
+        // Fetch confirmed seats from holds
+        var confirmedSeatHoldSeatPositions =
+            (await seatHoldRepository.GetConfirmedListByScheduleIdAndScreeningDate(request.ScheduledMovieShowId,
+                request.ScreeningDate))
+            .Select(x => x.SeatPosition)
+            .ToList();
 
-        var confirmedTicketCount = confirmedTicketList.SelectMany(x => x.TicketList).Count();
-
-        var availableSeatCount = catalogInfo.Data!.SeatCount - confirmedTicketCount;
-        if (availableSeatCount <= 0)
-            return appDependencyService.LocalizeError.Error<CreateTicketIssuanceResponse>(ErrorCodes.SeatNotAvailable);
-
-
-        if (availableSeatCount < userSeatHoldList.Count)
-            return appDependencyService.LocalizeError.Error<CreateTicketIssuanceResponse>(
-                ErrorCodes.NotEnoughSeatsAvailable, [availableSeatCount]);
+        // Merge uniquely by seat coordinates
+        var occupiedSeatPositions = confirmedTicketSeatPositions
+            .Concat(confirmedSeatHoldSeatPositions)
+            .DistinctBy(sp => (sp.Row, sp.Number))
+            .ToList();
 
 
         foreach (var seat in userSeatHoldList)
         {
-            var hasTicket = confirmedTicketList.Any(x => x.HasTicketForSeat(seat.SeatPosition));
-            if (hasTicket)
+            var seatTaken = occupiedSeatPositions.Any(x =>
+                x.Row == seat.SeatPosition.Row && x.Number == seat.SeatPosition.Number);
+            if (seatTaken)
                 return appDependencyService.LocalizeError.Error<CreateTicketIssuanceResponse>(ErrorCodes.DuplicateSeat,
                     [seat.SeatPosition.Row, seat.SeatPosition.Number]);
         }
-
 
         var newTicketIssuance =
             new TicketIssuance(request.ScheduledMovieShowId, userId, request.ScreeningDate);
@@ -84,7 +98,6 @@ public class TicketIssuanceAppService(
         {
             newTicketIssuance.AddTicket(seat.SeatPosition, scheduleInfo.Data.TicketPrice);
         }
-
 
         await ticketIssuanceRepository.AddAsync(newTicketIssuance);
 
