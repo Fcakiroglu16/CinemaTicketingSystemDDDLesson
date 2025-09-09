@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 #endregion
 
-namespace CinemaTicketingSystem.Infrastructure.Persistence.Accounts;
+namespace CinemaTicketingSystem.Infrastructure.Persistence.Accounts.Configurations;
 
 internal class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
 {

@@ -1,6 +1,7 @@
 ﻿#region
 
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Issuance;
+using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -20,6 +21,13 @@ internal class TicketIssuanceConfigurations : IEntityTypeConfiguration<TicketIss
         // Configure properties
         builder.Property(x => x.CustomerId).IsRequired();
         builder.Property(x => x.ScheduledMovieShowId).IsRequired();
+
+
+        builder.Property(x => x.CustomerId)
+            .HasConversion(
+                customerId => customerId.Value,
+                value => new CustomerId(value)
+            );
 
 
         //builder.Metadata.FindNavigation(nameof(MovieTicket.TicketSales))!.SetPropertyAccessMode(

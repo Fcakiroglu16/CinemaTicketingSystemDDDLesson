@@ -1,6 +1,7 @@
 ﻿#region
 
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Reservations;
+using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -22,6 +23,11 @@ internal class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
         builder.Property(x => x.ExpirationTime).IsRequired();
         builder.Property(x => x.Status).IsRequired();
 
+        builder.Property(x => x.CustomerId)
+            .HasConversion(
+                customerId => customerId.Value,
+                value => new CustomerId(value)
+            );
 
         builder.HasMany(x => x.ReservationSeatList).WithOne(y => y.Reservation);
 

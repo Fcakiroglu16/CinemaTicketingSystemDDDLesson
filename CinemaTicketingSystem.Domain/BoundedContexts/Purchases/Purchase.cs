@@ -1,6 +1,5 @@
 ﻿#region
 
-using CinemaTicketingSystem.Domain.BoundedContexts.Accounts.ValueObjects;
 using CinemaTicketingSystem.Domain.BoundedContexts.Purchases.DomainEvents;
 using CinemaTicketingSystem.SharedKernel.AggregateRoot;
 using CinemaTicketingSystem.SharedKernel.ValueObjects;
@@ -15,19 +14,19 @@ public class Purchase : AggregateRoot<Guid>
     {
     }
 
-    public Purchase(UserId userId, Price totalPrice, Guid ticketIssuanceId)
+    public Purchase(PayerId payerId, Price totalPrice, Guid ticketIssuanceId)
     {
         Id = Guid.CreateVersion7();
-        UserId = userId;
+        PayerId = payerId;
         TotalPrice = totalPrice;
         TicketIssuanceId = ticketIssuanceId;
         Created = DateTime.UtcNow;
 
 
-        AddIntegrationEvent(new PurchaseCreatedIntegrationEvent(userId, ticketIssuanceId));
+        AddIntegrationEvent(new PurchaseCreatedIntegrationEvent(payerId, ticketIssuanceId));
     }
 
-    public UserId UserId { get; set; }
+    public PayerId PayerId { get; set; }
 
     public Price TotalPrice { get; set; }
 

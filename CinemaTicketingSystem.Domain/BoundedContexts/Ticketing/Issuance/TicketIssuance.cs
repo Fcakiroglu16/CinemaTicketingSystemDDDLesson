@@ -1,6 +1,7 @@
 ﻿#region
 
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Issuance.DomainEvents;
+using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.ValueObjects;
 using CinemaTicketingSystem.SharedKernel;
 using CinemaTicketingSystem.SharedKernel.AggregateRoot;
 using CinemaTicketingSystem.SharedKernel.Exceptions;
@@ -27,7 +28,7 @@ public class TicketIssuance : AggregateRoot<Guid>
     {
     }
 
-    public TicketIssuance(Guid scheduleId, Guid customerId, DateOnly screeningDate)
+    public TicketIssuance(Guid scheduleId, CustomerId customerId, DateOnly screeningDate)
     {
         Id = Guid.CreateVersion7();
         ScheduledMovieShowId = scheduleId;
@@ -37,7 +38,7 @@ public class TicketIssuance : AggregateRoot<Guid>
     }
 
 
-    public Guid? CustomerId { get; }
+    public CustomerId CustomerId { get; }
     public Guid ScheduledMovieShowId { get; }
     public DateOnly ScreeningDate { get; private set; }
 

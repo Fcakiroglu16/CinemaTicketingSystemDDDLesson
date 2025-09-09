@@ -1,6 +1,7 @@
 #region
 
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds.DomainEvents;
+using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.ValueObjects;
 using CinemaTicketingSystem.SharedKernel;
 using CinemaTicketingSystem.SharedKernel.AggregateRoot;
 using CinemaTicketingSystem.SharedKernel.Exceptions;
@@ -18,7 +19,7 @@ public class SeatHold : AggregateRoot<Guid>
     {
     } // For EF Core
 
-    public SeatHold(Guid scheduledMovieShowId, Guid customerId, SeatPosition seatPosition, DateOnly screeningDate)
+    public SeatHold(Guid scheduledMovieShowId, CustomerId customerId, SeatPosition seatPosition, DateOnly screeningDate)
     {
         Id = Guid.CreateVersion7();
         ScheduledMovieShowId = scheduledMovieShowId;
@@ -33,7 +34,7 @@ public class SeatHold : AggregateRoot<Guid>
     public Guid ScheduledMovieShowId { get; }
 
     public DateOnly ScreeningDate { get; }
-    public Guid CustomerId { get; }
+    public CustomerId CustomerId { get; }
     public SeatPosition SeatPosition { get; }
     public DateTime? ExpiresAt { get; private set; }
 

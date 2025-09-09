@@ -1,6 +1,7 @@
 ﻿#region
 
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds;
+using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -20,6 +21,14 @@ internal class SeatHoldConfiguration : IEntityTypeConfiguration<SeatHold>
         builder.Property(x => x.ScheduledMovieShowId).IsRequired();
         builder.Property(x => x.ScreeningDate).IsRequired();
         builder.Property(x => x.CustomerId).IsRequired();
+
+        builder.Property(x => x.CustomerId)
+            .HasConversion(
+                customerId => customerId.Value,
+                value => new CustomerId(value)
+            );
+
+
         builder.OwnsOne(x => x.SeatPosition, seatBuilder =>
         {
             seatBuilder.Property(s => s.Number)

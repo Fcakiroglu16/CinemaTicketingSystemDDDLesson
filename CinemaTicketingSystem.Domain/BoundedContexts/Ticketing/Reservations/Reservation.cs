@@ -1,6 +1,7 @@
 #region
 
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Reservations.DomainEvents;
+using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.ValueObjects;
 using CinemaTicketingSystem.Domain.Ticketing.Reservations.DomainEvents;
 using CinemaTicketingSystem.SharedKernel;
 using CinemaTicketingSystem.SharedKernel.AggregateRoot;
@@ -24,7 +25,7 @@ public class Reservation : AggregateRoot<Guid>
     }
 
 
-    public Reservation(Guid scheduleId, Guid customerId, DateOnly screeningDate)
+    public Reservation(Guid scheduleId, CustomerId customerId, DateOnly screeningDate)
     {
         Id = Guid.CreateVersion7();
         ScheduledMovieShowId = scheduleId;
@@ -36,7 +37,7 @@ public class Reservation : AggregateRoot<Guid>
         Status = ReservationStatus.Created;
     }
 
-    public Guid CustomerId { get; }
+    public CustomerId CustomerId { get; }
     public Guid ScheduledMovieShowId { get; }
     public DateTime ReservationTime { get; private set; }
     public DateTime ExpirationTime { get; private set; }

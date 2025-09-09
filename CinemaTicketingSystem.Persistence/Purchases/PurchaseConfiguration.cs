@@ -1,6 +1,5 @@
 ﻿#region
 
-using CinemaTicketingSystem.Domain.BoundedContexts.Accounts.ValueObjects;
 using CinemaTicketingSystem.Domain.BoundedContexts.Purchases;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -17,10 +16,10 @@ internal class PurchaseConfiguration : IEntityTypeConfiguration<Purchase>
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedNever();
 
-        builder.Property(x => x.UserId)
+        builder.Property(x => x.PayerId)
             .HasConversion(
-                userId => userId.Value,
-                value => new UserId(value)
+                payerId => payerId.Value,
+                value => new PayerId(value)
             );
 
 

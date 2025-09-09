@@ -1,11 +1,12 @@
 ﻿#region
 
+using CinemaTicketingSystem.Persistence.Accounts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 #endregion
 
-namespace CinemaTicketingSystem.Persistence.Accounts;
+namespace CinemaTicketingSystem.Infrastructure.Persistence.Accounts.Configurations;
 
 internal class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
 {
