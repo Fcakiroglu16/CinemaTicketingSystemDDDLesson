@@ -1,9 +1,10 @@
 ﻿#region
 
 using CinemaTicketingSystem.Application.Abstraction;
+using CinemaTicketingSystem.Application.Catalog.Services;
 using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
 using CinemaTicketingSystem.Application.Contracts.Ticketing;
-using CinemaTicketingSystem.Application.Ticketing.External;
+using CinemaTicketingSystem.Application.Schedules.Services;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Issuance;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Reservations;
@@ -117,7 +118,7 @@ public class ReservationAppService(
             .ToList();
 
 
-        var reservationCount = reservationList.Count();
+        var reservationCount = reservationList.Count;
 
         var availableSeatCount = catalogInfo.Data!.SeatCount - reservationCount;
 
@@ -130,9 +131,9 @@ public class ReservationAppService(
 
 
         var hasReservationSeats = (from reservationSeat in reservation.ReservationSeatList
-                                   let hasSeat = reservationList.Any(r => r.HasSeat(reservationSeat.SeatPosition))
-                                   where hasSeat
-                                   select reservationSeat).ToList();
+            let hasSeat = reservationList.Any(r => r.HasSeat(reservationSeat.SeatPosition))
+            where hasSeat
+            select reservationSeat).ToList();
 
 
         if (hasReservationSeats.Any())

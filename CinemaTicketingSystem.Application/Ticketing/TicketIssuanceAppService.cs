@@ -1,9 +1,10 @@
 #region
 
 using CinemaTicketingSystem.Application.Abstraction;
+using CinemaTicketingSystem.Application.Catalog.Services;
 using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
 using CinemaTicketingSystem.Application.Contracts.Ticketing;
-using CinemaTicketingSystem.Application.Ticketing.External;
+using CinemaTicketingSystem.Application.Schedules.Services;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Issuance;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Reservations;
