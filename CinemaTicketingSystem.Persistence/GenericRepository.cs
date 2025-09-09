@@ -1,9 +1,9 @@
 ﻿#region
 
+using System.Linq.Expressions;
 using CinemaTicketingSystem.Domain.Repositories;
 using CinemaTicketingSystem.SharedKernel.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 #endregion
 

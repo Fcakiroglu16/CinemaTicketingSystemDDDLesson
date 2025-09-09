@@ -1,4 +1,8 @@
-﻿using CinemaTicketingSystem.Application.Abstraction;
+﻿#region
+
+using CinemaTicketingSystem.Application.Abstraction;
+
+#endregion
 
 namespace CinemaTicketingSystem.Application.Contracts.Purchase;
 

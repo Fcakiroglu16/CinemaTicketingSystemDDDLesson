@@ -96,9 +96,7 @@ public class TicketIssuanceAppService(
             new TicketIssuance(request.ScheduledMovieShowId, userId, request.ScreeningDate);
 
         foreach (var seat in userSeatHoldList)
-        {
             newTicketIssuance.AddTicket(seat.SeatPosition, scheduleInfo.Data.TicketPrice);
-        }
 
         await ticketIssuanceRepository.AddAsync(newTicketIssuance);
 
@@ -125,9 +123,7 @@ public class TicketIssuanceAppService(
         if (scheduleInfo.IsFail) return scheduleInfo;
 
         foreach (var seat in reservation.ReservationSeatList)
-        {
             purchase.AddTicket(seat.SeatPosition, scheduleInfo.Data!.TicketPrice);
-        }
 
 
         await ticketIssuanceRepository.AddAsync(purchase);

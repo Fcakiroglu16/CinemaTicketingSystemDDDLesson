@@ -1,12 +1,15 @@
-﻿using CinemaTicketingSystem.Application.Contracts.Ticketing;
+﻿#region
 
-namespace CinemaTicketingSystem.Application.Contracts.Purchase
-{
-    public record CreatePurchaseRequest(
-        string CardNumber,
-        string CardHolderName,
-        string CardExpirationDate,
-        string CardSecurityNumber,
-        PriceDto Price,
-        Guid TicketIssuanceId);
-}
+using CinemaTicketingSystem.Application.Contracts.Ticketing;
+
+#endregion
+
+namespace CinemaTicketingSystem.Application.Contracts.Purchase;
+
+public record CreatePurchaseRequest(
+    string CardNumber,
+    string CardHolderName,
+    string CardExpirationDate,
+    string CardSecurityNumber,
+    PriceDto Price,
+    Guid TicketIssuanceId);

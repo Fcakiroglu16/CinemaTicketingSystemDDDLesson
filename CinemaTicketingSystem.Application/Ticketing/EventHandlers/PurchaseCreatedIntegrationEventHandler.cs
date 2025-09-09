@@ -28,9 +28,7 @@ public class PurchaseCreatedIntegrationEventHandler(
             x.ScreeningDate == ticketIssuance.ScreeningDate, cancellationToken);
 
         foreach (var customerSeatHold in customerSeatHoldList)
-        {
             await seatHoldRepository.DeleteAsync(customerSeatHold, cancellationToken);
-        }
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }

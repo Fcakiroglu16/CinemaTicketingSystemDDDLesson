@@ -1,18 +1,21 @@
-﻿using CinemaTicketingSystem.Application.Contracts.Purchase;
+﻿#region
+
+using CinemaTicketingSystem.Application.Contracts.Purchase;
 using FluentValidation;
 
-namespace CinemaTicketingSystem.Presentation.API.Purchase.Create
+#endregion
+
+namespace CinemaTicketingSystem.Presentation.API.Purchase.Create;
+
+internal class CreatePurchaseValidator : AbstractValidator<CreatePurchaseRequest>
 {
-    internal class CreatePurchaseValidator : AbstractValidator<CreatePurchaseRequest>
+    public CreatePurchaseValidator()
     {
-        public CreatePurchaseValidator()
-        {
-            RuleFor(x => x.CardNumber).NotEmpty().CreditCard();
-            RuleFor(x => x.CardHolderName).NotEmpty();
-            RuleFor(x => x.CardExpirationDate).NotEmpty();
-            RuleFor(x => x.CardSecurityNumber).NotEmpty();
-            RuleFor(x => x.Price).NotEmpty();
-            RuleFor(x => x.TicketIssuanceId).NotEmpty();
-        }
+        RuleFor(x => x.CardNumber).NotEmpty().CreditCard();
+        RuleFor(x => x.CardHolderName).NotEmpty();
+        RuleFor(x => x.CardExpirationDate).NotEmpty();
+        RuleFor(x => x.CardSecurityNumber).NotEmpty();
+        RuleFor(x => x.Price).NotEmpty();
+        RuleFor(x => x.TicketIssuanceId).NotEmpty();
     }
 }

@@ -30,11 +30,11 @@ public class SeatHold : AggregateRoot<Guid>
         AddDomainEvent(new SeatHoldStarted(ScheduledMovieShowId, CustomerId, screeningDate, SeatPosition));
     }
 
-    public Guid ScheduledMovieShowId { get; private set; }
+    public Guid ScheduledMovieShowId { get; }
 
-    public DateOnly ScreeningDate { get; private set; }
+    public DateOnly ScreeningDate { get; }
     public Guid CustomerId { get; }
-    public SeatPosition SeatPosition { get; private set; }
+    public SeatPosition SeatPosition { get; }
     public DateTime? ExpiresAt { get; private set; }
 
     public HoldStatus Status { get; private set; }
