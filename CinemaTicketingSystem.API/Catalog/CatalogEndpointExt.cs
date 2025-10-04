@@ -1,11 +1,11 @@
 ﻿#region
 
 using Asp.Versioning.Builder;
-using CinemaTicketingSystem.API.Catalog.Cinema.Create;
 using CinemaTicketingSystem.API.Catalog.Cinema.GetAll;
 using CinemaTicketingSystem.API.Catalog.Cinema.Hall;
-using CinemaTicketingSystem.API.Catalog.Cinema.Hall.Add;
 using CinemaTicketingSystem.API.Catalog.Movie;
+using CinemaTicketingSystem.Presentation.API.Catalog.Cinema.Create;
+using CinemaTicketingSystem.Presentation.API.Catalog.Cinema.Hall.Add;
 using CinemaTicketingSystem.Presentation.API.Catalog.Movie.Create;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;

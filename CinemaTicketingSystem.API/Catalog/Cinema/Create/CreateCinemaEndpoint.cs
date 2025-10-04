@@ -1,9 +1,9 @@
 ﻿#region
 
 using CinemaTicketingSystem.API.Extensions;
-using CinemaTicketingSystem.API.Filters;
 using CinemaTicketingSystem.Application.Abstraction.Catalog.Cinema;
 using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Movie.Create;
+using CinemaTicketingSystem.Presentation.API.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Routing;
 
 #endregion
 
-namespace CinemaTicketingSystem.API.Catalog.Cinema.Create;
+namespace CinemaTicketingSystem.Presentation.API.Catalog.Cinema.Create;
 
 public static class CreateCinemaEndpoint
 {

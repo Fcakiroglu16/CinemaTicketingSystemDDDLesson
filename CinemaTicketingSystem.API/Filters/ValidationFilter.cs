@@ -6,14 +6,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 #endregion
 
-namespace CinemaTicketingSystem.API.Filters;
+namespace CinemaTicketingSystem.Presentation.API.Filters;
 
-public class ValidationFilter<T> : IEndpointFilter
+public class ValidationFilter<T>(IServiceProvider serviceProvider) : IEndpointFilter
 {
     public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context,
         EndpointFilterDelegate next)
     {
-        var validator = context.HttpContext.RequestServices.GetService<IValidator<T>>();
+        var validator = serviceProvider.GetService<IValidator<T>>();
 
         if (validator is null) return await next(context);
 

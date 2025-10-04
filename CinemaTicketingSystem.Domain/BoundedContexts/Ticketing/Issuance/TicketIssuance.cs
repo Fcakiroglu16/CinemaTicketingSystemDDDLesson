@@ -87,7 +87,7 @@ public class TicketIssuance : AggregateRoot<Guid>
 
     private void ApplyBulkDiscountIfEligible()
     {
-        if (_ticketList.Count >= 3 && !IsDiscountApplied) IsDiscountApplied = true;
+        IsDiscountApplied = _ticketList.Count >= 3;
     }
 
     public Price GetTotalPrice()
