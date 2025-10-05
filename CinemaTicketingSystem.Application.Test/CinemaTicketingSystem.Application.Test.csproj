@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CinemaTicketingSystem.API\CinemaTicketingSystem.Presentation.API.csproj" />
+    <ProjectReference Include="..\CinemaTicketingSystem.Host\CinemaTicketingSystem.WebApi.Host.csproj" />
     <ProjectReference Include="..\CinemaTicketingSystem.Persistence\CinemaTicketingSystem.Infrastructure.Persistence.csproj" />
   </ItemGroup>
 

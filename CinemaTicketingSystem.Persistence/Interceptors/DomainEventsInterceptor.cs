@@ -9,13 +9,15 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 namespace CinemaTicketingSystem.Infrastructure.Persistence.Interceptors;
 
 internal class DomainEventsInterceptor(
-    IIntegrationEventBus integrationEventBus,
-    IDomainEventMediator domainEventMediator) : SaveChangesInterceptor
+    IIntegrationEventBus? integrationEventBus,
+    IDomainEventMediator? domainEventMediator) : SaveChangesInterceptor
 {
     public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData,
         InterceptionResult<int> result,
         CancellationToken cancellationToken = new())
     {
+        if (domainEventMediator is null) return await base.SavingChangesAsync(eventData, result, cancellationToken);
+
         if (eventData.Context is null) return await base.SavingChangesAsync(eventData, result, cancellationToken);
 
 
@@ -42,6 +44,9 @@ internal class DomainEventsInterceptor(
     public override async ValueTask<int> SavedChangesAsync(SaveChangesCompletedEventData eventData, int result,
         CancellationToken cancellationToken = new())
     {
+        if (integrationEventBus is null) return await base.SavedChangesAsync(eventData, result, cancellationToken);
+
+
         if (eventData.Context is null) return await base.SavedChangesAsync(eventData, result, cancellationToken);
 
         var aggregates = eventData.Context.ChangeTracker

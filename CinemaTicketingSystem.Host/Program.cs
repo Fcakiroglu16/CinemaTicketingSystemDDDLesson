@@ -41,6 +41,8 @@ builder.Services.AddMediatR(configuration =>
     configuration.RegisterServicesFromAssemblies(typeof(ApplicationAssembly).Assembly, typeof(DomainAssembly).Assembly,
         typeof(PersistenceAssembly).Assembly);
 });
+
+
 builder.Services.AddValidatorsFromAssembly(typeof(ApiAssembly).Assembly);
 builder.Services.AddScoped<AppDependencyService>();
 builder.Services.AddVersioningExt();
@@ -68,3 +70,7 @@ app.AddPurchaseGroupEndpointExt(app.AddVersionSetExt());
 app.UseAuthentication();
 app.UseAuthorization();
 app.Run();
+
+public partial class Program
+{
+}

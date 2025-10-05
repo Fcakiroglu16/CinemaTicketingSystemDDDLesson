@@ -14,14 +14,15 @@ namespace CinemaTicketingSystem.Application.Test
         {
             _scope = factory.Services.CreateScope();
 
+
             DbContext = _scope.ServiceProvider
                 .GetRequiredService<AppDbContext>();
         }
 
         public void Dispose()
         {
-            _scope?.Dispose();
-            DbContext?.Dispose();
+            _scope.Dispose();
+            DbContext.Dispose();
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿#region
 
-using System.Reflection;
 using CinemaTicketingSystem.Domain.BoundedContexts.Accounts;
 using CinemaTicketingSystem.Domain.BoundedContexts.Catalog;
 using CinemaTicketingSystem.Domain.BoundedContexts.Purchases;
@@ -14,6 +13,7 @@ using CinemaTicketingSystem.SharedKernel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 #endregion
 
@@ -21,8 +21,8 @@ namespace CinemaTicketingSystem.Infrastructure.Persistence;
 
 public class AppDbContext(
     DbContextOptions<AppDbContext> options,
-    IDomainEventMediator domainEventMediator,
-    IIntegrationEventBus integrationEventBus)
+    IDomainEventMediator? domainEventMediator,
+    IIntegrationEventBus? integrationEventBus)
     : IdentityDbContext<AppUser, AppRole, Guid>(options)
 {
     public DbSet<Cinema> Cinemas { get; set; }
@@ -58,12 +58,12 @@ public class AppDbContext(
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-        foreach (var mutableProperty in entityType.GetProperties())
-        {
-            if (!ReferenceEquals(mutableProperty.ClrType, typeof(decimal))) continue;
-            mutableProperty.SetPrecision(9);
-            mutableProperty.SetScale(2);
-        }
+            foreach (var mutableProperty in entityType.GetProperties())
+            {
+                if (!ReferenceEquals(mutableProperty.ClrType, typeof(decimal))) continue;
+                mutableProperty.SetPrecision(9);
+                mutableProperty.SetScale(2);
+            }
 
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
