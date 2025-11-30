@@ -83,46 +83,6 @@ public class LocalizeErrorService(ILocalizer localizer) : ILocalizeErrorService,
         return AppResult<T>.Error(titleError, descriptionError, statusCode);
     }
 
-    AppResult ILocalizeErrorService.Error(string ErrorCodeAsTitle, HttpStatusCode httpStatusCode)
-    {
-        throw new NotImplementedException();
-    }
-
-    AppResult ILocalizeErrorService.Error(string ErrorCodeAsTitle, string ErrorCodeAsDescription, HttpStatusCode httpStatusCode)
-    {
-        throw new NotImplementedException();
-    }
-
-    AppResult ILocalizeErrorService.Error(string ErrorCodeAsTitle, object[]? ErrorCodeAsTitlePlaceHolder, HttpStatusCode statusCode)
-    {
-        throw new NotImplementedException();
-    }
-
-    AppResult ILocalizeErrorService.Error(string ErrorCodeAsTitle, object[]? ErrorCodeAsTitlePlaceHolder, string ErrorCodeAsDescription, object[]? ErrorCodeAsDescriptionPlaceHolder, HttpStatusCode statusCode)
-    {
-        throw new NotImplementedException();
-    }
-
-    AppResult<T> ILocalizeErrorService.Error<T>(string ErrorCodeAsTitle, HttpStatusCode httpStatusCode)
-    {
-        throw new NotImplementedException();
-    }
-
-    AppResult<T> ILocalizeErrorService.Error<T>(string ErrorCodeAsTitle, string ErrorCodeAsDescription, HttpStatusCode httpStatusCode)
-    {
-        throw new NotImplementedException();
-    }
-
-    AppResult<T> ILocalizeErrorService.Error<T>(string ErrorCodeAsTitle, object[]? ErrorCodeAsTitlePlaceHolder, HttpStatusCode statusCode)
-    {
-        throw new NotImplementedException();
-    }
-
-    AppResult<T> ILocalizeErrorService.Error<T>(string ErrorCodeAsTitle, object[]? ErrorCodeAsTitlePlaceHolder, string ErrorCodeAsDescription, object[]? ErrorCodeAsDescriptionPlaceHolder, HttpStatusCode statusCode)
-    {
-        throw new NotImplementedException();
-    }
-
     private string LocalizeError(string errorCode, object[]? data = null)
     {
         return localizer.L(errorCode, data);
