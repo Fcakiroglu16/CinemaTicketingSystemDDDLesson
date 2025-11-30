@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
 	<PropertyGroup>
-		<TargetFramework>net9.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>dotnet-CinemaTicketingSystem.DbMigrator-23372646-24da-4a8c-a616-d7f134e3bf25</UserSecretsId>
@@ -12,8 +12,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference
-			Include="..\CinemaTicketingSystem.Persistence\CinemaTicketingSystem.Infrastructure.Persistence.csproj" />
+		<ProjectReference Include="..\CinemaTicketingSystem.Persistence\CinemaTicketingSystem.Infrastructure.Persistence.csproj" />
 	</ItemGroup>
 
 </Project>
