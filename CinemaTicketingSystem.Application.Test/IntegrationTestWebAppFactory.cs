@@ -106,7 +106,7 @@ namespace CinemaTicketingSystem.Application.Test
 
 
             Schedule newSchedule = new Schedule(newMovie.Id, newCinemaHall.Id,
-                ShowTime.Create(new TimeOnly(19, 0), new TimeOnly(2, 0)), new Price(100, "TRY"));
+                ShowTime.Create(new TimeOnly(19, 0), new TimeOnly(21, 30)), new Price(100, "TRY"));
 
 
             await dbContext.Schedules.AddAsync(newSchedule);
