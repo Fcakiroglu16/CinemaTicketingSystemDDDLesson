@@ -3,8 +3,7 @@
 using Ardalis.GuardClauses;
 using CinemaTicketingSystem.Domain.BoundedContexts.Catalog.DomainEvents;
 using CinemaTicketingSystem.Domain.BoundedContexts.Catalog.IntegrationEvents;
-using CinemaTicketingSystem.Domain.Catalog.DomainEvents;
-using CinemaTicketingSystem.Domain.Core;
+using CinemaTicketingSystem.SharedKernel;
 using CinemaTicketingSystem.SharedKernel.AggregateRoot;
 using CinemaTicketingSystem.SharedKernel.ValueObjects;
 
@@ -86,7 +85,7 @@ public class Movie : AggregateRoot<Guid>
         if (!EarliestShowingDate.HasValue)
             return 0;
 
-        var days = (EarliestShowingDate.Value - DateTime.Today).Days;
+        int days = (EarliestShowingDate.Value - DateTime.Today).Days;
         return Math.Max(0, days);
     }
 
@@ -194,7 +193,7 @@ public class Movie : AggregateRoot<Guid>
 
     public string GetDurationInfo()
     {
-        var info = Duration.GetFormattedDuration();
+        string info = Duration.GetFormattedDuration();
 
         if (Duration.IsShortMovie())
             info += " (Short Film)";
@@ -207,7 +206,7 @@ public class Movie : AggregateRoot<Guid>
     // Showing Status Management
     public void StartShowing(DateTime? startDate = null)
     {
-        var proposedStartDate = startDate ?? DateTime.UtcNow;
+        DateTime proposedStartDate = startDate ?? DateTime.UtcNow;
 
 
         Guard.Against.InvalidInput(proposedStartDate, nameof(startDate), x => CanStartShowingOn(proposedStartDate),
@@ -233,7 +232,7 @@ public class Movie : AggregateRoot<Guid>
         if (DateTime.Today >= EarliestShowingDate.Value)
             return "Available for showing";
 
-        var daysRemaining = GetDaysUntilEarliestShowing();
+        int daysRemaining = GetDaysUntilEarliestShowing();
         return $"Available for showing in {daysRemaining} days ({EarliestShowingDate:MMM dd, yyyy})";
     }
 
@@ -242,7 +241,7 @@ public class Movie : AggregateRoot<Guid>
         if (!ShowingStartDate.HasValue)
             return false;
 
-        var checkDate = date.Date;
+        DateTime checkDate = date.Date;
         return checkDate >= ShowingStartDate.Value &&
                (!ShowingEndDate.HasValue || checkDate <= ShowingEndDate.Value);
     }
@@ -252,8 +251,8 @@ public class Movie : AggregateRoot<Guid>
         if (!ShowingStartDate.HasValue)
             return false;
 
-        var movieStart = ShowingStartDate.Value;
-        var movieEnd = ShowingEndDate ?? DateTime.MaxValue.Date;
+        DateTime movieStart = ShowingStartDate.Value;
+        DateTime movieEnd = ShowingEndDate ?? DateTime.MaxValue.Date;
 
         return movieStart <= endDate.Date && movieEnd >= startDate.Date;
     }

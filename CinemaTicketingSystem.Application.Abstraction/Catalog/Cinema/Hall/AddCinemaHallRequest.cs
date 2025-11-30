@@ -1,10 +1,10 @@
 ﻿#region
 
-using CinemaTicketingSystem.Domain.Core;
-
 #endregion
 
-namespace CinemaTicketingSystem.Application.Abstraction.Catalog.Cinema.Hall;
+using CinemaTicketingSystem.SharedKernel;
+
+namespace CinemaTicketingSystem.Application.Contracts.Catalog.Cinema.Hall;
 
 public record AddCinemaHallRequest(string Name, int[] Technologies, List<SeatDto> SeatList)
 {

@@ -1,8 +1,8 @@
 #region
 
-using CinemaTicketingSystem.Application.Abstraction;
-
 #endregion
+
+using CinemaTicketingSystem.Application.Contracts;
 
 namespace CinemaTicketingSystem.Application.Catalog.Services;
 

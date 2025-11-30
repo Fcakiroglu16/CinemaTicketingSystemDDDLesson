@@ -1,10 +1,10 @@
 ﻿#region
 
-using CinemaTicketingSystem.Domain.Core;
-
 #endregion
 
-namespace CinemaTicketingSystem.Application.Abstraction.Catalog.Movie;
+using CinemaTicketingSystem.SharedKernel;
+
+namespace CinemaTicketingSystem.Application.Contracts.Catalog.Movie;
 
 public record MovieDto(
     Guid Id,

@@ -1,9 +1,8 @@
 ﻿#region
 
-using CinemaTicketingSystem.Application.Abstraction;
-using CinemaTicketingSystem.Application.Abstraction.Catalog.Movie;
-using CinemaTicketingSystem.Application.Abstraction.Catalog.Movie.Create;
-using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Movie.Create;
+using CinemaTicketingSystem.Application.Contracts;
+using CinemaTicketingSystem.Application.Contracts.Catalog.Movie;
+using CinemaTicketingSystem.Application.Contracts.Catalog.Movie.Create;
 using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
 using CinemaTicketingSystem.Domain.BoundedContexts.Catalog.Repositories;
 using CinemaTicketingSystem.SharedKernel;
@@ -18,14 +17,14 @@ public class MovieAppService(IMovieRepository movieRepository, AppDependencyServ
 {
     public async Task<AppResult<CreateMovieResponse>> CreateAsync(CreateMovieRequest request)
     {
-        var existMovie = await movieRepository.CheckIfMovieExists(request.Title);
+        bool existMovie = await movieRepository.CheckIfMovieExists(request.Title);
 
         if (existMovie)
             return appDependencyService.LocalizeError.Error<CreateMovieResponse>(ErrorCodes.MovieAlreadyExists,
                 [request.Title]);
 
 
-        var newMovie = new Domain.BoundedContexts.Catalog.Movie(request.Title,
+        Domain.BoundedContexts.Catalog.Movie newMovie = new Domain.BoundedContexts.Catalog.Movie(request.Title,
             new Duration(request.Duration.TotalMinutes),
             request.PosterImageUrl);
 
@@ -42,7 +41,7 @@ public class MovieAppService(IMovieRepository movieRepository, AppDependencyServ
 
     public async Task<AppResult<GetAllMovieResponse>> GetAllAsync()
     {
-        var movies = await movieRepository.GetAllAsync();
+        IEnumerable<Domain.BoundedContexts.Catalog.Movie> movies = await movieRepository.GetAllAsync();
         return AppResult<GetAllMovieResponse>.SuccessAsOk(new GetAllMovieResponse(movies.Select(movie => new MovieDto(
                 movie.Id, movie.Title, movie.OriginalTitle, movie.PosterImageUrl, movie.Description,
                 movie.Duration.Minutes,

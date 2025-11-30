@@ -1,11 +1,12 @@
 #region
 
-using System.Net;
-using CinemaTicketingSystem.Application.Abstraction;
+using CinemaTicketingSystem.Application.Contracts;
 using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
+using CinemaTicketingSystem.Domain.BoundedContexts.Scheduling;
 using CinemaTicketingSystem.Domain.BoundedContexts.Scheduling.Repositories;
 using CinemaTicketingSystem.SharedKernel;
 using Microsoft.Extensions.Logging;
+using System.Net;
 
 #endregion
 
@@ -18,7 +19,7 @@ public class ScheduleQueryService(
 {
     public async Task<AppResult<GetScheduleInfoResponse>> GetScheduleInfo(Guid scheduleId)
     {
-        var schedule = await scheduleRepository.GetByIdAsync(scheduleId);
+        Schedule? schedule = await scheduleRepository.GetByIdAsync(scheduleId);
         if (schedule is null)
         {
             logger.LogWarning("Schedule with Id {scheduleId} was not found", scheduleId);

@@ -1,8 +1,8 @@
 #region
 
-using System.Text.RegularExpressions;
 using Ardalis.GuardClauses;
 using CinemaTicketingSystem.SharedKernel.ValueObjects;
+using System.Text.RegularExpressions;
 
 #endregion
 
@@ -17,7 +17,7 @@ public class Email : ValueObject
     {
         Guard.Against.NullOrWhiteSpace(value, nameof(value), "Email cannot be empty.");
 
-        var normalizedEmail = value.Trim().ToLowerInvariant();
+        string normalizedEmail = value.Trim().ToLowerInvariant();
 
         Guard.Against.InvalidInput(normalizedEmail, nameof(value), IsValidEmail,
             $"Invalid email format: {value}");

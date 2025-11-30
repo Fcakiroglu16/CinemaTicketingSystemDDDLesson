@@ -1,4 +1,4 @@
-﻿namespace CinemaTicketingSystem.API;
+﻿namespace CinemaTicketingSystem.Presentation.API;
 
 public class ApiAssembly
 {

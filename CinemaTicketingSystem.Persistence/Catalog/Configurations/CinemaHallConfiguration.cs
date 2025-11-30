@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 #endregion
 
-namespace CinemaTicketingSystem.Persistence.Catalog.Configurations;
+namespace CinemaTicketingSystem.Infrastructure.Persistence.Catalog.Configurations;
 
 public class CinemaHallConfiguration : IEntityTypeConfiguration<CinemaHall>
 {

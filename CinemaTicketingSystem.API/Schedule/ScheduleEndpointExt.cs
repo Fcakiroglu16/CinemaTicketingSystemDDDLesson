@@ -1,14 +1,14 @@
 ﻿#region
 
 using Asp.Versioning.Builder;
-using CinemaTicketingSystem.API.Schedule.GetAll;
 using CinemaTicketingSystem.Presentation.API.Schedule.AddMovieToHall;
+using CinemaTicketingSystem.Presentation.API.Schedule.GetAll;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
 #endregion
 
-namespace CinemaTicketingSystem.API.Schedule;
+namespace CinemaTicketingSystem.Presentation.API.Schedule;
 
 public static class ScheduleEndpointExt
 {

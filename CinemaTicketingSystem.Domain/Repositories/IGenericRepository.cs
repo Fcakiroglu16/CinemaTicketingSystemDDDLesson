@@ -1,7 +1,7 @@
 ﻿#region
 
-using System.Linq.Expressions;
 using CinemaTicketingSystem.SharedKernel.Entities;
+using System.Linq.Expressions;
 
 #endregion
 

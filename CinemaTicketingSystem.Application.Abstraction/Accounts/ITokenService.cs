@@ -4,7 +4,7 @@ using CinemaTicketingSystem.SharedKernel.Identities;
 
 #endregion
 
-namespace CinemaTicketingSystem.Application.Abstraction.Accounts;
+namespace CinemaTicketingSystem.Application.Contracts.Accounts;
 
 public interface ITokenService
 {

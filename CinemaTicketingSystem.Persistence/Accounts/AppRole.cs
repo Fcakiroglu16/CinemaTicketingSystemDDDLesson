@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 #endregion
 
-namespace CinemaTicketingSystem.Persistence.Accounts;
+namespace CinemaTicketingSystem.Infrastructure.Persistence.Accounts;
 
 public class AppRole : IdentityRole<Guid>
 {

@@ -1,26 +1,26 @@
 #region
 
-using CinemaTicketingSystem.API;
-using CinemaTicketingSystem.API.Account;
-using CinemaTicketingSystem.API.Catalog;
-using CinemaTicketingSystem.API.Extensions;
-using CinemaTicketingSystem.API.Schedule;
 using CinemaTicketingSystem.Application;
-using CinemaTicketingSystem.Application.Abstraction;
+using CinemaTicketingSystem.Application.Contracts;
 using CinemaTicketingSystem.Domain;
-using CinemaTicketingSystem.Host.Identities;
-using CinemaTicketingSystem.Identity;
-using CinemaTicketingSystem.Persistence;
+using CinemaTicketingSystem.Infrastructure.Authentication;
+using CinemaTicketingSystem.Infrastructure.Persistence;
+using CinemaTicketingSystem.Presentation.API;
+using CinemaTicketingSystem.Presentation.API.Account;
+using CinemaTicketingSystem.Presentation.API.Catalog;
+using CinemaTicketingSystem.Presentation.API.Extensions;
 using CinemaTicketingSystem.Presentation.API.Purchase;
+using CinemaTicketingSystem.Presentation.API.Schedule;
 using CinemaTicketingSystem.Presentation.API.Ticketing;
 using CinemaTicketingSystem.WebApi.Host.Extensions;
+using CinemaTicketingSystem.WebApi.Host.Identities;
 using FluentValidation;
 using Microsoft.Extensions.Options;
 using Scalar.AspNetCore;
 
 #endregion
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddOpenApi();
@@ -50,7 +50,7 @@ builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<BusinessExceptionHandler>().AddExceptionHandler<UserFriendlyExceptionHandler>()
     .AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.RegisterIdentity(builder.Configuration);
-var app = builder.Build();
+WebApplication app = builder.Build();
 app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
 {
@@ -59,7 +59,7 @@ if (app.Environment.IsDevelopment())
 }
 
 
-var locOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>();
+IOptions<RequestLocalizationOptions> locOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>();
 app.UseRequestLocalization(locOptions.Value);
 app.AddCatalogGroupEndpointExt(app.AddVersionSetExt());
 app.AddScheduleGroupEndpointExt(app.AddVersionSetExt());

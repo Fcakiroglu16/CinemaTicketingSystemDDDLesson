@@ -1,4 +1,4 @@
-﻿namespace CinemaTicketingSystem.Application.Abstraction.Contracts;
+﻿namespace CinemaTicketingSystem.Application.Contracts.Contracts;
 
 public interface IDomainService
 {

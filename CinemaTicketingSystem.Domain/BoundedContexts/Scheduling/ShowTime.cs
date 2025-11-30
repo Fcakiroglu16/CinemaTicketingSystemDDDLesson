@@ -34,7 +34,7 @@ public class ShowTime : ValueObject
         duration = Guard.Against.Null(duration, nameof(duration));
         Guard.Against.NegativeOrZero(duration.Minutes, nameof(duration), "Duration must be positive");
 
-        var endTime = startTime.Add(duration.ToTimeSpan());
+        TimeOnly endTime = startTime.Add(duration.ToTimeSpan());
 
         return new ShowTime
         {
@@ -57,8 +57,8 @@ public class ShowTime : ValueObject
         // 1. Bu gösterinin sonu + temizlik > diğerinin başlangıcı VE
         // 2. Bu gösterinin başlangıcı < diğerinin sonu + temizlik
 
-        var thisEndTimeWithCleaning = EndTime.AddMinutes(cleaningTime);
-        var otherEndTimeWithCleaning = other.EndTime.AddMinutes(cleaningTime);
+        TimeOnly thisEndTimeWithCleaning = EndTime.AddMinutes(cleaningTime);
+        TimeOnly otherEndTimeWithCleaning = other.EndTime.AddMinutes(cleaningTime);
 
         return thisEndTimeWithCleaning > other.StartTime &&
                StartTime < otherEndTimeWithCleaning;

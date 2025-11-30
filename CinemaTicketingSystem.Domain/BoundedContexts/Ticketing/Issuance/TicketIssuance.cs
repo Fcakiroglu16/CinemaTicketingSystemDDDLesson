@@ -73,7 +73,7 @@ public class TicketIssuance : AggregateRoot<Guid>
 
     public void RemoveTicket(SeatPosition seatPosition)
     {
-        var ticket = _ticketList.FirstOrDefault(t => t.SeatPosition == seatPosition);
+        Ticket? ticket = _ticketList.FirstOrDefault(t => t.SeatPosition == seatPosition);
         if (ticket is null)
             throw new BusinessException(ErrorCodes.TicketNotFound).AddData(seatPosition.Row)
                 .AddData(seatPosition.Number);
@@ -92,19 +92,19 @@ public class TicketIssuance : AggregateRoot<Guid>
 
     public Price GetTotalPrice()
     {
-        var baseTotal = _ticketList
+        Price baseTotal = _ticketList
             .Select(t => t.Price)
             .Aggregate((total, next) => total + next);
 
         if (!IsDiscountApplied) return baseTotal;
 
-        var discountMultiplier = 0.9m; // 10% off
+        decimal discountMultiplier = 0.9m; // 10% off
         return new Price(baseTotal.Amount * discountMultiplier, baseTotal.Currency);
     }
 
     public void MarkTicketsAsUsed()
     {
-        foreach (var ticket in _ticketList)
+        foreach (Ticket ticket in _ticketList)
         {
             ticket.MarkAsUsed();
             AddDomainEvent(new TicketUsedEvent(ticket.Id, CustomerId!.Value, DateTime.UtcNow));

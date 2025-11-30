@@ -1,46 +1,46 @@
 ﻿#region
 
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using CinemaTicketingSystem.Application.Abstraction.Accounts;
+using CinemaTicketingSystem.Application.Contracts.Accounts;
 using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
 using CinemaTicketingSystem.SharedKernel.Identities;
 using CinemaTicketingSystem.SharedKernel.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 #endregion
 
-namespace CinemaTicketingSystem.Identity;
+namespace CinemaTicketingSystem.Infrastructure.Authentication;
 
 public class TokenService(TokenOption tokenOption) : ITokenService, IScopedDependency
 {
     public CreateTokenResponse CreateToken(CreateTokenRequest createToken)
     {
-        var accessTokenExpiration = DateTime.Now.AddMinutes(tokenOption.AccessTokenExpiration);
-        var refreshTokenExpiration = DateTime.Now.AddMinutes(tokenOption.RefreshTokenExpiration);
-        var securityKey = SignService.GetSymmetricSecurityKey(tokenOption.SecurityKey);
+        DateTime accessTokenExpiration = DateTime.Now.AddMinutes(tokenOption.AccessTokenExpiration);
+        DateTime refreshTokenExpiration = DateTime.Now.AddMinutes(tokenOption.RefreshTokenExpiration);
+        SecurityKey securityKey = SignService.GetSymmetricSecurityKey(tokenOption.SecurityKey);
 
-        var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
+        SigningCredentials signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
 
-        var jwtSecurityToken = new JwtSecurityToken(
+        JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
             tokenOption.Issuer,
             expires: accessTokenExpiration,
             notBefore: DateTime.Now,
             claims: GetClaims(createToken),
             signingCredentials: signingCredentials);
 
-        var handler = new JwtSecurityTokenHandler();
+        JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
 
-        var token = handler.WriteToken(jwtSecurityToken);
+        string token = handler.WriteToken(jwtSecurityToken);
 
-        var refreshToken = Guid.NewGuid().ToString();
+        string refreshToken = Guid.NewGuid().ToString();
 
         return new CreateTokenResponse(token, refreshToken, accessTokenExpiration, refreshTokenExpiration);
     }
 
     private IEnumerable<Claim> GetClaims(CreateTokenRequest createTokenModel)
     {
-        var userList = new List<Claim>
+        List<Claim> userList = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, createTokenModel.UserId.ToString()),
             new(JwtRegisteredClaimNames.Email, createTokenModel.Email!),

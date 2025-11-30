@@ -1,16 +1,16 @@
 ﻿#region
 
-using System.Net;
 using CinemaTicketingSystem.Application.Contracts.Contracts;
 using CinemaTicketingSystem.SharedKernel.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net;
 
 #endregion
 
-namespace CinemaTicketingSystem.API.Extensions;
+namespace CinemaTicketingSystem.Presentation.API.Extensions;
 
 public class BusinessExceptionHandler : IExceptionHandler
 {
@@ -18,14 +18,14 @@ public class BusinessExceptionHandler : IExceptionHandler
         CancellationToken cancellationToken)
     {
         if (exception is not BusinessException domainException) return false;
-        var problemDetails = new ProblemDetails();
+        ProblemDetails problemDetails = new ProblemDetails();
 
-        var errorCode = domainException.ErrorCode;
-        var placeHolderList = domainException.PlaceholderData;
+        string errorCode = domainException.ErrorCode;
+        IReadOnlyList<object> placeHolderList = domainException.PlaceholderData;
 
-        var localizer = httpContext.RequestServices.GetRequiredService<ILocalizer>();
+        ILocalizer localizer = httpContext.RequestServices.GetRequiredService<ILocalizer>();
 
-        var title = placeHolderList.Any() ? localizer.L(errorCode, placeHolderList.ToArray()) : localizer.L(errorCode);
+        string title = placeHolderList.Any() ? localizer.L(errorCode, placeHolderList.ToArray()) : localizer.L(errorCode);
 
         problemDetails.Title = title;
         problemDetails.Status = HttpStatusCode.BadRequest.GetHashCode();

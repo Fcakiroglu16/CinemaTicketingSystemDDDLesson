@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 #endregion
 
-var builder = Host.CreateApplicationBuilder(args);
+HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CinemaTicketingDb")));
 builder.Services.AddHostedService<Migrator>();
 
-var host = builder.Build();
+IHost host = builder.Build();
 host.Run();

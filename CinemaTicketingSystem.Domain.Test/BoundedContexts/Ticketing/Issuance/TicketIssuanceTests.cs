@@ -22,7 +22,7 @@ public class TicketIssuanceTests
     public void Constructor_ShouldCreateTicketIssuance_WithValidParameters()
     {
         // Act
-        var ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
+        TicketIssuance ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
 
         // Assert
         Assert.Equal(_validScheduleId, ticketIssuance.ScheduledMovieShowId);
@@ -37,7 +37,7 @@ public class TicketIssuanceTests
     public void Confirm_ShouldChangeStatus_ToConfirmed()
     {
         // Arrange
-        var ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
+        TicketIssuance ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
 
         // Act
         ticketIssuance.Confirm();
@@ -50,7 +50,7 @@ public class TicketIssuanceTests
     public void Cancel_ShouldChangeStatus_ToCancelled()
     {
         // Arrange
-        var ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
+        TicketIssuance ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
 
         // Act
         ticketIssuance.Cancel();
@@ -63,14 +63,14 @@ public class TicketIssuanceTests
     public void AddTicket_ShouldAddTicket_WithValidParameters()
     {
         // Arrange
-        var ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
+        TicketIssuance ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
 
         // Act
         ticketIssuance.AddTicket(_validSeatPosition, _validPrice);
 
         // Assert
         Assert.Single(ticketIssuance.TicketList);
-        var ticket = ticketIssuance.TicketList.First();
+        Ticket ticket = ticketIssuance.TicketList.First();
         Assert.Equal(_validSeatPosition, ticket.SeatPosition);
         Assert.Equal(_validPrice, ticket.Price);
     }
@@ -79,7 +79,7 @@ public class TicketIssuanceTests
     public void AddTicket_ShouldApplyDiscount_WhenThreeOrMoreTicketsAdded()
     {
         // Arrange
-        var ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
+        TicketIssuance ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
 
         // Act
         ticketIssuance.AddTicket(new SeatPosition("A", 1), _validPrice);
@@ -91,7 +91,7 @@ public class TicketIssuanceTests
         Assert.True(ticketIssuance.IsDiscountApplied);
 
         // The total price should be discounted by 10%
-        var expectedTotal = new Price(_validPrice.Amount * 3 * 0.9m, _validPrice.Currency);
+        Price expectedTotal = new Price(_validPrice.Amount * 3 * 0.9m, _validPrice.Currency);
         Assert.Equal(expectedTotal.Amount, ticketIssuance.GetTotalPrice().Amount);
     }
 
@@ -99,7 +99,7 @@ public class TicketIssuanceTests
     public void AddTicket_ShouldThrowException_WhenExceedingMaximumTicketsPerPurchase()
     {
         // Arrange
-        var ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
+        TicketIssuance ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
 
         // Add 10 tickets (maximum allowed)
         for (int i = 1; i <= 10; i++)
@@ -108,7 +108,7 @@ public class TicketIssuanceTests
         }
 
         // Act & Assert
-        var exception = Assert.Throws<BusinessException>(() =>
+        BusinessException exception = Assert.Throws<BusinessException>(() =>
             ticketIssuance.AddTicket(new SeatPosition("B", 1), _validPrice));
         Assert.Equal(ErrorCodes.MaxTicketsExceeded, exception.ErrorCode);
     }
@@ -117,14 +117,14 @@ public class TicketIssuanceTests
     public void AddTicket_ShouldThrowException_WhenSeatPositionAlreadyExists()
     {
         // Arrange
-        var ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
-        var seatPosition = new SeatPosition("A", 1);
+        TicketIssuance ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
+        SeatPosition seatPosition = new SeatPosition("A", 1);
 
         // Add a ticket for seat A1
         ticketIssuance.AddTicket(seatPosition, _validPrice);
 
         // Act & Assert
-        var exception = Assert.Throws<BusinessException>(() =>
+        BusinessException exception = Assert.Throws<BusinessException>(() =>
             ticketIssuance.AddTicket(seatPosition, _validPrice));
         Assert.Equal(ErrorCodes.DuplicateSeat, exception.ErrorCode);
     }
@@ -133,8 +133,8 @@ public class TicketIssuanceTests
     public void RemoveTicket_ShouldRemoveTicket_WhenValidSeatPositionProvided()
     {
         // Arrange
-        var ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
-        var seatPosition = new SeatPosition("A", 1);
+        TicketIssuance ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
+        SeatPosition seatPosition = new SeatPosition("A", 1);
 
         ticketIssuance.AddTicket(seatPosition, _validPrice);
 
@@ -149,11 +149,11 @@ public class TicketIssuanceTests
     public void RemoveTicket_ShouldThrowException_WhenInvalidSeatPositionProvided()
     {
         // Arrange
-        var ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
-        var nonExistentSeatPosition = new SeatPosition("Z", 99);
+        TicketIssuance ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
+        SeatPosition nonExistentSeatPosition = new SeatPosition("Z", 99);
 
         // Act & Assert
-        var exception = Assert.Throws<BusinessException>(() =>
+        BusinessException exception = Assert.Throws<BusinessException>(() =>
             ticketIssuance.RemoveTicket(nonExistentSeatPosition));
         Assert.Equal(ErrorCodes.TicketNotFound, exception.ErrorCode);
     }
@@ -162,7 +162,7 @@ public class TicketIssuanceTests
     public void RemoveTicket_ShouldRemoveDiscount_WhenDroppingBelowThreeTickets()
     {
         // Arrange
-        var ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
+        TicketIssuance ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
 
         // Add 3 tickets to trigger the discount
         ticketIssuance.AddTicket(new SeatPosition("A", 1), _validPrice);
@@ -182,15 +182,15 @@ public class TicketIssuanceTests
     public void GetTotalPrice_ShouldReturnCorrectAmount_WithoutDiscount()
     {
         // Arrange
-        var ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
-        var price1 = new Price(10m, "USD");
-        var price2 = new Price(15m, "USD");
+        TicketIssuance ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
+        Price price1 = new Price(10m, "USD");
+        Price price2 = new Price(15m, "USD");
 
         ticketIssuance.AddTicket(new SeatPosition("A", 1), price1);
         ticketIssuance.AddTicket(new SeatPosition("A", 2), price2);
 
         // Act
-        var totalPrice = ticketIssuance.GetTotalPrice();
+        Price totalPrice = ticketIssuance.GetTotalPrice();
 
         // Assert
         Assert.Equal(25m, totalPrice.Amount);
@@ -201,8 +201,8 @@ public class TicketIssuanceTests
     public void GetTotalPrice_ShouldReturnDiscountedAmount_WhenDiscountApplied()
     {
         // Arrange
-        var ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
-        var price = new Price(10m, "USD");
+        TicketIssuance ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
+        Price price = new Price(10m, "USD");
 
         // Add 3 tickets to trigger the discount
         ticketIssuance.AddTicket(new SeatPosition("A", 1), price);
@@ -210,7 +210,7 @@ public class TicketIssuanceTests
         ticketIssuance.AddTicket(new SeatPosition("A", 3), price);
 
         // Act
-        var totalPrice = ticketIssuance.GetTotalPrice();
+        Price totalPrice = ticketIssuance.GetTotalPrice();
 
         // Assert
         Assert.Equal(27m, totalPrice.Amount); // 30m with 10% discount = 27m
@@ -221,7 +221,7 @@ public class TicketIssuanceTests
     public void MarkTicketsAsUsed_ShouldMarkAllTicketsAsUsed()
     {
         // Arrange
-        var ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
+        TicketIssuance ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
 
         ticketIssuance.AddTicket(new SeatPosition("A", 1), _validPrice);
         ticketIssuance.AddTicket(new SeatPosition("A", 2), _validPrice);
@@ -230,7 +230,7 @@ public class TicketIssuanceTests
         ticketIssuance.MarkTicketsAsUsed();
 
         // Assert
-        foreach (var ticket in ticketIssuance.TicketList)
+        foreach (Ticket ticket in ticketIssuance.TicketList)
         {
             Assert.True(ticket.IsUsed);
             Assert.NotNull(ticket.UsedAt);
@@ -241,13 +241,13 @@ public class TicketIssuanceTests
     public void HasTicketForSeat_ShouldReturnTrue_WhenTicketForSeatExists()
     {
         // Arrange
-        var ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
-        var seatPosition = new SeatPosition("A", 1);
+        TicketIssuance ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
+        SeatPosition seatPosition = new SeatPosition("A", 1);
 
         ticketIssuance.AddTicket(seatPosition, _validPrice);
 
         // Act
-        var hasTicket = ticketIssuance.HasTicketForSeat(seatPosition);
+        bool hasTicket = ticketIssuance.HasTicketForSeat(seatPosition);
 
         // Assert
         Assert.True(hasTicket);
@@ -257,14 +257,14 @@ public class TicketIssuanceTests
     public void HasTicketForSeat_ShouldReturnFalse_WhenTicketForSeatDoesNotExist()
     {
         // Arrange
-        var ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
-        var seatPosition = new SeatPosition("A", 1);
-        var otherSeatPosition = new SeatPosition("B", 2);
+        TicketIssuance ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
+        SeatPosition seatPosition = new SeatPosition("A", 1);
+        SeatPosition otherSeatPosition = new SeatPosition("B", 2);
 
         ticketIssuance.AddTicket(seatPosition, _validPrice);
 
         // Act
-        var hasTicket = ticketIssuance.HasTicketForSeat(otherSeatPosition);
+        bool hasTicket = ticketIssuance.HasTicketForSeat(otherSeatPosition);
 
         // Assert
         Assert.False(hasTicket);

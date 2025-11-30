@@ -1,12 +1,12 @@
 ﻿#region
 
-using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Movie.Create;
-using CinemaTicketingSystem.Domain.Core;
+using CinemaTicketingSystem.Application.Contracts.Catalog.Movie.Create;
+using CinemaTicketingSystem.SharedKernel;
 using FluentValidation;
 
 #endregion
 
-namespace CinemaTicketingSystem.API.Catalog.Movie.Create;
+namespace CinemaTicketingSystem.Presentation.API.Catalog.Movie.Create;
 
 public class CreateMovieValidator : AbstractValidator<CreateMovieRequest>
 {

@@ -1,4 +1,4 @@
-﻿namespace CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Cinema;
+﻿namespace CinemaTicketingSystem.Application.Contracts.Catalog.Cinema;
 
 public record AddressDto(
     string Country,

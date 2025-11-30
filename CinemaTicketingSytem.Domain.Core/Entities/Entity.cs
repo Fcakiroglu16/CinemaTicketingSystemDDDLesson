@@ -28,7 +28,7 @@ public abstract class EntityBase
 
     public override int GetHashCode()
     {
-        return GetKeys().Aggregate(17, (current, key) => current * 31 + (key?.GetHashCode() ?? 0));
+        return GetKeys().Aggregate(17, (current, key) => (current * 31) + (key?.GetHashCode() ?? 0));
     }
 
     public static bool operator ==(EntityBase? left, EntityBase? right)

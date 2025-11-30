@@ -1,4 +1,4 @@
-﻿namespace CinemaTicketingSystem.Application.Abstraction.CinemaManagement;
+﻿namespace CinemaTicketingSystem.Application.Contracts.Catalog;
 
 public interface ITicketAppService
 {

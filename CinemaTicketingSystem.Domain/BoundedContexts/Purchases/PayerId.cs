@@ -32,7 +32,7 @@ public class PayerId : ValueObject
 
     public static PayerId From(string value)
     {
-        if (!Guid.TryParse(value, out var guid))
+        if (!Guid.TryParse(value, out Guid guid))
             throw new ArgumentException($"Invalid ContentManagerId format: {value}");
 
         return new PayerId(guid);

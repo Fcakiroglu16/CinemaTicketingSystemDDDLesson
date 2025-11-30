@@ -1,4 +1,4 @@
-﻿namespace CinemaTicketingSystem.Domain.Core;
+﻿namespace CinemaTicketingSystem.SharedKernel;
 
 public static class TicketingErrorCodes
 {

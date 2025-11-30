@@ -33,7 +33,7 @@ public class UserId : ValueObject
 
     public static UserId From(string value)
     {
-        if (!Guid.TryParse(value, out var guid))
+        if (!Guid.TryParse(value, out Guid guid))
             throw new ArgumentException($"Invalid UserId format: {value}");
 
         return new UserId(guid);

@@ -1,11 +1,12 @@
 #region
 
-using System.Net;
-using CinemaTicketingSystem.Application.Abstraction;
+using CinemaTicketingSystem.Application.Contracts;
 using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
+using CinemaTicketingSystem.Domain.BoundedContexts.Catalog;
 using CinemaTicketingSystem.Domain.BoundedContexts.Catalog.Repositories;
 using CinemaTicketingSystem.SharedKernel;
 using Microsoft.Extensions.Logging;
+using System.Net;
 
 #endregion
 
@@ -19,7 +20,7 @@ public class CatalogQueryService(
 {
     public async Task<AppResult<GetCatalogInfoResponse>> GetCinemaInfo(Guid hallId, Guid movieId)
     {
-        var movie = await movieRepository.GetByIdAsync(movieId);
+        Domain.BoundedContexts.Catalog.Movie? movie = await movieRepository.GetByIdAsync(movieId);
 
         if (movie is null)
         {
@@ -28,7 +29,7 @@ public class CatalogQueryService(
                 HttpStatusCode.NotFound);
         }
 
-        var cinema = await cinemaRepository.GetByHallId(hallId);
+        Domain.BoundedContexts.Catalog.Cinema? cinema = await cinemaRepository.GetByHallId(hallId);
 
         if (cinema is null)
         {
@@ -37,7 +38,7 @@ public class CatalogQueryService(
                 HttpStatusCode.NotFound);
         }
 
-        var hall = cinema.Halls.FirstOrDefault(h => h.Id == hallId);
+        CinemaHall? hall = cinema.Halls.FirstOrDefault(h => h.Id == hallId);
 
         if (hall is null)
         {

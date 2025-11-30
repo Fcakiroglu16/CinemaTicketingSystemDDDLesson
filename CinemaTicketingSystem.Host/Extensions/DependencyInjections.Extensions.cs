@@ -1,28 +1,24 @@
 ﻿#region
 
-using System.Reflection;
-using CinemaTicketingSystem.API.Localization;
-using CinemaTicketingSystem.Application.Abstraction.Contracts;
 using CinemaTicketingSystem.Application.Contracts.Contracts;
 using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
 using CinemaTicketingSystem.Application.Schedules.IntegrationEventHandlers;
 using CinemaTicketingSystem.Application.Ticketing.EventHandlers;
-using CinemaTicketingSystem.Caching;
 using CinemaTicketingSystem.Domain.BoundedContexts.Catalog.IntegrationEvents;
 using CinemaTicketingSystem.Domain.BoundedContexts.Purchases.DomainEvents;
 using CinemaTicketingSystem.Domain.Repositories;
+using CinemaTicketingSystem.Infrastructure.Caching;
 using CinemaTicketingSystem.Infrastructure.Messaging;
 using CinemaTicketingSystem.Infrastructure.Persistence;
-using CinemaTicketingSystem.Persistence;
-using CinemaTicketingSystem.Persistence.Accounts;
+using CinemaTicketingSystem.Infrastructure.Persistence.Accounts;
 using CinemaTicketingSystem.Presentation.API.Localization;
-using CinemaTicketingSystem.ServiceBus;
 using CinemaTicketingSystem.SharedKernel;
 using CinemaTicketingSystem.SharedKernel.Options;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using System.Reflection;
 
 #endregion
 
@@ -85,7 +81,7 @@ public static class ServiceCollectionExtensions
         services.AddLocalization();
         services.Configure<RequestLocalizationOptions>(options =>
         {
-            var supportedCultures = new[] { "en", "tr" };
+            string[] supportedCultures = new[] { "en", "tr" };
             options.SetDefaultCulture("en");
             options.AddSupportedCultures(supportedCultures);
             options.AddSupportedUICultures(supportedCultures);
@@ -130,9 +126,9 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection RegisterRepositories(this IServiceCollection services)
     {
-        var persistenceAssembly = typeof(PersistenceAssembly).Assembly;
+        Assembly persistenceAssembly = typeof(PersistenceAssembly).Assembly;
 
-        var repositoryTypes = persistenceAssembly
+        List<Type> repositoryTypes = persistenceAssembly
             .GetTypes()
             .Where(type => type.Name.EndsWith("Repository") &&
                            type.IsClass &&
@@ -140,14 +136,14 @@ public static class ServiceCollectionExtensions
                            !type.IsGenericTypeDefinition)
             .ToList();
 
-        foreach (var repositoryType in repositoryTypes)
+        foreach (Type? repositoryType in repositoryTypes)
         {
-            var interfaces = repositoryType.GetInterfaces()
+            List<Type> interfaces = repositoryType.GetInterfaces()
                 .Where(i => i.Name.EndsWith("Repository") && i != typeof(IGenericRepository<>))
                 .ToList();
 
             if (interfaces.Any())
-                foreach (var interfaceType in interfaces)
+                foreach (Type? interfaceType in interfaces)
                     services.AddScoped(interfaceType, repositoryType);
             else
                 // Eğer interface yoksa concrete type'ı kendisi olarak kaydet
@@ -161,13 +157,13 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection RegisterDomainServices(this IServiceCollection services,
         params Assembly[] assemblies)
     {
-        var domainServiceTypes = assemblies
+        List<Type> domainServiceTypes = assemblies
             .SelectMany(a => a.GetTypes())
             .Where(type => type is { IsClass: true, IsAbstract: false, IsGenericTypeDefinition: false } &&
                            typeof(IDomainService).IsAssignableFrom(type))
             .ToList();
 
-        foreach (var domainServiceType in domainServiceTypes) services.AddTransient(domainServiceType);
+        foreach (Type? domainServiceType in domainServiceTypes) services.AddTransient(domainServiceType);
 
         return services;
     }
@@ -175,19 +171,19 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection RegisterConventions(this IServiceCollection services, params Assembly[] assemblies)
     {
-        var allTypes = assemblies
+        IEnumerable<TypeInfo> allTypes = assemblies
             .SelectMany(a => a.DefinedTypes)
             .Where(t => t is { IsClass: true, IsAbstract: false, IsPublic: true });
 
-        foreach (var implementationType in allTypes)
+        foreach (TypeInfo? implementationType in allTypes)
         {
-            var serviceTypes = implementationType.ImplementedInterfaces
+            List<Type> serviceTypes = implementationType.ImplementedInterfaces
                 .Where(i => i != typeof(ITransientDependency) &&
                             i != typeof(IScopedDependency) &&
                             i != typeof(ISingletonDependency))
                 .ToList();
 
-            var lifetime = GetLifetime(implementationType);
+            ServiceLifetime? lifetime = GetLifetime(implementationType);
 
             if (lifetime == null)
                 continue;
@@ -199,7 +195,7 @@ public static class ServiceCollectionExtensions
                 continue;
             }
 
-            foreach (var serviceType in serviceTypes)
+            foreach (Type? serviceType in serviceTypes)
                 services.Add(new ServiceDescriptor(serviceType, implementationType, lifetime.Value));
         }
 

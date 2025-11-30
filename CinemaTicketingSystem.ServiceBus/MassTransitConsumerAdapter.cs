@@ -1,6 +1,6 @@
 ﻿#region
 
-using CinemaTicketingSystem.Application.Abstraction.Contracts;
+using CinemaTicketingSystem.Application.Contracts.Contracts;
 using CinemaTicketingSystem.SharedKernel;
 using MassTransit;
 

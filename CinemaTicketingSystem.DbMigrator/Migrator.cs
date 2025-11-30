@@ -16,8 +16,8 @@ public class Migrator(
     {
         logger.LogInformation("Migrator running.");
 
-        using var scope = serviceProvider.CreateScope();
-        var appDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        using IServiceScope scope = serviceProvider.CreateScope();
+        AppDbContext appDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         appDbContext.Database.MigrateAsync(stoppingToken);
 
 

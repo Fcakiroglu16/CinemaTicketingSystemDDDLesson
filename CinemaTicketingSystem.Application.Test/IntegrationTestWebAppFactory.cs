@@ -1,8 +1,7 @@
 ﻿using CinemaTicketingSystem.Domain.BoundedContexts.Catalog;
 using CinemaTicketingSystem.Domain.BoundedContexts.Scheduling;
-using CinemaTicketingSystem.Domain.Catalog;
-using CinemaTicketingSystem.Domain.Core;
 using CinemaTicketingSystem.Infrastructure.Persistence;
+using CinemaTicketingSystem.SharedKernel;
 using CinemaTicketingSystem.SharedKernel.ValueObjects;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -37,9 +36,9 @@ namespace CinemaTicketingSystem.Application.Test
                 services.AddDbContext<AppDbContext>(options =>
                     options.UseSqlServer(_mssqlContainer.GetConnectionString()));
 
-                var inMemorySettings = new Dictionary<string, string>();
+                Dictionary<string, string> inMemorySettings = new Dictionary<string, string>();
 
-                var configuration = new ConfigurationBuilder()
+                IConfigurationRoot configuration = new ConfigurationBuilder()
                     .AddInMemoryCollection(inMemorySettings)
                     .Build();
 
@@ -62,24 +61,24 @@ namespace CinemaTicketingSystem.Application.Test
         public async Task InitializeAsync()
         {
             await _mssqlContainer.StartAsync();
-            var connectionString = _mssqlContainer.GetConnectionString();
-            var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>()
+            string connectionString = _mssqlContainer.GetConnectionString();
+            DbContextOptionsBuilder<AppDbContext> optionsBuilder = new DbContextOptionsBuilder<AppDbContext>()
                 .UseSqlServer(connectionString,
                     option => { option.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName); });
 
-            await using var dbContext = new AppDbContext(optionsBuilder.Options, null!, null!);
+            await using AppDbContext dbContext = new AppDbContext(optionsBuilder.Options, null!, null!);
 
 
             await dbContext.Database.MigrateAsync();
 
             await dbContext.Database.EnsureCreatedAsync();
 
-            var newCinema = new Cinema("Galaxy Cinema Mall",
+            Cinema newCinema = new Cinema("Galaxy Cinema Mall",
                 new Address("Turkey", "Istanbul", "Beyoğlu", "İstiklal Caddesi No: 123", "34430",
                     "Located in the heart of Beyoğlu, next to Galatasaray High School"));
 
 
-            var newCinemaHall = new CinemaHall("Hall 1 - Standard", ScreeningTechnology.Standard);
+            CinemaHall newCinemaHall = new CinemaHall("Hall 1 - Standard", ScreeningTechnology.Standard);
 
             newCinemaHall.AddSeat(new Seat(new SeatPosition("A", 1), SeatType.Regular));
             newCinemaHall.AddSeat(new Seat(new SeatPosition("A", 2), SeatType.VIP));
@@ -95,7 +94,7 @@ namespace CinemaTicketingSystem.Application.Test
             await dbContext.Cinemas.AddAsync(newCinema);
 
 
-            var newMovie = new Movie("Inception", new Duration((double)TimeSpan.FromMinutes(150).Minutes),
+            Movie newMovie = new Movie("Inception", new Duration((double)TimeSpan.FromMinutes(150).Minutes),
                 "http://wwww.abc.com", ScreeningTechnology.Standard);
 
 
@@ -106,7 +105,7 @@ namespace CinemaTicketingSystem.Application.Test
             await dbContext.Movies.AddAsync(newMovie);
 
 
-            var newSchedule = new Schedule(newMovie.Id, newCinemaHall.Id,
+            Schedule newSchedule = new Schedule(newMovie.Id, newCinemaHall.Id,
                 ShowTime.Create(new TimeOnly(19, 0), new TimeOnly(2, 0)), new Price(100, "TRY"));
 
 

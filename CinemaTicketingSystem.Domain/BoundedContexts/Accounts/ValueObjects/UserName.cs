@@ -1,8 +1,8 @@
 ﻿#region
 
-using System.Text.RegularExpressions;
 using Ardalis.GuardClauses;
 using CinemaTicketingSystem.SharedKernel.ValueObjects;
+using System.Text.RegularExpressions;
 
 #endregion
 
@@ -19,7 +19,7 @@ public class UserName : ValueObject
         Guard.Against.NullOrWhiteSpace(value, nameof(value), "Username cannot be empty.");
 
         Guard.Against.InvalidInput(value, nameof(value),
-            username => username.Length > MinLength || username.Length < MaxLength,
+            username => username.Length is > MinLength or < MaxLength,
             $"Username must be between {MinLength} and {MaxLength} characters.");
 
         Guard.Against.InvalidInput(value, nameof(value),
@@ -40,15 +40,15 @@ public class UserName : ValueObject
     {
         Guard.Against.NullOrWhiteSpace(email, nameof(email), "Email cannot be empty for username generation.");
 
-        var localPart = email.Split('@')[0];
-        var cleaned = Regex.Replace(localPart, @"[^a-zA-Z0-9_.]", "");
+        string localPart = email.Split('@')[0];
+        string cleaned = Regex.Replace(localPart, @"[^a-zA-Z0-9_.]", "");
         if (cleaned.Length < MinLength)
             cleaned = cleaned.PadRight(MinLength, 'x');
         if (cleaned.Length > MaxLength - 4)
             cleaned = cleaned.Substring(0, MaxLength - 4);
-        var random = new Random();
-        var suffix = random.Next(1000, 9999).ToString();
-        var username = cleaned + suffix;
+        Random random = new Random();
+        string suffix = random.Next(1000, 9999).ToString();
+        string username = cleaned + suffix;
         return new UserName(username);
     }
 

@@ -1,6 +1,7 @@
 ﻿#region
 
 using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,16 +14,16 @@ public class ValidationFilter<T>(IServiceProvider serviceProvider) : IEndpointFi
     public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context,
         EndpointFilterDelegate next)
     {
-        var validator = serviceProvider.GetService<IValidator<T>>();
+        IValidator<T>? validator = serviceProvider.GetService<IValidator<T>>();
 
         if (validator is null) return await next(context);
 
-        var requestModel = context.Arguments.OfType<T>().FirstOrDefault();
+        T? requestModel = context.Arguments.OfType<T>().FirstOrDefault();
 
 
         if (requestModel is null) return await next(context);
 
-        var validateResult = await validator.ValidateAsync(requestModel);
+        ValidationResult validateResult = await validator.ValidateAsync(requestModel);
 
         if (!validateResult.IsValid) return Results.ValidationProblem(validateResult.ToDictionary());
 

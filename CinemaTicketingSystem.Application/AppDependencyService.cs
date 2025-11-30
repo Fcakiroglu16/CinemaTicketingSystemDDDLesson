@@ -1,6 +1,5 @@
 ﻿#region
 
-using CinemaTicketingSystem.Application.Abstraction.Contracts;
 using CinemaTicketingSystem.Application.Contracts.Contracts;
 using CinemaTicketingSystem.Domain.Repositories;
 using CinemaTicketingSystem.SharedKernel;

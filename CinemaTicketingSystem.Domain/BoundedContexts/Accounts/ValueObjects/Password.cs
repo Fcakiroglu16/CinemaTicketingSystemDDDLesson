@@ -1,8 +1,8 @@
 ﻿#region
 
-using System.Text.RegularExpressions;
 using Ardalis.GuardClauses;
 using CinemaTicketingSystem.SharedKernel.ValueObjects;
+using System.Text.RegularExpressions;
 
 #endregion
 
@@ -23,7 +23,7 @@ public class Password : ValueObject
         Guard.Against.NullOrWhiteSpace(value, nameof(value), "Password cannot be empty.");
 
         Guard.Against.InvalidInput(value, nameof(value),
-            password => password.Length > MinLength || password.Length < MaxLength,
+            password => password.Length is > MinLength or < MaxLength,
             $"Password must be between {MinLength} and {MaxLength} characters.");
 
         Guard.Against.InvalidInput(value, nameof(value),

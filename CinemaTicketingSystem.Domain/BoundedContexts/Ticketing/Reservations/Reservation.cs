@@ -2,7 +2,6 @@
 
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Reservations.DomainEvents;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.ValueObjects;
-using CinemaTicketingSystem.Domain.Ticketing.Reservations.DomainEvents;
 using CinemaTicketingSystem.SharedKernel;
 using CinemaTicketingSystem.SharedKernel.AggregateRoot;
 using CinemaTicketingSystem.SharedKernel.Exceptions;
@@ -65,7 +64,7 @@ public class Reservation : AggregateRoot<Guid>
 
     public void RemoveSeat(SeatPosition seatPosition)
     {
-        var seat = _reservationSeatList.FirstOrDefault(s => s.SeatPosition == seatPosition);
+        ReservationSeat? seat = _reservationSeatList.FirstOrDefault(s => s.SeatPosition == seatPosition);
         if (seat == null)
             throw new BusinessException(ErrorCodes.ReservedSeatNotFound)
                 .AddData(seatPosition.Row)
@@ -77,7 +76,7 @@ public class Reservation : AggregateRoot<Guid>
 
     public void AddSeats(IEnumerable<ReservationSeat> seats)
     {
-        foreach (var seat in seats) AddSeat(seat);
+        foreach (ReservationSeat seat in seats) AddSeat(seat);
     }
 
     public bool HasSeat(SeatPosition seatPosition)
@@ -91,7 +90,7 @@ public class Reservation : AggregateRoot<Guid>
             throw new BusinessException(ErrorCodes.NoSeatsReserved);
 
 
-        var movieStartDateTime = ScreeningDate.ToDateTime(MovieStartTime);
+        DateTime movieStartDateTime = ScreeningDate.ToDateTime(MovieStartTime);
         ExpirationTime = movieStartDateTime.AddHours(ReservationCutoffHours);
 
         ReservationTime = DateTime.UtcNow;

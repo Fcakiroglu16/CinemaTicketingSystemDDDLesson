@@ -1,11 +1,10 @@
 ﻿#region
 
 using CinemaTicketingSystem.Domain.Repositories;
-using CinemaTicketingSystem.Infrastructure.Persistence;
 
 #endregion
 
-namespace CinemaTicketingSystem.Persistence;
+namespace CinemaTicketingSystem.Infrastructure.Persistence;
 
 public class UnitOfWork(AppDbContext context) : IUnitOfWork
 {

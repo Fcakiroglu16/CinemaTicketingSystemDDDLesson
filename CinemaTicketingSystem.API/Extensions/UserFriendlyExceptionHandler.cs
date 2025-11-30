@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 #endregion
 
-namespace CinemaTicketingSystem.API.Extensions;
+namespace CinemaTicketingSystem.Presentation.API.Extensions;
 
 public class UserFriendlyExceptionHandler : IExceptionHandler
 {
@@ -17,14 +17,14 @@ public class UserFriendlyExceptionHandler : IExceptionHandler
         CancellationToken cancellationToken)
     {
         if (exception is not UserFriendlyException userFriendlyException) return false;
-        var problemDetails = new ProblemDetails();
+        ProblemDetails problemDetails = new ProblemDetails();
 
-        var errorCode = userFriendlyException.ErrorCode;
-        var placeHolderList = userFriendlyException.PlaceholderData;
+        string errorCode = userFriendlyException.ErrorCode;
+        IReadOnlyList<string> placeHolderList = userFriendlyException.PlaceholderData;
 
-        var localizer = httpContext.RequestServices.GetRequiredService<ILocalizer>();
+        ILocalizer localizer = httpContext.RequestServices.GetRequiredService<ILocalizer>();
 
-        var title = placeHolderList.Any() ? localizer.L(errorCode, placeHolderList.ToArray()) : localizer.L(errorCode);
+        string title = placeHolderList.Any() ? localizer.L(errorCode, placeHolderList.ToArray()) : localizer.L(errorCode);
 
 
         httpContext.Response.StatusCode = userFriendlyException.StatusCode.GetHashCode();

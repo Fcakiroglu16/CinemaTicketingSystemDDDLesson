@@ -18,7 +18,7 @@ public class TicketTests
     public void Constructor_ShouldCreateTicket_WithValidParameters()
     {
         // Act
-        var ticket = new Ticket(_validSeatPosition, _validPrice);
+        Ticket ticket = new Ticket(_validSeatPosition, _validPrice);
 
         // Assert
         Assert.Equal(_validSeatPosition, ticket.SeatPosition);
@@ -35,10 +35,10 @@ public class TicketTests
     public void CanBeUsed_ShouldReturnTrue_WhenTicketIsNotUsed()
     {
         // Arrange
-        var ticket = new Ticket(_validSeatPosition, _validPrice);
+        Ticket ticket = new Ticket(_validSeatPosition, _validPrice);
 
         // Act
-        var canBeUsed = ticket.CanBeUsed();
+        bool canBeUsed = ticket.CanBeUsed();
 
         // Assert
         Assert.True(canBeUsed);
@@ -48,11 +48,11 @@ public class TicketTests
     public void CanBeUsed_ShouldReturnFalse_WhenTicketIsUsed()
     {
         // Arrange
-        var ticket = new Ticket(_validSeatPosition, _validPrice);
+        Ticket ticket = new Ticket(_validSeatPosition, _validPrice);
         ticket.MarkAsUsed();
 
         // Act
-        var canBeUsed = ticket.CanBeUsed();
+        bool canBeUsed = ticket.CanBeUsed();
 
         // Assert
         Assert.False(canBeUsed);
@@ -62,10 +62,10 @@ public class TicketTests
     public void GetTicketInfo_ShouldReturnFormattedInfo()
     {
         // Arrange
-        var ticket = new Ticket(_validSeatPosition, _validPrice);
+        Ticket ticket = new Ticket(_validSeatPosition, _validPrice);
 
         // Act
-        var ticketInfo = ticket.GetTicketInfo();
+        string ticketInfo = ticket.GetTicketInfo();
 
         // Assert
         Assert.Contains(ticket.TicketCode, ticketInfo);
@@ -77,7 +77,7 @@ public class TicketTests
     public void MarkAsUsed_ShouldMarkTicketAsUsed_WhenTicketIsNotUsed()
     {
         // Arrange
-        var ticket = new Ticket(_validSeatPosition, _validPrice);
+        Ticket ticket = new Ticket(_validSeatPosition, _validPrice);
 
         // Act
         ticket.MarkAsUsed();
@@ -91,11 +91,11 @@ public class TicketTests
     public void MarkAsUsed_ShouldThrowException_WhenTicketIsAlreadyUsed()
     {
         // Arrange
-        var ticket = new Ticket(_validSeatPosition, _validPrice);
+        Ticket ticket = new Ticket(_validSeatPosition, _validPrice);
         ticket.MarkAsUsed(); // Mark as used first time
 
         // Act & Assert
-        var exception = Assert.Throws<BusinessException>(() => ticket.MarkAsUsed());
+        BusinessException exception = Assert.Throws<BusinessException>(() => ticket.MarkAsUsed());
         Assert.Equal(ErrorCodes.TicketAlreadyUsed, exception.ErrorCode);
     }
 
@@ -103,8 +103,8 @@ public class TicketTests
     public void GenerateTicketCode_ShouldCreateRandomCode_WithCorrectLength()
     {
         // Arrange
-        var ticket1 = new Ticket(_validSeatPosition, _validPrice);
-        var ticket2 = new Ticket(_validSeatPosition, _validPrice);
+        Ticket ticket1 = new Ticket(_validSeatPosition, _validPrice);
+        Ticket ticket2 = new Ticket(_validSeatPosition, _validPrice);
 
         // Act & Assert
         Assert.Equal(6, ticket1.TicketCode.Length);

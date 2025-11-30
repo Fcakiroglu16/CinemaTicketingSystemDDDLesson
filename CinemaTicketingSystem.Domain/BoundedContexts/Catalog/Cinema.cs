@@ -3,7 +3,6 @@
 using Ardalis.GuardClauses;
 using CinemaTicketingSystem.Domain.BoundedContexts.Catalog.DomainEvents;
 using CinemaTicketingSystem.Domain.BoundedContexts.Catalog.IntegrationEvents;
-using CinemaTicketingSystem.Domain.Catalog;
 using CinemaTicketingSystem.SharedKernel.AggregateRoot;
 using CinemaTicketingSystem.SharedKernel.Exceptions;
 
@@ -59,7 +58,7 @@ public class Cinema : AggregateRoot<Guid>
 
     public void RemoveHall(Guid hallId)
     {
-        var hall = cinemaHalls.FirstOrDefault(h => h.Id == hallId);
+        CinemaHall? hall = cinemaHalls.FirstOrDefault(h => h.Id == hallId);
 
         if (hall is null)
             throw new CinemaHallNotFoundException(hallId);

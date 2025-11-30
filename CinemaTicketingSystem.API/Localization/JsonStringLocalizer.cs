@@ -1,11 +1,11 @@
 ﻿#region
 
-using System.Globalization;
 using Microsoft.Extensions.Localization;
+using System.Globalization;
 
 #endregion
 
-namespace CinemaTicketingSystem.API.Localization;
+namespace CinemaTicketingSystem.Presentation.API.Localization;
 
 public class JsonStringLocalizer(IDictionary<string, string> localizedStrings) : IStringLocalizer
 {
@@ -17,8 +17,8 @@ public class JsonStringLocalizer(IDictionary<string, string> localizedStrings) :
     {
         get
         {
-            var format = localizedStrings.ContainsKey(name) ? localizedStrings[name] : name;
-            var value = string.Format(format, arguments);
+            string format = localizedStrings.ContainsKey(name) ? localizedStrings[name] : name;
+            string value = string.Format(format, arguments);
             return new LocalizedString(name, value, !localizedStrings.ContainsKey(name));
         }
     }

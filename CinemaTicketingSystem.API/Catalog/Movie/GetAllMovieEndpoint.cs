@@ -1,14 +1,14 @@
 ﻿#region
 
-using CinemaTicketingSystem.API.Extensions;
-using CinemaTicketingSystem.Application.Abstraction.Catalog.Movie;
+using CinemaTicketingSystem.Application.Contracts.Catalog.Movie;
+using CinemaTicketingSystem.Presentation.API.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 
 #endregion
 
-namespace CinemaTicketingSystem.API.Catalog.Movie;
+namespace CinemaTicketingSystem.Presentation.API.Catalog.Movie;
 
 internal static class GetAllMovieEndpoint
 {

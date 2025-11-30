@@ -1,11 +1,11 @@
 ﻿#region
 
-using CinemaTicketingSystem.Application.Abstraction.Catalog.Cinema.Hall;
+using CinemaTicketingSystem.Application.Contracts.Catalog.Cinema.Hall;
 using FluentValidation;
 
 #endregion
 
-namespace CinemaTicketingSystem.API.Catalog.Cinema.Hall.Add;
+namespace CinemaTicketingSystem.Presentation.API.Catalog.Cinema.Hall.Add;
 
 public class AddCinemaHallValidator : AbstractValidator<AddCinemaHallRequest>
 {

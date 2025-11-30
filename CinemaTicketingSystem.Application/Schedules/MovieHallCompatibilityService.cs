@@ -1,8 +1,7 @@
 ﻿#region
 
-using CinemaTicketingSystem.Application.Abstraction.Contracts;
+using CinemaTicketingSystem.Application.Contracts.Contracts;
 using CinemaTicketingSystem.Domain.BoundedContexts.Scheduling;
-using CinemaTicketingSystem.Domain.Core;
 using CinemaTicketingSystem.SharedKernel;
 
 #endregion
@@ -25,7 +24,7 @@ public class MovieHallCompatibilityService : IDomainService
 
 
         // Check if the hall supports the movie's required technology
-        var technologySupported = (hall.SupportedTechnologies & movie.SupportedTechnology) == movie.SupportedTechnology;
+        bool technologySupported = (hall.SupportedTechnologies & movie.SupportedTechnology) == movie.SupportedTechnology;
 
 
         if (movie.SupportedTechnology.HasFlag(ScreeningTechnology.IMAX))

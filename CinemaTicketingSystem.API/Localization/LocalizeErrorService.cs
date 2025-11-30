@@ -1,10 +1,9 @@
 ﻿#region
 
-using System.Net;
-using CinemaTicketingSystem.Application.Abstraction;
-using CinemaTicketingSystem.Application.Abstraction.Contracts;
+using CinemaTicketingSystem.Application.Contracts;
 using CinemaTicketingSystem.Application.Contracts.Contracts;
 using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
+using System.Net;
 
 #endregion
 
@@ -15,7 +14,7 @@ public class LocalizeErrorService(ILocalizer localizer) : ILocalizeErrorService,
 {
     public AppResult Error(string ErrorCodeAsTitle, HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest)
     {
-        var titleError = LocalizeError(ErrorCodeAsTitle);
+        string titleError = LocalizeError(ErrorCodeAsTitle);
 
         return AppResult.Error(titleError, httpStatusCode);
     }
@@ -23,8 +22,8 @@ public class LocalizeErrorService(ILocalizer localizer) : ILocalizeErrorService,
     public AppResult Error(string ErrorCodeAsTitle, string ErrorCodeAsDescription,
         HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest)
     {
-        var titleError = LocalizeError(ErrorCodeAsTitle);
-        var descriptionError = LocalizeError(ErrorCodeAsDescription);
+        string titleError = LocalizeError(ErrorCodeAsTitle);
+        string descriptionError = LocalizeError(ErrorCodeAsDescription);
 
         return AppResult.Error(titleError, descriptionError, httpStatusCode);
     }
@@ -32,7 +31,7 @@ public class LocalizeErrorService(ILocalizer localizer) : ILocalizeErrorService,
     public AppResult Error(string ErrorCodeAsTitle, object[]? ErrorCodeAsTitlePlaceHolder,
         HttpStatusCode statusCode = HttpStatusCode.BadRequest)
     {
-        var titleError = LocalizeError(ErrorCodeAsTitle, ErrorCodeAsTitlePlaceHolder);
+        string titleError = LocalizeError(ErrorCodeAsTitle, ErrorCodeAsTitlePlaceHolder);
 
         return AppResult.Error(titleError, statusCode);
     }
@@ -42,8 +41,8 @@ public class LocalizeErrorService(ILocalizer localizer) : ILocalizeErrorService,
         string ErrorCodeAsDescription, object[]? ErrorCodeAsDescriptionPlaceHolder,
         HttpStatusCode statusCode = HttpStatusCode.BadRequest)
     {
-        var titleError = LocalizeError(ErrorCodeAsTitle, ErrorCodeAsTitlePlaceHolder);
-        var descriptionError = LocalizeError(ErrorCodeAsDescription, ErrorCodeAsDescriptionPlaceHolder);
+        string titleError = LocalizeError(ErrorCodeAsTitle, ErrorCodeAsTitlePlaceHolder);
+        string descriptionError = LocalizeError(ErrorCodeAsDescription, ErrorCodeAsDescriptionPlaceHolder);
 
         return AppResult.Error(titleError, descriptionError, statusCode);
     }
@@ -51,7 +50,7 @@ public class LocalizeErrorService(ILocalizer localizer) : ILocalizeErrorService,
 
     public AppResult<T> Error<T>(string ErrorCodeAsTitle, HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest)
     {
-        var titleError = LocalizeError(ErrorCodeAsTitle);
+        string titleError = LocalizeError(ErrorCodeAsTitle);
 
         return AppResult<T>.Error(titleError, httpStatusCode);
     }
@@ -59,8 +58,8 @@ public class LocalizeErrorService(ILocalizer localizer) : ILocalizeErrorService,
     public AppResult<T> Error<T>(string ErrorCodeAsTitle, string ErrorCodeAsDescription,
         HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest)
     {
-        var titleError = LocalizeError(ErrorCodeAsTitle);
-        var descriptionError = LocalizeError(ErrorCodeAsDescription);
+        string titleError = LocalizeError(ErrorCodeAsTitle);
+        string descriptionError = LocalizeError(ErrorCodeAsDescription);
 
         return AppResult<T>.Error(titleError, descriptionError, httpStatusCode);
     }
@@ -68,7 +67,7 @@ public class LocalizeErrorService(ILocalizer localizer) : ILocalizeErrorService,
     public AppResult<T> Error<T>(string ErrorCodeAsTitle, object[]? ErrorCodeAsTitlePlaceHolder,
         HttpStatusCode statusCode = HttpStatusCode.BadRequest)
     {
-        var titleError = LocalizeError(ErrorCodeAsTitle, ErrorCodeAsTitlePlaceHolder);
+        string titleError = LocalizeError(ErrorCodeAsTitle, ErrorCodeAsTitlePlaceHolder);
 
         return AppResult<T>.Error(titleError, statusCode);
     }
@@ -78,10 +77,50 @@ public class LocalizeErrorService(ILocalizer localizer) : ILocalizeErrorService,
         string ErrorCodeAsDescription, object[]? ErrorCodeAsDescriptionPlaceHolder,
         HttpStatusCode statusCode = HttpStatusCode.BadRequest)
     {
-        var titleError = LocalizeError(ErrorCodeAsTitle, ErrorCodeAsTitlePlaceHolder);
-        var descriptionError = LocalizeError(ErrorCodeAsDescription, ErrorCodeAsDescriptionPlaceHolder);
+        string titleError = LocalizeError(ErrorCodeAsTitle, ErrorCodeAsTitlePlaceHolder);
+        string descriptionError = LocalizeError(ErrorCodeAsDescription, ErrorCodeAsDescriptionPlaceHolder);
 
         return AppResult<T>.Error(titleError, descriptionError, statusCode);
+    }
+
+    AppResult ILocalizeErrorService.Error(string ErrorCodeAsTitle, HttpStatusCode httpStatusCode)
+    {
+        throw new NotImplementedException();
+    }
+
+    AppResult ILocalizeErrorService.Error(string ErrorCodeAsTitle, string ErrorCodeAsDescription, HttpStatusCode httpStatusCode)
+    {
+        throw new NotImplementedException();
+    }
+
+    AppResult ILocalizeErrorService.Error(string ErrorCodeAsTitle, object[]? ErrorCodeAsTitlePlaceHolder, HttpStatusCode statusCode)
+    {
+        throw new NotImplementedException();
+    }
+
+    AppResult ILocalizeErrorService.Error(string ErrorCodeAsTitle, object[]? ErrorCodeAsTitlePlaceHolder, string ErrorCodeAsDescription, object[]? ErrorCodeAsDescriptionPlaceHolder, HttpStatusCode statusCode)
+    {
+        throw new NotImplementedException();
+    }
+
+    AppResult<T> ILocalizeErrorService.Error<T>(string ErrorCodeAsTitle, HttpStatusCode httpStatusCode)
+    {
+        throw new NotImplementedException();
+    }
+
+    AppResult<T> ILocalizeErrorService.Error<T>(string ErrorCodeAsTitle, string ErrorCodeAsDescription, HttpStatusCode httpStatusCode)
+    {
+        throw new NotImplementedException();
+    }
+
+    AppResult<T> ILocalizeErrorService.Error<T>(string ErrorCodeAsTitle, object[]? ErrorCodeAsTitlePlaceHolder, HttpStatusCode statusCode)
+    {
+        throw new NotImplementedException();
+    }
+
+    AppResult<T> ILocalizeErrorService.Error<T>(string ErrorCodeAsTitle, object[]? ErrorCodeAsTitlePlaceHolder, string ErrorCodeAsDescription, object[]? ErrorCodeAsDescriptionPlaceHolder, HttpStatusCode statusCode)
+    {
+        throw new NotImplementedException();
     }
 
     private string LocalizeError(string errorCode, object[]? data = null)

@@ -32,7 +32,7 @@ public class ContentManagerId : ValueObject
 
     public static ContentManagerId From(string value)
     {
-        if (!Guid.TryParse(value, out var guid))
+        if (!Guid.TryParse(value, out Guid guid))
             throw new ArgumentException($"Invalid ContentManagerId format: {value}");
 
         return new ContentManagerId(guid);

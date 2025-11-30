@@ -1,4 +1,4 @@
-﻿namespace CinemaTicketingSystem.Identity;
+﻿namespace CinemaTicketingSystem.Infrastructure.Authentication;
 
 public class IdentityAssembly
 {

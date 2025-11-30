@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 
 #endregion
 
-namespace CinemaTicketingSystem.API.Account;
+namespace CinemaTicketingSystem.Presentation.API.Account;
 
 public static class AccountEndpointExt
 {

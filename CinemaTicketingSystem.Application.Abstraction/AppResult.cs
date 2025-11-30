@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 #endregion
 
-namespace CinemaTicketingSystem.Application.Abstraction;
+namespace CinemaTicketingSystem.Application.Contracts;
 
 public class AppResult
 {
@@ -119,7 +119,7 @@ public class AppResult<T> : AppResult
         };
     }
 
-    public new static AppResult<T> Error(AppProblemDetails problemDetails,
+    public static new AppResult<T> Error(AppProblemDetails problemDetails,
         HttpStatusCode status = HttpStatusCode.BadRequest)
     {
         return new AppResult<T>
@@ -129,7 +129,7 @@ public class AppResult<T> : AppResult
         };
     }
 
-    public new static AppResult<T> Error(string title, string description,
+    public static new AppResult<T> Error(string title, string description,
         HttpStatusCode status = HttpStatusCode.BadRequest)
     {
         return new AppResult<T>
@@ -144,7 +144,7 @@ public class AppResult<T> : AppResult
         };
     }
 
-    public new static AppResult<T> Error(string title, HttpStatusCode status = HttpStatusCode.BadRequest)
+    public static new AppResult<T> Error(string title, HttpStatusCode status = HttpStatusCode.BadRequest)
     {
         return new AppResult<T>
         {
@@ -158,7 +158,7 @@ public class AppResult<T> : AppResult
     }
 
 
-    public new static AppResult<T> ErrorFromValidation(IDictionary<string, object?> errors)
+    public static new AppResult<T> ErrorFromValidation(IDictionary<string, object?> errors)
     {
         return new AppResult<T>
         {

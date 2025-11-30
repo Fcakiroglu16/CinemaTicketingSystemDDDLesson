@@ -1,13 +1,13 @@
 ﻿#region
 
-using System.Net;
-using CinemaTicketingSystem.Application.Abstraction;
+using CinemaTicketingSystem.Application.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 #endregion
 
-namespace CinemaTicketingSystem.API.Extensions;
+namespace CinemaTicketingSystem.Presentation.API.Extensions;
 
 public static class EndpointResultExt
 {

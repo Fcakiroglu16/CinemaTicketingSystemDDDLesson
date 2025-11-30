@@ -1,6 +1,6 @@
 ﻿#region
 
-using CinemaTicketingSystem.Application.Abstraction;
+using CinemaTicketingSystem.Application.Contracts;
 using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
 using CinemaTicketingSystem.Application.Contracts.Purchase;
 using CinemaTicketingSystem.Domain.Repositories;
@@ -17,14 +17,19 @@ public class PurchaseAppService(
 {
     public async Task<AppResult> Create(CreatePurchaseRequest request)
     {
-        var userId = appDependencyService.UserContext.UserId;
+        Guid userId = appDependencyService.UserContext.UserId;
         //TODO : seat hold expire check can add here
         // purchase operation
-        var purchase = new Domain.BoundedContexts.Purchases.Purchase(userId,
+        Domain.BoundedContexts.Purchases.Purchase purchase = new Domain.BoundedContexts.Purchases.Purchase(userId,
             new Price(request.Price.Amount, request.Price.Currency), request.TicketIssuanceId);
 
         await purchaseRepository.AddAsync(purchase);
         await appDependencyService.UnitOfWork.SaveChangesAsync();
         return AppResult.SuccessAsNoContent();
+    }
+
+    Task<AppResult> IPurchaseAppService.Create(CreatePurchaseRequest request)
+    {
+        throw new NotImplementedException();
     }
 }

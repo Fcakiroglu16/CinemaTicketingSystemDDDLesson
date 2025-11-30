@@ -45,7 +45,7 @@ public class Schedule : AggregateRoot<Guid>
     /// </summary>
     public bool HasStarted()
     {
-        var currentTime = TimeOnly.FromDateTime(DateTime.Now);
+        TimeOnly currentTime = TimeOnly.FromDateTime(DateTime.Now);
         return ShowTime.HasStarted(currentTime);
     }
 
@@ -54,7 +54,7 @@ public class Schedule : AggregateRoot<Guid>
     /// </summary>
     public bool HasEnded()
     {
-        var currentTime = TimeOnly.FromDateTime(DateTime.Now);
+        TimeOnly currentTime = TimeOnly.FromDateTime(DateTime.Now);
         return ShowTime.HasEnded(currentTime);
     }
 

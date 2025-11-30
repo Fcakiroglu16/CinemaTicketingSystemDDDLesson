@@ -21,7 +21,7 @@ internal class TicketIssuanceRepository(AppDbContext context)
 
     public async Task<TicketIssuance?> Get(Guid CustomerId, DateOnly ScreeningDate, Guid ScheduledMovieShowId)
     {
-        var localTicketIssuance = _context.TicketIssuance.Local.FirstOrDefault(x =>
+        TicketIssuance? localTicketIssuance = _context.TicketIssuance.Local.FirstOrDefault(x =>
             x.CustomerId == CustomerId && x.ScreeningDate == ScreeningDate &&
             x.ScheduledMovieShowId == ScheduledMovieShowId);
 

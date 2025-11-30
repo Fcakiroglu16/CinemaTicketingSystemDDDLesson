@@ -32,7 +32,7 @@ public class CustomerId : ValueObject
 
     public static CustomerId From(string value)
     {
-        if (!Guid.TryParse(value, out var guid))
+        if (!Guid.TryParse(value, out Guid guid))
             throw new ArgumentException($"Invalid CustomerId format: {value}");
 
         return new CustomerId(guid);

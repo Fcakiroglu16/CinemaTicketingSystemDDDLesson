@@ -1,7 +1,7 @@
 ﻿#region
 
 using Ardalis.GuardClauses;
-using CinemaTicketingSystem.Domain.Core;
+using CinemaTicketingSystem.SharedKernel;
 using CinemaTicketingSystem.SharedKernel.Entities;
 using CinemaTicketingSystem.SharedKernel.Exceptions;
 using CinemaTicketingSystem.SharedKernel.ValueObjects;
@@ -88,7 +88,7 @@ public class CinemaHall : Entity<Guid>
 
     public void RemoveSeat(string row, int number)
     {
-        var seat = seats.FirstOrDefault(s => s.SeatPosition.Equals(new SeatPosition(row, number)));
+        Seat? seat = seats.FirstOrDefault(s => s.SeatPosition.Equals(new SeatPosition(row, number)));
         Guard.Against.Null(seat, nameof(seat), $"Seat {row}{number} not found");
 
         seats.Remove(seat);
@@ -111,7 +111,7 @@ public class CinemaHall : Entity<Guid>
 
     public Seat GetSeat(string row, int number)
     {
-        var seat = seats.FirstOrDefault(s => s.SeatPosition.Equals(new SeatPosition(row, number)));
+        Seat? seat = seats.FirstOrDefault(s => s.SeatPosition.Equals(new SeatPosition(row, number)));
         return Guard.Against.Null(seat, nameof(seat), $"Seat {row}{number} not found");
     }
 

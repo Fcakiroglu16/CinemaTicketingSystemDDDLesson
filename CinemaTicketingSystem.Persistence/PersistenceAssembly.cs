@@ -1,4 +1,4 @@
-﻿namespace CinemaTicketingSystem.Persistence;
+﻿namespace CinemaTicketingSystem.Infrastructure.Persistence;
 
 public struct PersistenceAssembly
 {

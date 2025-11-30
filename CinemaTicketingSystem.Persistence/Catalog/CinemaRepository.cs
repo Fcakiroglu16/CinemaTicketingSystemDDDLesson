@@ -2,12 +2,11 @@
 
 using CinemaTicketingSystem.Domain.BoundedContexts.Catalog;
 using CinemaTicketingSystem.Domain.BoundedContexts.Catalog.Repositories;
-using CinemaTicketingSystem.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 #endregion
 
-namespace CinemaTicketingSystem.Persistence.Catalog;
+namespace CinemaTicketingSystem.Infrastructure.Persistence.Catalog;
 
 public class CinemaRepository(AppDbContext context) : GenericRepository<Cinema>(context), ICinemaRepository
 

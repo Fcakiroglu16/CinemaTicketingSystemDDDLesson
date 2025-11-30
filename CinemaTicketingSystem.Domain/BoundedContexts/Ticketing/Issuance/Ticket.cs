@@ -45,7 +45,7 @@ public class Ticket : Entity<Guid>
     private static string GenerateTicketCode()
     {
         const string chars = "abcdefghijklmnopqrstuvwxyz";
-        var random = new Random();
+        Random random = new Random();
 
         return new string(Enumerable.Range(0, 6)
             .Select(_ => chars[random.Next(chars.Length)])

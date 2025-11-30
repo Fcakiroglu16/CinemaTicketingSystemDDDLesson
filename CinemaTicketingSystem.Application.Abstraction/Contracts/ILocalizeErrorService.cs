@@ -4,7 +4,7 @@ using System.Net;
 
 #endregion
 
-namespace CinemaTicketingSystem.Application.Abstraction.Contracts;
+namespace CinemaTicketingSystem.Application.Contracts.Contracts;
 
 public interface ILocalizeErrorService
 {

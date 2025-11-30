@@ -1,6 +1,5 @@
 ﻿#region
 
-using CinemaTicketingSystem.Persistence.Accounts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

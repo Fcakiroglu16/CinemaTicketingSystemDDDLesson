@@ -1,7 +1,7 @@
 ﻿#region
 
-using CinemaTicketingSystem.API.Extensions;
 using CinemaTicketingSystem.Application.Contracts.Ticketing;
+using CinemaTicketingSystem.Presentation.API.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;

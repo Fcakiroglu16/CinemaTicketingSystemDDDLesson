@@ -1,7 +1,7 @@
 ﻿#region
 
 using Ardalis.GuardClauses;
-using CinemaTicketingSystem.Domain.Core;
+using CinemaTicketingSystem.SharedKernel;
 using CinemaTicketingSystem.SharedKernel.AggregateRoot;
 using CinemaTicketingSystem.SharedKernel.ValueObjects;
 
@@ -34,10 +34,10 @@ public class MovieSnapshot : AggregateRoot<Guid>
 
         Guard.Against.Negative(toleranceMinutes, nameof(toleranceMinutes));
 
-        var showDuration = endTime - startTime;
-        var movieDurationTimeSpan = Duration.ToTimeSpan();
+        TimeSpan showDuration = endTime - startTime;
+        TimeSpan movieDurationTimeSpan = Duration.ToTimeSpan();
 
-        var difference = Math.Abs((showDuration - movieDurationTimeSpan).TotalMinutes);
+        double difference = Math.Abs((showDuration - movieDurationTimeSpan).TotalMinutes);
 
         return difference <= toleranceMinutes;
     }

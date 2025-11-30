@@ -1,11 +1,8 @@
 #region
 
-using CinemaTicketingSystem.SharedKernel;
-using CinemaTicketingSystem.SharedKernel.Exceptions;
-
 #endregion
 
-namespace CinemaTicketingSystem.Domain.Core.Exceptions;
+namespace CinemaTicketingSystem.SharedKernel.Exceptions;
 
 public class SeatNotFoundException : BusinessException
 {

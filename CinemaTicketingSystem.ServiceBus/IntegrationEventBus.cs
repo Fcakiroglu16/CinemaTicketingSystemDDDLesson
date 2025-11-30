@@ -5,7 +5,7 @@ using MassTransit;
 
 #endregion
 
-namespace CinemaTicketingSystem.ServiceBus;
+namespace CinemaTicketingSystem.Infrastructure.Messaging;
 
 public class IntegrationEventBus(IPublishEndpoint publishEndpoint) : IIntegrationEventBus
 {

@@ -1,12 +1,10 @@
 ﻿#region
 
-using CinemaTicketingSystem.Application.Abstraction.Catalog.Cinema.Hall;
-using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Cinema;
-using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Cinema.Hall;
-
 #endregion
 
-namespace CinemaTicketingSystem.Application.Abstraction.Catalog.Cinema;
+using CinemaTicketingSystem.Application.Contracts.Catalog.Cinema.Hall;
+
+namespace CinemaTicketingSystem.Application.Contracts.Catalog.Cinema;
 
 public interface ICinemaAppService
 {

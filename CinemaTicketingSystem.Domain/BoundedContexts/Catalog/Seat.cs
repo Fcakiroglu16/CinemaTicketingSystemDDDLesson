@@ -1,6 +1,6 @@
 ﻿#region
 
-using CinemaTicketingSystem.Domain.Core;
+using CinemaTicketingSystem.SharedKernel;
 using CinemaTicketingSystem.SharedKernel.Entities;
 using CinemaTicketingSystem.SharedKernel.ValueObjects;
 

@@ -6,19 +6,19 @@ using Microsoft.AspNetCore.Identity;
 
 #endregion
 
-namespace CinemaTicketingSystem.Persistence.Accounts;
+namespace CinemaTicketingSystem.Infrastructure.Persistence.Accounts;
 
 internal class AccountRepository(UserManager<AppUser> userManager) : IAccountRepository
 {
     public async Task<bool> ExistEmailAsync(Email email)
     {
-        var userFromDb = await userManager.FindByEmailAsync(email);
+        AppUser? userFromDb = await userManager.FindByEmailAsync(email);
         return userFromDb is not null;
     }
 
     public async Task CreateAsync(User user)
     {
-        var newUser = new AppUser
+        AppUser newUser = new AppUser
         {
             Email = user.Email,
             UserName = user.UserName,
@@ -33,9 +33,9 @@ internal class AccountRepository(UserManager<AppUser> userManager) : IAccountRep
 
     public async Task<User?> GetAsync(Email email, Password password)
     {
-        var userFromDb = await userManager.FindByEmailAsync(email);
+        AppUser? userFromDb = await userManager.FindByEmailAsync(email);
         if (userFromDb is null) return null;
-        var passwordCheck = await userManager.CheckPasswordAsync(userFromDb, password);
+        bool passwordCheck = await userManager.CheckPasswordAsync(userFromDb, password);
         if (!passwordCheck) return null;
 
 
@@ -45,7 +45,7 @@ internal class AccountRepository(UserManager<AppUser> userManager) : IAccountRep
 
     public async Task<User?> GetAsync(UserId id)
     {
-        var userFromDb = await userManager.FindByIdAsync(id.ToString());
+        AppUser? userFromDb = await userManager.FindByIdAsync(id.ToString());
 
         if (userFromDb is null) return null;
 

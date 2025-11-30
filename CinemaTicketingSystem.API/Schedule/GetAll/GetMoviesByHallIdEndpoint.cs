@@ -1,14 +1,14 @@
 ﻿#region
 
-using CinemaTicketingSystem.API.Extensions;
 using CinemaTicketingSystem.Application.Contracts.Schedule;
+using CinemaTicketingSystem.Presentation.API.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 
 #endregion
 
-namespace CinemaTicketingSystem.API.Schedule.GetAll;
+namespace CinemaTicketingSystem.Presentation.API.Schedule.GetAll;
 
 internal static class GetMoviesByHallIdEndpoint
 {

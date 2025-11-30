@@ -1,7 +1,7 @@
 #region
 
-using CinemaTicketingSystem.Application.Abstraction;
 using CinemaTicketingSystem.Application.Catalog.Services;
+using CinemaTicketingSystem.Application.Contracts;
 using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
 using CinemaTicketingSystem.Application.Contracts.Ticketing;
 using CinemaTicketingSystem.Application.Schedules.Services;
@@ -9,6 +9,8 @@ using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Issuance;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Reservations;
 using CinemaTicketingSystem.SharedKernel;
+using CinemaTicketingSystem.SharedKernel.ValueObjects;
+
 
 #endregion
 
@@ -35,21 +37,21 @@ public class TicketIssuanceAppService(
 
     public async Task<AppResult<CreateTicketIssuanceResponse>> Create(CreateTicketIssuanceRequest request)
     {
-        var userId = appDependencyService.UserContext.UserId;
+        Guid userId = appDependencyService.UserContext.UserId;
 
-        var scheduleInfo = await iScheduleQueryService.GetScheduleInfo(request.ScheduledMovieShowId);
+        AppResult<GetScheduleInfoResponse> scheduleInfo = await iScheduleQueryService.GetScheduleInfo(request.ScheduledMovieShowId);
 
         if (scheduleInfo.IsFail)
             return AppResult<CreateTicketIssuanceResponse>.Error(scheduleInfo.ProblemDetails!);
 
 
-        var catalogInfo =
+        AppResult<GetCatalogInfoResponse> catalogInfo =
             await catalogQueryService.GetCinemaInfo(scheduleInfo.Data!.CinemaHallId, scheduleInfo.Data.MovieId);
 
         if (catalogInfo.IsFail) return AppResult<CreateTicketIssuanceResponse>.Error(catalogInfo.ProblemDetails!);
 
 
-        var userSeatHoldList = (await seatHoldRepository.WhereAsync(x =>
+        List<SeatHold> userSeatHoldList = (await seatHoldRepository.WhereAsync(x =>
                 x.CustomerId == userId &&
                 x.ScheduledMovieShowId == request.ScheduledMovieShowId && x.ScreeningDate == request.ScreeningDate))
             .ToList();
@@ -65,7 +67,7 @@ public class TicketIssuanceAppService(
 
 
         // Fetch confirmed seats from tickets
-        var confirmedTicketSeatPositions =
+        List<SeatPosition> confirmedTicketSeatPositions =
             (await ticketIssuanceRepository.GetConfirmedTicketsIssuanceByScheduleIdAndScreeningDate(
                 request.ScheduledMovieShowId,
                 request.ScreeningDate))
@@ -74,7 +76,7 @@ public class TicketIssuanceAppService(
             .ToList();
 
         // Fetch confirmed seats from holds
-        var confirmedSeatHoldSeatPositions =
+        List<SeatPosition> confirmedSeatHoldSeatPositions =
             (await seatHoldRepository.GetConfirmedListByScheduleIdAndScreeningDate(request.ScheduledMovieShowId,
                 request.ScreeningDate)).Where(x => x.CustomerId != userId)
             .Select(x => x.SeatPosition)
@@ -82,25 +84,25 @@ public class TicketIssuanceAppService(
 
 
         // Merge uniquely by seat coordinates
-        var occupiedSeatPositions = confirmedTicketSeatPositions
+        List<SeatPosition> occupiedSeatPositions = confirmedTicketSeatPositions
             .Concat(confirmedSeatHoldSeatPositions)
             .DistinctBy(sp => (sp.Row, sp.Number))
             .ToList();
 
 
-        foreach (var seat in userSeatHoldList)
+        foreach (SeatHold? seat in userSeatHoldList)
         {
-            var seatTaken = occupiedSeatPositions.Any(x =>
+            bool seatTaken = occupiedSeatPositions.Any(x =>
                 x.Row == seat.SeatPosition.Row && x.Number == seat.SeatPosition.Number);
             if (seatTaken)
                 return appDependencyService.LocalizeError.Error<CreateTicketIssuanceResponse>(ErrorCodes.DuplicateSeat,
                     [seat.SeatPosition.Row, seat.SeatPosition.Number]);
         }
 
-        var newTicketIssuance =
+        TicketIssuance newTicketIssuance =
             new TicketIssuance(request.ScheduledMovieShowId, userId, request.ScreeningDate);
 
-        foreach (var seat in userSeatHoldList)
+        foreach (SeatHold? seat in userSeatHoldList)
             newTicketIssuance.AddTicket(seat.SeatPosition, scheduleInfo.Data.TicketPrice);
 
         await ticketIssuanceRepository.AddAsync(newTicketIssuance);
@@ -114,25 +116,35 @@ public class TicketIssuanceAppService(
 
     public async Task<AppResult> CreateFromReservation(Guid ReservationId)
     {
-        var reservation = await reservationRepository.GetByIdAsync(ReservationId);
+        Reservation? reservation = await reservationRepository.GetByIdAsync(ReservationId);
 
 
         if (reservation!.IsExpired()) return appDependencyService.LocalizeError.Error(ErrorCodes.ReservationExpired);
 
-        var purchase = new TicketIssuance(reservation.ScheduledMovieShowId, reservation.CustomerId,
+        TicketIssuance purchase = new TicketIssuance(reservation.ScheduledMovieShowId, reservation.CustomerId,
             reservation.ScreeningDate);
 
 
-        var scheduleInfo = await iScheduleQueryService.GetScheduleInfo(reservation.ScheduledMovieShowId);
+        AppResult<GetScheduleInfoResponse> scheduleInfo = await iScheduleQueryService.GetScheduleInfo(reservation.ScheduledMovieShowId);
 
         if (scheduleInfo.IsFail) return scheduleInfo;
 
-        foreach (var seat in reservation.ReservationSeatList)
+        foreach (ReservationSeat seat in reservation.ReservationSeatList)
             purchase.AddTicket(seat.SeatPosition, scheduleInfo.Data!.TicketPrice);
 
 
         await ticketIssuanceRepository.AddAsync(purchase);
         await appDependencyService.UnitOfWork.SaveChangesAsync();
         return AppResult.SuccessAsNoContent();
+    }
+
+    Task<AppResult<CreateTicketIssuanceResponse>> ITicketPurchaseAppService.Create(CreateTicketIssuanceRequest request)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<AppResult> ITicketPurchaseAppService.CreateFromReservation(Guid reservationId)
+    {
+        throw new NotImplementedException();
     }
 }

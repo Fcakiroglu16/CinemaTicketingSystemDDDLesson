@@ -1,6 +1,6 @@
 ﻿#region
 
-using CinemaTicketingSystem.Application.Abstraction.Contracts;
+using CinemaTicketingSystem.Application.Contracts.Contracts;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds;
 using CinemaTicketingSystem.SharedKernel;
 using CinemaTicketingSystem.SharedKernel.ValueObjects;
@@ -19,9 +19,9 @@ public class ReservationEligibilityPolicy : IDomainService
     {
         if (seatHolds.Count != requestedSeats.Count) return DomainResult.Failure(ErrorCodes.SeatHoldNotFound);
 
-        foreach (var seatHold in seatHolds)
+        foreach (SeatHold seatHold in seatHolds)
         {
-            var match = requestedSeats.Any(seat =>
+            bool match = requestedSeats.Any(seat =>
                 seatHold.SeatPosition == new SeatPosition(seat.Row, seat.Number));
 
             if (!match)
@@ -38,8 +38,8 @@ public class ReservationEligibilityPolicy : IDomainService
 
     public DomainResult IsReservationTooLate(TimeOnly movieStartTime, DateOnly screeningDate)
     {
-        var now = DateTime.UtcNow;
-        var screeningDateTime = new DateTime(
+        DateTime now = DateTime.UtcNow;
+        DateTime screeningDateTime = new DateTime(
             screeningDate.Year,
             screeningDate.Month,
             screeningDate.Day,
@@ -47,8 +47,8 @@ public class ReservationEligibilityPolicy : IDomainService
             movieStartTime.Minute,
             movieStartTime.Second);
 
-        var timeSpan = screeningDateTime - now;
-        var cutoff = TimeSpan.FromHours(ReservationCutoffHours);
+        TimeSpan timeSpan = screeningDateTime - now;
+        TimeSpan cutoff = TimeSpan.FromHours(ReservationCutoffHours);
 
         if (timeSpan < cutoff)
             return DomainResult.Failure(ErrorCodes.ReservationTooLate);

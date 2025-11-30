@@ -1,8 +1,8 @@
 ﻿#region
 
-using CinemaTicketingSystem.API.Extensions;
-using CinemaTicketingSystem.Application.Abstraction.Catalog.Movie;
-using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Movie.Create;
+using CinemaTicketingSystem.Application.Contracts.Catalog.Movie;
+using CinemaTicketingSystem.Application.Contracts.Catalog.Movie.Create;
+using CinemaTicketingSystem.Presentation.API.Extensions;
 using CinemaTicketingSystem.Presentation.API.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;

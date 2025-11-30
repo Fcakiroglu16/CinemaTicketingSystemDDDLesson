@@ -1,22 +1,22 @@
 ﻿#region
 
-using CinemaTicketingSystem.Application.Abstraction.Contracts;
+using CinemaTicketingSystem.Application.Contracts.Contracts;
 using Microsoft.Extensions.Caching.Memory;
 
 #endregion
 
-namespace CinemaTicketingSystem.Caching;
+namespace CinemaTicketingSystem.Infrastructure.Caching;
 
 public class CacheService(IMemoryCache memoryCache) : ICacheService
 {
     public T? Get<T>(string key)
     {
-        return memoryCache.TryGetValue(key, out var value) ? (T?)value : default;
+        return memoryCache.TryGetValue(key, out object? value) ? (T?)value : default;
     }
 
     public void Set<T>(string key, T value, TimeSpan? expiration = null)
     {
-        var options = new MemoryCacheEntryOptions();
+        MemoryCacheEntryOptions options = new MemoryCacheEntryOptions();
 
         if (expiration.HasValue)
             options.AbsoluteExpirationRelativeToNow = expiration;

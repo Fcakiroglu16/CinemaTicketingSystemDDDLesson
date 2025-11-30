@@ -1,6 +1,5 @@
 ﻿#region
 
-using CinemaTicketingSystem.Domain.Core;
 using CinemaTicketingSystem.SharedKernel;
 
 #endregion

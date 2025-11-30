@@ -1,9 +1,10 @@
 ﻿#region
 
-using System.Linq.Expressions;
 using CinemaTicketingSystem.Domain.Repositories;
 using CinemaTicketingSystem.SharedKernel.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Linq.Expressions;
 
 #endregion
 
@@ -22,7 +23,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 
     public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        var result = await _dbSet.AddAsync(entity, cancellationToken);
+        EntityEntry<TEntity> result = await _dbSet.AddAsync(entity, cancellationToken);
         return result.Entity;
     }
 
@@ -104,7 +105,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
     public async Task DeleteRangeAsync(Expression<Func<TEntity, bool>> predicate,
         CancellationToken cancellationToken = default)
     {
-        var entities = await _dbSet.Where(predicate).ToListAsync(cancellationToken);
+        List<TEntity> entities = await _dbSet.Where(predicate).ToListAsync(cancellationToken);
         _dbSet.RemoveRange(entities);
     }
 
@@ -116,20 +117,20 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         bool ascending = true,
         CancellationToken cancellationToken = default)
     {
-        var query = _dbSet.AsQueryable();
+        IQueryable<TEntity> query = _dbSet.AsQueryable();
 
         // Apply filter if provided
         if (predicate != null)
             query = query.Where(predicate);
 
         // Get total count before pagination
-        var totalCount = await query.CountAsync(cancellationToken);
+        int totalCount = await query.CountAsync(cancellationToken);
 
         // Apply ordering
         if (orderBy != null) query = ascending ? query.OrderBy(orderBy) : query.OrderByDescending(orderBy);
 
         // Apply pagination
-        var items = await query
+        List<TEntity> items = await query
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync(cancellationToken);

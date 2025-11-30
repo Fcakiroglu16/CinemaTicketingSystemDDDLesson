@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 #endregion
 
-namespace CinemaTicketingSystem.API.Extensions;
+namespace CinemaTicketingSystem.Presentation.API.Extensions;
 
 public static class VersioningExt
 {
@@ -32,7 +32,7 @@ public static class VersioningExt
 
     public static ApiVersionSet AddVersionSetExt(this WebApplication app)
     {
-        var apiVersionSet = app.NewApiVersionSet()
+        ApiVersionSet apiVersionSet = app.NewApiVersionSet()
             .HasApiVersion(new ApiVersion(1, 0))
             .HasApiVersion(new ApiVersion(1, 0))
             .HasApiVersion(new ApiVersion(1, 0))

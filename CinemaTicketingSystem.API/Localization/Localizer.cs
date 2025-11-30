@@ -1,6 +1,5 @@
 ﻿#region
 
-using CinemaTicketingSystem.API.Localization;
 using CinemaTicketingSystem.Application.Contracts.Contracts;
 using Microsoft.Extensions.Localization;
 

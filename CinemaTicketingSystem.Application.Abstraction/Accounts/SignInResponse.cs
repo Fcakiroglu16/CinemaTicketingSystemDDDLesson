@@ -1,4 +1,4 @@
-﻿namespace CinemaTicketingSystem.Application.Abstraction.Accounts;
+﻿namespace CinemaTicketingSystem.Application.Contracts.Accounts;
 
 public record SignInResponse(
     string AccessToken,

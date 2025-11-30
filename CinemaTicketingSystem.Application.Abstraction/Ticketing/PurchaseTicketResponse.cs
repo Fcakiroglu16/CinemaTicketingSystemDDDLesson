@@ -1,4 +1,4 @@
-namespace CinemaTicketingSystem.Application.Abstraction.Ticketing;
+namespace CinemaTicketingSystem.Application.Contracts.Ticketing;
 
 public record PurchaseTicketResponse(
     string CinemaName,

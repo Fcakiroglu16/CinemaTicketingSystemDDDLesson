@@ -1,6 +1,6 @@
 ﻿#region
 
-using CinemaTicketingSystem.Application.Abstraction.Contracts;
+using CinemaTicketingSystem.Application.Contracts.Contracts;
 using CinemaTicketingSystem.Domain.BoundedContexts.Catalog.IntegrationEvents;
 using CinemaTicketingSystem.Domain.BoundedContexts.Scheduling;
 using CinemaTicketingSystem.Domain.Repositories;
@@ -15,7 +15,7 @@ public class MovieCreatedIntegrationEventHandler(
 {
     public async Task HandleAsync(MovieCreatedIntegrationEvent message, CancellationToken cancellationToken = default)
     {
-        var movieSnapshot = new MovieSnapshot(message.MovieId, message.Duration, message.Technology);
+        MovieSnapshot movieSnapshot = new MovieSnapshot(message.MovieId, message.Duration, message.Technology);
         await movieScheduleRepository.AddAsync(movieSnapshot, cancellationToken);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);

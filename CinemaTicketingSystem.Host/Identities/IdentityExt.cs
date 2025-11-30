@@ -1,6 +1,6 @@
 ﻿#region
 
-using CinemaTicketingSystem.Identity;
+using CinemaTicketingSystem.Infrastructure.Authentication;
 using CinemaTicketingSystem.SharedKernel;
 using CinemaTicketingSystem.SharedKernel.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 
 #endregion
 
-namespace CinemaTicketingSystem.Host.Identities;
+namespace CinemaTicketingSystem.WebApi.Host.Identities;
 
 public static class IdentityExt
 {
@@ -22,7 +22,7 @@ public static class IdentityExt
 
         services.AddSingleton(sp =>
         {
-            var clientTokenOption = sp.GetRequiredService<IOptions<List<ClientOption>>>();
+            IOptions<List<ClientOption>> clientTokenOption = sp.GetRequiredService<IOptions<List<ClientOption>>>();
 
             return clientTokenOption.Value;
         });
@@ -31,7 +31,7 @@ public static class IdentityExt
         services.Configure<ClientTokenOption>(configuration.GetSection(nameof(ClientTokenOption)));
         services.AddSingleton(sp =>
         {
-            var clientTokenOption = sp.GetRequiredService<IOptions<ClientTokenOption>>();
+            IOptions<ClientTokenOption> clientTokenOption = sp.GetRequiredService<IOptions<ClientTokenOption>>();
 
             return clientTokenOption.Value;
         });
@@ -40,7 +40,7 @@ public static class IdentityExt
         services.Configure<TokenOption>(configuration.GetSection(nameof(TokenOption)));
         services.AddSingleton(sp =>
         {
-            var clientTokenOption = sp.GetRequiredService<IOptions<TokenOption>>();
+            IOptions<TokenOption> clientTokenOption = sp.GetRequiredService<IOptions<TokenOption>>();
 
             return clientTokenOption.Value;
         });
@@ -52,7 +52,7 @@ public static class IdentityExt
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer("ClientCredentialSchema", opts =>
         {
-            var tokenOptions = configuration.GetSection(nameof(ClientTokenOption)).Get<ClientTokenOption>();
+            ClientTokenOption? tokenOptions = configuration.GetSection(nameof(ClientTokenOption)).Get<ClientTokenOption>();
             opts.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidIssuer = tokenOptions!.Issuer,
@@ -66,7 +66,7 @@ public static class IdentityExt
             };
         }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opts =>
         {
-            var tokenOptions = configuration.GetSection(nameof(TokenOption)).Get<TokenOption>();
+            TokenOption? tokenOptions = configuration.GetSection(nameof(TokenOption)).Get<TokenOption>();
             opts.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidIssuer = tokenOptions!.Issuer,

@@ -1,4 +1,4 @@
-﻿namespace CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Movie.Create;
+﻿namespace CinemaTicketingSystem.Application.Contracts.Catalog.Movie.Create;
 
 public record CreateMovieRequest(
     string Title,

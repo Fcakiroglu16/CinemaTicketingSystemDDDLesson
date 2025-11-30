@@ -5,7 +5,7 @@ using MediatR;
 
 #endregion
 
-namespace CinemaTicketingSystem.ServiceBus;
+namespace CinemaTicketingSystem.Infrastructure.Messaging;
 
 public class DomainEventMediator(IMediator mediator) : IDomainEventMediator
 {

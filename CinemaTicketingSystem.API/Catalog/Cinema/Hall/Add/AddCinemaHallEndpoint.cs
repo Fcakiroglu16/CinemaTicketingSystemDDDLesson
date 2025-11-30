@@ -1,9 +1,8 @@
 ﻿#region
 
-using CinemaTicketingSystem.API.Catalog.Cinema.Hall.Add;
-using CinemaTicketingSystem.API.Extensions;
-using CinemaTicketingSystem.Application.Abstraction.Catalog.Cinema;
-using CinemaTicketingSystem.Application.Abstraction.Catalog.Cinema.Hall;
+using CinemaTicketingSystem.Application.Contracts.Catalog.Cinema;
+using CinemaTicketingSystem.Application.Contracts.Catalog.Cinema.Hall;
+using CinemaTicketingSystem.Presentation.API.Extensions;
 using CinemaTicketingSystem.Presentation.API.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;

@@ -1,14 +1,14 @@
 ﻿#region
 
-using System.Security.Claims;
 using CinemaTicketingSystem.Application.Contracts.Contracts;
 using CinemaTicketingSystem.SharedKernel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 
 #endregion
 
-namespace CinemaTicketingSystem.Identity;
+namespace CinemaTicketingSystem.Infrastructure.Authentication;
 
 public class UserContext(IHttpContextAccessor httpContextAccessor, ILogger<UserContext> logger, ILocalizer localizer)
     : IUserContext

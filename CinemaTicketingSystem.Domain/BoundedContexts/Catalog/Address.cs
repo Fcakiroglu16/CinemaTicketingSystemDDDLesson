@@ -4,7 +4,7 @@ using CinemaTicketingSystem.SharedKernel.ValueObjects;
 
 #endregion
 
-namespace CinemaTicketingSystem.Domain.Catalog;
+namespace CinemaTicketingSystem.Domain.BoundedContexts.Catalog;
 
 public class Address : ValueObject
 {
@@ -45,7 +45,7 @@ public class Address : ValueObject
     // Formatting methods
     public string GetFullAddress()
     {
-        var parts = new List<string> { Street, District, City, Country };
+        List<string> parts = new List<string> { Street, District, City, Country };
 
         if (!string.IsNullOrEmpty(Description))
             parts.Insert(0, Description);

@@ -1,13 +1,13 @@
 ﻿#region
 
 using CinemaTicketingSystem.Domain.BoundedContexts.Catalog;
-using CinemaTicketingSystem.Domain.Core;
+using CinemaTicketingSystem.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 #endregion
 
-namespace CinemaTicketingSystem.Persistence.Catalog.Configurations;
+namespace CinemaTicketingSystem.Infrastructure.Persistence.Catalog.Configurations;
 
 public class CinemaConfiguration : IEntityTypeConfiguration<Cinema>
 {

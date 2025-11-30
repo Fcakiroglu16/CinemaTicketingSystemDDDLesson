@@ -4,7 +4,7 @@ using CinemaTicketingSystem.SharedKernel;
 
 #endregion
 
-namespace CinemaTicketingSystem.Application.Abstraction.Contracts;
+namespace CinemaTicketingSystem.Application.Contracts.Contracts;
 
 public interface IIntegrationEventHandler<in TEvent>
     where TEvent : IIntegrationEvent

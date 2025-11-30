@@ -1,7 +1,6 @@
 #region
 
-using CinemaTicketingSystem.Application.Abstraction;
-using CinemaTicketingSystem.Application.Abstraction.Accounts;
+using CinemaTicketingSystem.Application.Contracts;
 using CinemaTicketingSystem.Application.Contracts.Accounts;
 using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
 using CinemaTicketingSystem.Domain.BoundedContexts.Accounts;
@@ -30,12 +29,12 @@ public class AccountAppService(
 
     public async Task<AppResult> SignUpAsync(SignUpRequest request)
     {
-        var emailExists = await accountRepository.ExistEmailAsync(request.Email);
+        bool emailExists = await accountRepository.ExistEmailAsync(request.Email);
 
         if (emailExists)
             return appDependencyService.LocalizeError.Error(ErrorCodes.UserAlreadyExists);
 
-        var newUser = new User(request.Email, request.Password, request.FirstName, request.LastName);
+        User newUser = new User(request.Email, request.Password, request.FirstName, request.LastName);
 
         await accountRepository.CreateAsync(newUser);
 
@@ -44,17 +43,17 @@ public class AccountAppService(
 
     public async Task<AppResult<SignInResponse>> SignInAsync(SignInRequest request)
     {
-        var user = await accountRepository.GetAsync(request.Email, request.Password);
+        User? user = await accountRepository.GetAsync(request.Email, request.Password);
 
 
         if (user is null)
             return appDependencyService.LocalizeError.Error<SignInResponse>(ErrorCodes.InvalidCredentials,
                 ErrorCodes.EmailOrPasswordWrong);
 
-        var tokenResponse = tokenService.CreateToken(new CreateTokenRequest(user.Id, user.UserName, user.Email));
+        CreateTokenResponse tokenResponse = tokenService.CreateToken(new CreateTokenRequest(user.Id, user.UserName, user.Email));
 
 
-        var hasRefreshToken = await refreshTokenRepository.GetByIdAsync(UserId.From(user.Id));
+        RefreshToken? hasRefreshToken = await refreshTokenRepository.GetByIdAsync(UserId.From(user.Id));
 
         if (hasRefreshToken is not null)
         {
@@ -75,5 +74,15 @@ public class AccountAppService(
 
         return AppResult<SignInResponse>.SuccessAsOk(new SignInResponse(tokenResponse.AccessToken,
             tokenResponse.RefreshToken, tokenResponse.AccessTokenExpiration, tokenResponse.RefreshTokenExpiration));
+    }
+
+    Task<AppResult<SignInResponse>> IAccountAppService.SignInAsync(SignInRequest userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<AppResult> IAccountAppService.SignUpAsync(SignUpRequest request)
+    {
+        throw new NotImplementedException();
     }
 }

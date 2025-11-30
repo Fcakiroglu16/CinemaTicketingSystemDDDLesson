@@ -1,9 +1,7 @@
 ﻿#region
 
-using CinemaTicketingSystem.API.Account.SignIn;
-using CinemaTicketingSystem.API.Extensions;
-using CinemaTicketingSystem.Application.Abstraction.Accounts;
 using CinemaTicketingSystem.Application.Contracts.Accounts;
+using CinemaTicketingSystem.Presentation.API.Extensions;
 using CinemaTicketingSystem.Presentation.API.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;

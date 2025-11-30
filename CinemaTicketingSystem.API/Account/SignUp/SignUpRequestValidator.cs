@@ -1,11 +1,11 @@
 ﻿#region
 
-using CinemaTicketingSystem.Application.Abstraction.Accounts;
+using CinemaTicketingSystem.Application.Contracts.Accounts;
 using FluentValidation;
 
 #endregion
 
-namespace CinemaTicketingSystem.API.Account.SignUp;
+namespace CinemaTicketingSystem.Presentation.API.Account.SignUp;
 
 public class SignUpRequestValidator : AbstractValidator<SignUpRequest>
 {

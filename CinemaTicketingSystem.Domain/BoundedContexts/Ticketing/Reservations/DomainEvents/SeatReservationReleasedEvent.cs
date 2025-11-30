@@ -5,6 +5,6 @@ using CinemaTicketingSystem.SharedKernel.ValueObjects;
 
 #endregion
 
-namespace CinemaTicketingSystem.Domain.Ticketing.Reservations.DomainEvents;
+namespace CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Reservations.DomainEvents;
 
 public record SeatReservationReleasedEvent(Guid ReservationId, SeatPosition SeatPosition) : IDomainEvent;

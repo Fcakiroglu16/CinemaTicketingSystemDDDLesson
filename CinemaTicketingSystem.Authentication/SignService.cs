@@ -1,11 +1,11 @@
 ﻿#region
 
-using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 #endregion
 
-namespace CinemaTicketingSystem.Identity;
+namespace CinemaTicketingSystem.Infrastructure.Authentication;
 
 public static class SignService
 {

@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 #endregion
 
-namespace CinemaTicketingSystem.API.Extensions;
+namespace CinemaTicketingSystem.Presentation.API.Extensions;
 
 public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
 {
@@ -22,13 +22,13 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
         logger.LogError(
             exception, "Exception occurred: {Message}", exception.Message);
 
-        var localizer = httpContext.RequestServices.GetRequiredService<ILocalizer>();
+        ILocalizer localizer = httpContext.RequestServices.GetRequiredService<ILocalizer>();
 
-        var title = localizer.L(ErrorCodes.ServerErrorTitle);
-        var detail = localizer.L(ErrorCodes.ServerErrorDetail);
+        string title = localizer.L(ErrorCodes.ServerErrorTitle);
+        string detail = localizer.L(ErrorCodes.ServerErrorDetail);
 
 
-        var problemDetails = new ProblemDetails
+        ProblemDetails problemDetails = new ProblemDetails
         {
             Status = StatusCodes.Status500InternalServerError,
             Title = title,

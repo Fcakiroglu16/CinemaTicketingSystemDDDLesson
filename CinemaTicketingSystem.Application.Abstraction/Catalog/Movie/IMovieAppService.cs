@@ -1,11 +1,10 @@
 ﻿#region
 
-using CinemaTicketingSystem.Application.Abstraction.Catalog.Movie.Create;
-using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Movie.Create;
-
 #endregion
 
-namespace CinemaTicketingSystem.Application.Abstraction.Catalog.Movie;
+using CinemaTicketingSystem.Application.Contracts.Catalog.Movie.Create;
+
+namespace CinemaTicketingSystem.Application.Contracts.Catalog.Movie;
 
 public interface IMovieAppService
 {

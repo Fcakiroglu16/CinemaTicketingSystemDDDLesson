@@ -1,18 +1,14 @@
 ﻿#region
 
-using System.Net;
-using CinemaTicketingSystem.Application.Abstraction;
-using CinemaTicketingSystem.Application.Abstraction.Catalog.Cinema;
-using CinemaTicketingSystem.Application.Abstraction.Catalog.Cinema.Hall;
-using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Cinema;
-using CinemaTicketingSystem.Application.Abstraction.CinemaManagement.Cinema.Hall;
+using CinemaTicketingSystem.Application.Contracts;
+using CinemaTicketingSystem.Application.Contracts.Catalog.Cinema;
+using CinemaTicketingSystem.Application.Contracts.Catalog.Cinema.Hall;
 using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
 using CinemaTicketingSystem.Domain.BoundedContexts.Catalog;
 using CinemaTicketingSystem.Domain.BoundedContexts.Catalog.Repositories;
-using CinemaTicketingSystem.Domain.Catalog;
-using CinemaTicketingSystem.Domain.Core;
 using CinemaTicketingSystem.SharedKernel;
 using CinemaTicketingSystem.SharedKernel.ValueObjects;
+using System.Net;
 
 #endregion
 
@@ -24,13 +20,13 @@ public class CinemaAppService(
 {
     public async Task<AppResult> CreateAsync(CreateCinemaRequest request)
     {
-        var existCinema = await cinemaRepository.ExistsAsync(c => c.Name.Equals(request.Name));
+        bool existCinema = await cinemaRepository.ExistsAsync(c => c.Name.Equals(request.Name));
         if (existCinema)
             return appDependencyService.LocalizeError.Error(ErrorCodes.CinemaAlreadyExists, [request.Name]);
 
-        var addressDto = request.Address;
+        AddressDto addressDto = request.Address;
 
-        var address = new Address(addressDto.Country,
+        Address address = new Address(addressDto.Country,
             addressDto.City,
             addressDto.District,
             addressDto.Street,
@@ -38,7 +34,7 @@ public class CinemaAppService(
             addressDto.Description);
 
 
-        var newCinema = new Domain.BoundedContexts.Catalog.Cinema(request.Name, address);
+        Domain.BoundedContexts.Catalog.Cinema newCinema = new Domain.BoundedContexts.Catalog.Cinema(request.Name, address);
 
 
         await cinemaRepository.AddAsync(newCinema);
@@ -49,12 +45,12 @@ public class CinemaAppService(
 
     public async Task<AppResult> AddHallAsync(Guid cinemaId, AddCinemaHallRequest request)
     {
-        var cinema = await cinemaRepository.GetByIdAsync(cinemaId);
+        Domain.BoundedContexts.Catalog.Cinema? cinema = await cinemaRepository.GetByIdAsync(cinemaId);
 
         if (cinema is null)
             return appDependencyService.LocalizeError.Error(ErrorCodes.CinemaNotFound, [HttpStatusCode.NotFound]);
 
-        var existCinemaHall = cinema.Halls
+        CinemaHall? existCinemaHall = cinema.Halls
             .FirstOrDefault(x => x.Name.Equals(request.Name, StringComparison.OrdinalIgnoreCase));
 
 
@@ -62,7 +58,7 @@ public class CinemaAppService(
             return appDependencyService.LocalizeError.Error(ErrorCodes.CinemaHallAlreadyExists, [request.Name]);
 
 
-        var cinemaHall = new CinemaHall(request.Name,
+        CinemaHall cinemaHall = new CinemaHall(request.Name,
             request.Technologies.Cast<ScreeningTechnology>().Aggregate((x, y) => x | y));
 
 
@@ -80,14 +76,14 @@ public class CinemaAppService(
 
     public async Task<AppResult> RemoveHallAsync(RemoveCinemaHallRequest request)
     {
-        var cinema = await cinemaRepository.GetByIdAsync(request.CinemaId);
+        Domain.BoundedContexts.Catalog.Cinema? cinema = await cinemaRepository.GetByIdAsync(request.CinemaId);
         if (cinema is null)
 
 
             return appDependencyService.LocalizeError.Error(ErrorCodes.CinemaNotFound, HttpStatusCode.NotFound);
 
 
-        var hall = cinema.GetHall(request.HallId);
+        CinemaHall? hall = cinema.GetHall(request.HallId);
         if (hall is null)
             return appDependencyService.LocalizeError.Error(ErrorCodes.CinemaHallNotFound, HttpStatusCode.NotFound);
 
@@ -100,7 +96,7 @@ public class CinemaAppService(
 
     public async Task<AppResult<List<CinemaHallDto>>> GetCinemaHallsAsync(Guid cinemaId)
     {
-        var cinema = await cinemaRepository.GetByIdAsync(cinemaId);
+        Domain.BoundedContexts.Catalog.Cinema? cinema = await cinemaRepository.GetByIdAsync(cinemaId);
         if (cinema is null)
             return appDependencyService.LocalizeError.Error<List<CinemaHallDto>>(ErrorCodes.CinemaNotFound);
 
@@ -122,7 +118,7 @@ public class CinemaAppService(
 
     public async Task<AppResult<CinemaDto>> GetAsync(Guid cinemaId)
     {
-        var cinema = await cinemaRepository.GetByIdAsync(cinemaId);
+        Domain.BoundedContexts.Catalog.Cinema? cinema = await cinemaRepository.GetByIdAsync(cinemaId);
         if (cinema is null)
             return appDependencyService.LocalizeError.Error<CinemaDto>(ErrorCodes.CinemaNotFound);
 
@@ -135,7 +131,7 @@ public class CinemaAppService(
 
     public async Task<AppResult<List<CinemaDto>>> GetAllAsync()
     {
-        var cinemas = (await cinemaRepository.GetAllAsync()).ToList();
+        List<Domain.BoundedContexts.Catalog.Cinema> cinemas = (await cinemaRepository.GetAllAsync()).ToList();
         if (!cinemas.Any()) return AppResult<List<CinemaDto>>.SuccessAsOk([]);
 
         var cinemaDtos = cinemas.ToList().Select(x => new CinemaDto(x.Id, x.Name,
