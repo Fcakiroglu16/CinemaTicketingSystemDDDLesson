@@ -30,6 +30,19 @@ internal class TicketIssuanceConfigurations : IEntityTypeConfiguration<TicketIss
             );
 
 
+        builder.OwnsOne(x => x.TotalPrice, priceBuilder =>
+        {
+            priceBuilder.Property(p => p.Amount)
+                .HasColumnName("Amount")
+                //.HasPrecision(9, 2)
+                .IsRequired();
+
+            priceBuilder.Property(p => p.Currency)
+                .HasColumnName("Currency")
+                .HasMaxLength(3)
+                .IsRequired();
+        });
+
         //builder.Metadata.FindNavigation(nameof(MovieTicket.TicketSales))!.SetPropertyAccessMode(
         //    PropertyAccessMode.Field);
 

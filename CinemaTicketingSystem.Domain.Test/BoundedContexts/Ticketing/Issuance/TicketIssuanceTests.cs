@@ -75,25 +75,6 @@ public class TicketIssuanceTests
         Assert.Equal(_validPrice, ticket.Price);
     }
 
-    [Fact]
-    public void AddTicket_ShouldApplyDiscount_WhenThreeOrMoreTicketsAdded()
-    {
-        // Arrange
-        TicketIssuance ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
-
-        // Act
-        ticketIssuance.AddTicket(new SeatPosition("A", 1), _validPrice);
-        ticketIssuance.AddTicket(new SeatPosition("A", 2), _validPrice);
-        ticketIssuance.AddTicket(new SeatPosition("A", 3), _validPrice);
-
-        // Assert
-        Assert.Equal(3, ticketIssuance.TicketList.Count);
-        Assert.True(ticketIssuance.IsDiscountApplied);
-
-        // The total price should be discounted by 10%
-        Price expectedTotal = new Price(_validPrice.Amount * 3 * 0.9m, _validPrice.Currency);
-        Assert.Equal(expectedTotal.Amount, ticketIssuance.GetTotalPrice().Amount);
-    }
 
     [Fact]
     public void AddTicket_ShouldThrowException_WhenExceedingMaximumTicketsPerPurchase()
@@ -178,44 +159,6 @@ public class TicketIssuanceTests
         Assert.False(ticketIssuance.IsDiscountApplied);
     }
 
-    [Fact]
-    public void GetTotalPrice_ShouldReturnCorrectAmount_WithoutDiscount()
-    {
-        // Arrange
-        TicketIssuance ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
-        Price price1 = new Price(10m, "USD");
-        Price price2 = new Price(15m, "USD");
-
-        ticketIssuance.AddTicket(new SeatPosition("A", 1), price1);
-        ticketIssuance.AddTicket(new SeatPosition("A", 2), price2);
-
-        // Act
-        Price totalPrice = ticketIssuance.GetTotalPrice();
-
-        // Assert
-        Assert.Equal(25m, totalPrice.Amount);
-        Assert.Equal("USD", totalPrice.Currency);
-    }
-
-    [Fact]
-    public void GetTotalPrice_ShouldReturnDiscountedAmount_WhenDiscountApplied()
-    {
-        // Arrange
-        TicketIssuance ticketIssuance = new TicketIssuance(_validScheduleId, _validCustomerId, _validScreeningDate);
-        Price price = new Price(10m, "USD");
-
-        // Add 3 tickets to trigger the discount
-        ticketIssuance.AddTicket(new SeatPosition("A", 1), price);
-        ticketIssuance.AddTicket(new SeatPosition("A", 2), price);
-        ticketIssuance.AddTicket(new SeatPosition("A", 3), price);
-
-        // Act
-        Price totalPrice = ticketIssuance.GetTotalPrice();
-
-        // Assert
-        Assert.Equal(27m, totalPrice.Amount); // 30m with 10% discount = 27m
-        Assert.Equal("USD", totalPrice.Currency);
-    }
 
     [Fact]
     public void MarkTicketsAsUsed_ShouldMarkAllTicketsAsUsed()

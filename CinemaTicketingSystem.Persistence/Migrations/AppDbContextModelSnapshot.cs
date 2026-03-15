@@ -17,7 +17,7 @@ namespace CinemaTicketingSystem.Infrastructure.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.7")
+                .HasAnnotation("ProductVersion", "10.0.0")
                 .HasAnnotation("Proxies:ChangeTracking", false)
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true)
@@ -336,7 +336,7 @@ namespace CinemaTicketingSystem.Infrastructure.Persistence.Migrations
                     b.ToTable("ReservationSeats", "Ticketing");
                 });
 
-            modelBuilder.Entity("CinemaTicketingSystem.Persistence.Accounts.AppRole", b =>
+            modelBuilder.Entity("CinemaTicketingSystem.Infrastructure.Persistence.Accounts.AppRole", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -364,7 +364,7 @@ namespace CinemaTicketingSystem.Infrastructure.Persistence.Migrations
                     b.ToTable("Roles", "accounts");
                 });
 
-            modelBuilder.Entity("CinemaTicketingSystem.Persistence.Accounts.AppUser", b =>
+            modelBuilder.Entity("CinemaTicketingSystem.Infrastructure.Persistence.Accounts.AppUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -556,7 +556,7 @@ namespace CinemaTicketingSystem.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("CinemaTicketingSystem.Domain.BoundedContexts.Catalog.Cinema", b =>
                 {
-                    b.OwnsOne("CinemaTicketingSystem.Domain.Catalog.Address", "Address", b1 =>
+                    b.OwnsOne("CinemaTicketingSystem.Domain.BoundedContexts.Catalog.Address", "Address", b1 =>
                         {
                             b1.Property<Guid>("CinemaId")
                                 .HasColumnType("uniqueidentifier");
@@ -832,6 +832,16 @@ namespace CinemaTicketingSystem.Infrastructure.Persistence.Migrations
                             b1.Property<Guid>("TicketId")
                                 .HasColumnType("uniqueidentifier");
 
+                            b1.Property<decimal>("Amount")
+                                .HasColumnType("decimal(18,2)")
+                                .HasColumnName("Amount");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasMaxLength(3)
+                                .HasColumnType("nvarchar(3)")
+                                .HasColumnName("Currency");
+
                             b1.HasKey("TicketId");
 
                             b1.ToTable("Tickets", "Ticketing");
@@ -872,6 +882,35 @@ namespace CinemaTicketingSystem.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("TicketIssuance");
+                });
+
+            modelBuilder.Entity("CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Issuance.TicketIssuance", b =>
+                {
+                    b.OwnsOne("CinemaTicketingSystem.SharedKernel.ValueObjects.Price", "TotalPrice", b1 =>
+                        {
+                            b1.Property<Guid>("TicketIssuanceId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<decimal>("Amount")
+                                .HasColumnType("decimal(18,2)")
+                                .HasColumnName("Amount");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasMaxLength(3)
+                                .HasColumnType("nvarchar(3)")
+                                .HasColumnName("Currency");
+
+                            b1.HasKey("TicketIssuanceId");
+
+                            b1.ToTable("TicketIssuance", "Ticketing");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TicketIssuanceId");
+                        });
+
+                    b.Navigation("TotalPrice")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Reservations.ReservationSeat", b =>
@@ -915,7 +954,7 @@ namespace CinemaTicketingSystem.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("CinemaTicketingSystem.Persistence.Accounts.AppRole", null)
+                    b.HasOne("CinemaTicketingSystem.Infrastructure.Persistence.Accounts.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -924,7 +963,7 @@ namespace CinemaTicketingSystem.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("CinemaTicketingSystem.Persistence.Accounts.AppUser", null)
+                    b.HasOne("CinemaTicketingSystem.Infrastructure.Persistence.Accounts.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -933,7 +972,7 @@ namespace CinemaTicketingSystem.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("CinemaTicketingSystem.Persistence.Accounts.AppUser", null)
+                    b.HasOne("CinemaTicketingSystem.Infrastructure.Persistence.Accounts.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -942,13 +981,13 @@ namespace CinemaTicketingSystem.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("CinemaTicketingSystem.Persistence.Accounts.AppRole", null)
+                    b.HasOne("CinemaTicketingSystem.Infrastructure.Persistence.Accounts.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CinemaTicketingSystem.Persistence.Accounts.AppUser", null)
+                    b.HasOne("CinemaTicketingSystem.Infrastructure.Persistence.Accounts.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -957,7 +996,7 @@ namespace CinemaTicketingSystem.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("CinemaTicketingSystem.Persistence.Accounts.AppUser", null)
+                    b.HasOne("CinemaTicketingSystem.Infrastructure.Persistence.Accounts.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

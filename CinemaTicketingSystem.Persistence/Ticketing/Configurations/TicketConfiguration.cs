@@ -40,19 +40,19 @@ internal class TicketConfiguration : IEntityTypeConfiguration<Ticket>
 
         // Configure Price as owned type
 
-        builder.OwnsOne(x => x.Price);
+        //builder.OwnsOne(x => x.Price);
 
-        //builder.OwnsOne(x => x.TicketPrice, priceBuilder =>
-        //{
-        //    priceBuilder.Property(p => p.Amount)
-        //        .HasColumnName("Amount")
-        //        //.HasPrecision(9, 2)
-        //        .IsRequired();
+        builder.OwnsOne(x => x.Price, priceBuilder =>
+        {
+            priceBuilder.Property(p => p.Amount)
+                .HasColumnName("Amount")
+                //.HasPrecision(9, 2)
+                .IsRequired();
 
-        //    priceBuilder.Property(p => p.Currency)
-        //        .HasColumnName("Currency")
-        //        .HasMaxLength(3)
-        //        .IsRequired();
-        //});
+            priceBuilder.Property(p => p.Currency)
+                .HasColumnName("Currency")
+                .HasMaxLength(3)
+                .IsRequired();
+        });
     }
 }

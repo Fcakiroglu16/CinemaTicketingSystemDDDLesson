@@ -47,6 +47,9 @@ public class TicketIssuance : AggregateRoot<Guid>
 
     public TicketIssuanceStatus Status { get; private set; }
 
+    public Price TotalPrice { get; private set; }
+
+
     public virtual IReadOnlyCollection<Ticket> TicketList => _ticketList.AsReadOnly();
 
     public void Confirm()
@@ -73,6 +76,7 @@ public class TicketIssuance : AggregateRoot<Guid>
                 .AddData(seatPosition.Number);
         _ticketList.Add(new Ticket(seatPosition, price));
         ApplyBulkDiscountIfEligible();
+        CalculateTotalPrice();
     }
 
     public void RemoveTicket(SeatPosition seatPosition)
@@ -88,22 +92,26 @@ public class TicketIssuance : AggregateRoot<Guid>
         ApplyBulkDiscountIfEligible();
     }
 
-
     private void ApplyBulkDiscountIfEligible()
     {
         IsDiscountApplied = _ticketList.Count >= 3;
     }
 
-    public Price GetTotalPrice()
+    private void CalculateTotalPrice()
     {
         Price baseTotal = _ticketList
             .Select(t => t.Price)
             .Aggregate((total, next) => total + next);
 
-        if (!IsDiscountApplied) return baseTotal;
-
-        decimal discountMultiplier = 0.9m; // 10% off
-        return new Price(baseTotal.Amount * discountMultiplier, baseTotal.Currency);
+        if (!IsDiscountApplied)
+        {
+            TotalPrice = baseTotal;
+        }
+        else
+        {
+            decimal discountMultiplier = 0.9m; // 10% off
+            TotalPrice = new Price(baseTotal.Amount * discountMultiplier, baseTotal.Currency);
+        }
     }
 
     public void MarkTicketsAsUsed()
