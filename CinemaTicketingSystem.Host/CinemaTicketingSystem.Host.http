@@ -192,7 +192,7 @@ Authorization: Bearer {{accessToken}}
     "amount": 100.00,
     "currency": "TRY"
   },
-  "ticketIssuanceId": "0199021f-cf5f-7453-a0da-54b505c3defb"
+  "ticketIssuanceId": "019cf14a-8e50-7149-b9b8-8f0b2ec1fa75"
 
 }
 

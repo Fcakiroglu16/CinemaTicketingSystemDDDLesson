@@ -27,9 +27,4 @@ public class PurchaseAppService(
         await appDependencyService.UnitOfWork.SaveChangesAsync();
         return AppResult.SuccessAsNoContent();
     }
-
-    Task<AppResult> IPurchaseAppService.Create(CreatePurchaseRequest request)
-    {
-        throw new NotImplementedException();
-    }
 }
