@@ -35,10 +35,10 @@ namespace CinemaTicketingSystem.Application.Test
         {
             var testUserId = Guid.NewGuid();
             var appDependencyService = GetService<AppDependencyService>();
-            
+
             // Create a fake user context
             var fakeUserContext = new FakeUserContext(testUserId);
-            
+
             // Create a fake app dependency service with the fake user context
             var fakeAppDependencyService = new AppDependencyService(
                 appDependencyService.UnitOfWork,
@@ -69,9 +69,11 @@ namespace CinemaTicketingSystem.Application.Test
             var screeningDate = GetUniqueScreeningDate();
 
             // Create seat holds for the user
-            var seatHold1 = new SeatHold(schedule.Id, testUserId, new SeatPosition("A", GetUniqueSeatNumber()), screeningDate);
+            var seatHold1 = new SeatHold(schedule.Id, testUserId, new SeatPosition("A", GetUniqueSeatNumber()),
+                screeningDate);
             seatHold1.ConfirmHold();
-            var seatHold2 = new SeatHold(schedule.Id, testUserId, new SeatPosition("A", GetUniqueSeatNumber()), screeningDate);
+            var seatHold2 = new SeatHold(schedule.Id, testUserId, new SeatPosition("A", GetUniqueSeatNumber()),
+                screeningDate);
             seatHold2.ConfirmHold();
 
             await DbContext.SeatHolds.AddRangeAsync(seatHold1, seatHold2);
@@ -115,7 +117,8 @@ namespace CinemaTicketingSystem.Application.Test
             Assert.NotNull(result.ProblemDetails.Title);
         }
 
-        [Fact(Skip = "Expired seat holds are filtered out in the query, so user gets 'NoSeatHoldFound' error instead of 'SeatHoldExpired' error. This is the expected behavior.")]
+        [Fact(Skip =
+            "Expired seat holds are filtered out in the query, so user gets 'NoSeatHoldFound' error instead of 'SeatHoldExpired' error. This is the expected behavior.")]
         public async Task Create_ShouldFail_WhenSeatHoldIsExpired()
         {
             // Arrange
@@ -124,9 +127,10 @@ namespace CinemaTicketingSystem.Application.Test
             var screeningDate = GetUniqueScreeningDate();
 
             // Create an expired seat hold
-            var seatHold = new SeatHold(schedule.Id, testUserId, new SeatPosition("B", GetUniqueSeatNumber()), screeningDate);
+            var seatHold = new SeatHold(schedule.Id, testUserId, new SeatPosition("B", GetUniqueSeatNumber()),
+                screeningDate);
             seatHold.ConfirmHold();
-            
+
             // Manually set expiration to past (using reflection or wait)
             await DbContext.SeatHolds.AddAsync(seatHold);
             await DbContext.SaveChangesAsync();
@@ -235,6 +239,7 @@ namespace CinemaTicketingSystem.Application.Test
                 seat.ConfirmHold();
                 await DbContext.SeatHolds.AddAsync(seat);
             }
+
             await DbContext.SaveChangesAsync();
 
             var request = new CreateTicketIssuanceRequest(schedule.Id, screeningDate);
@@ -290,7 +295,8 @@ namespace CinemaTicketingSystem.Application.Test
             await DbContext.SaveChangesAsync();
 
             // Current user has different seats
-            var seatHold = new SeatHold(schedule.Id, testUserId, new SeatPosition("G", GetUniqueSeatNumber()), screeningDate);
+            var seatHold = new SeatHold(schedule.Id, testUserId, new SeatPosition("G", GetUniqueSeatNumber()),
+                screeningDate);
             seatHold.ConfirmHold();
             await DbContext.SeatHolds.AddAsync(seatHold);
             await DbContext.SaveChangesAsync();

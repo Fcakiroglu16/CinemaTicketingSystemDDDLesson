@@ -24,15 +24,15 @@ public class PurchaseCreatedIntegrationEventHandler(
 
         ticketIssuance.Confirm();
 
-        CustomerId customerId = CustomerId.From(message.userId.Value);
+        //CustomerId customerId = CustomerId.From(message.userId.Value);
 
-        IEnumerable<SeatHold> customerSeatHoldList = await seatHoldRepository.WhereAsync(x =>
-            x.CustomerId == customerId && x.ScheduledMovieShowId == ticketIssuance.ScheduledMovieShowId &&
-            x.ScreeningDate == ticketIssuance.ScreeningDate, cancellationToken);
+        //IEnumerable<SeatHold> customerSeatHoldList = await seatHoldRepository.WhereAsync(x =>
+        //    x.CustomerId == customerId && x.ScheduledMovieShowId == ticketIssuance.ScheduledMovieShowId &&
+        //    x.ScreeningDate == ticketIssuance.ScreeningDate, cancellationToken);
 
 
-        foreach (SeatHold customerSeatHold in customerSeatHoldList)
-            await seatHoldRepository.DeleteAsync(customerSeatHold, cancellationToken);
+        //foreach (SeatHold customerSeatHold in customerSeatHoldList)
+        //    await seatHoldRepository.DeleteAsync(customerSeatHold, cancellationToken);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }
