@@ -27,6 +27,10 @@ public class PurchaseCreatedIntegrationEventHandler(
             x.CustomerId == message.userId && x.ScheduledMovieShowId == ticketIssuance.ScheduledMovieShowId &&
             x.ScreeningDate == ticketIssuance.ScreeningDate, cancellationToken);
 
+
+
+
+
         foreach (SeatHold customerSeatHold in customerSeatHoldList)
             await seatHoldRepository.DeleteAsync(customerSeatHold, cancellationToken);
 
