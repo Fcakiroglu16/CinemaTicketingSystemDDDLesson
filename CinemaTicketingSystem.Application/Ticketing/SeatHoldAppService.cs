@@ -4,6 +4,7 @@ using CinemaTicketingSystem.Application.Contracts;
 using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
 using CinemaTicketingSystem.Application.Contracts.Ticketing;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds;
+using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds.Specifications;
 using CinemaTicketingSystem.SharedKernel;
 using CinemaTicketingSystem.SharedKernel.ValueObjects;
 
@@ -21,9 +22,8 @@ public class SeatHoldAppService(AppDependencyService appDependencyService, ISeat
 
         //TODO: redis lock can add here for concurrency handling
         List<SeatHold> seatHold =
-            (await seatHoldRepository.WhereAsync(x =>
-                x.ScheduledMovieShowId == request.ScheduledMovieShowId && x.ScreeningDate == request.ScreeningDate &&
-                x.Status == HoldStatus.Hold && x.ExpiresAt > DateTime.UtcNow)).ToList();
+            await seatHoldRepository.ListAsync(
+                new ActiveSeatHoldsByScheduleAndDateSpec(request.ScheduledMovieShowId, request.ScreeningDate));
 
 
         List<SeatPositionDto> hasSeatPositionList = request.SeatPositions.Where(seat =>
@@ -37,9 +37,8 @@ public class SeatHoldAppService(AppDependencyService appDependencyService, ISeat
         }
 
 
-        IEnumerable<SeatHold> customerSeatHolds = await seatHoldRepository.WhereAsync(x =>
-            x.CustomerId == customerId && x.ScreeningDate.Equals(request.ScreeningDate) &&
-            x.ScheduledMovieShowId == request.ScheduledMovieShowId);
+        List<SeatHold> customerSeatHolds = await seatHoldRepository.ListAsync(
+            new UserSeatHoldsByScheduleAndDateSpec(customerId, request.ScheduledMovieShowId, request.ScreeningDate));
 
 
         //idempotency check
@@ -69,10 +68,8 @@ public class SeatHoldAppService(AppDependencyService appDependencyService, ISeat
         Guid customerId = appDependencyService.UserContext.UserId;
 
 
-        List<SeatHold> seatHolds = (await seatHoldRepository.WhereAsync(x =>
-                x.ScheduledMovieShowId == request.ScheduledMovieShowId && x.ScreeningDate == request.ScreeningDate &&
-                x.CustomerId == customerId))
-            .ToList();
+        List<SeatHold> seatHolds = await seatHoldRepository.ListAsync(
+            new UserSeatHoldsByScheduleAndDateSpec(customerId, request.ScheduledMovieShowId, request.ScreeningDate));
 
 
         foreach (SeatHold? seatHold in seatHolds)
@@ -89,7 +86,8 @@ public class SeatHoldAppService(AppDependencyService appDependencyService, ISeat
     {
         Guid customerId = appDependencyService.UserContext.UserId;
 
-        List<SeatHold> seatHolds = (await seatHoldRepository.WhereAsync(x => x.CustomerId == customerId)).ToList();
+        List<SeatHold> seatHolds = await seatHoldRepository.ListAsync(
+            new SeatHoldsByCustomerSpec(customerId));
 
         await seatHoldRepository.DeleteRangeAsync(seatHolds);
         await appDependencyService.UnitOfWork.SaveChangesAsync();

@@ -4,6 +4,7 @@ using CinemaTicketingSystem.Application.Contracts;
 using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
 using CinemaTicketingSystem.Domain.BoundedContexts.Catalog;
 using CinemaTicketingSystem.Domain.BoundedContexts.Catalog.Repositories;
+using CinemaTicketingSystem.Domain.BoundedContexts.Catalog.Specifications;
 using CinemaTicketingSystem.SharedKernel;
 using Microsoft.Extensions.Logging;
 using System.Net;
@@ -29,7 +30,8 @@ public class CatalogQueryService(
                 HttpStatusCode.NotFound);
         }
 
-        Domain.BoundedContexts.Catalog.Cinema? cinema = await cinemaRepository.GetByHallId(hallId);
+        Domain.BoundedContexts.Catalog.Cinema? cinema = await cinemaRepository.FirstOrDefaultAsync(
+            new CinemaByHallIdSpec(hallId));
 
         if (cinema is null)
         {

@@ -137,4 +137,46 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 
         return (items, totalCount);
     }
+
+    public Task<List<TEntity>> ListAsync(ISpecification<TEntity> specification,
+        CancellationToken cancellationToken = default)
+    {
+        return ApplySpecification(specification).ToListAsync(cancellationToken);
+    }
+
+    public Task<TEntity?> FirstOrDefaultAsync(ISpecification<TEntity> specification,
+        CancellationToken cancellationToken = default)
+    {
+        return ApplySpecification(specification).FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public Task<TEntity> SingleAsync(ISpecification<TEntity> specification,
+        CancellationToken cancellationToken = default)
+    {
+        return ApplySpecification(specification).SingleAsync(cancellationToken);
+    }
+
+    public Task<bool> AnyAsync(ISpecification<TEntity> specification,
+        CancellationToken cancellationToken = default)
+    {
+        return ApplySpecification(specification).AnyAsync(cancellationToken);
+    }
+
+    private IQueryable<TEntity> ApplySpecification(ISpecification<TEntity> specification)
+    {
+        IQueryable<TEntity> query = _dbSet.AsQueryable();
+
+        if (specification.Criteria is not null)
+            query = query.Where(specification.Criteria);
+
+        foreach (var include in specification.Includes)
+            query = query.Include(include);
+
+        if (specification.OrderBy is not null)
+            query = query.OrderBy(specification.OrderBy);
+        else if (specification.OrderByDescending is not null)
+            query = query.OrderByDescending(specification.OrderByDescending);
+
+        return query;
+    }
 }

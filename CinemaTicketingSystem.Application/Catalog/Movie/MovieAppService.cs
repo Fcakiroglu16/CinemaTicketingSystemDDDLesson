@@ -5,6 +5,7 @@ using CinemaTicketingSystem.Application.Contracts.Catalog.Movie;
 using CinemaTicketingSystem.Application.Contracts.Catalog.Movie.Create;
 using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
 using CinemaTicketingSystem.Domain.BoundedContexts.Catalog.Repositories;
+using CinemaTicketingSystem.Domain.BoundedContexts.Catalog.Specifications;
 using CinemaTicketingSystem.SharedKernel;
 using CinemaTicketingSystem.SharedKernel.ValueObjects;
 
@@ -17,7 +18,7 @@ public class MovieAppService(IMovieRepository movieRepository, AppDependencyServ
 {
     public async Task<AppResult<CreateMovieResponse>> CreateAsync(CreateMovieRequest request)
     {
-        bool existMovie = await movieRepository.CheckIfMovieExists(request.Title);
+        bool existMovie = await movieRepository.AnyAsync(new MovieByTitleSpec(request.Title));
 
         if (existMovie)
             return appDependencyService.LocalizeError.Error<CreateMovieResponse>(ErrorCodes.MovieAlreadyExists,

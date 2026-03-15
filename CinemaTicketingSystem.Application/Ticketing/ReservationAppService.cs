@@ -6,7 +6,9 @@ using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
 using CinemaTicketingSystem.Application.Contracts.Ticketing;
 using CinemaTicketingSystem.Application.Schedules.Services;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds;
+using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Holds.Specifications;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Issuance;
+using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Issuance.Specifications;
 using CinemaTicketingSystem.Domain.BoundedContexts.Ticketing.Reservations;
 using CinemaTicketingSystem.SharedKernel;
 using CinemaTicketingSystem.SharedKernel.ValueObjects;
@@ -43,11 +45,8 @@ public class ReservationAppService(
 
 
         Guid userId = appDependencyService.UserContext.UserId;
-        List<SeatHold> seatHoldList = (await seatHoldRepository.WhereAsync(x =>
-                x.ScheduledMovieShowId == request.ScheduledMovieShowId &&
-                x.CustomerId == appDependencyService.UserContext.UserId &&
-                x.ScreeningDate == request.ScreeningDate))
-            .ToList();
+        List<SeatHold> seatHoldList = await seatHoldRepository.ListAsync(
+            new UserSeatHoldsByScheduleAndDateSpec(userId, request.ScheduledMovieShowId, request.ScreeningDate));
 
 
         if (seatHoldList.Any(seatHold => seatHold.IsExpired()))
@@ -56,17 +55,16 @@ public class ReservationAppService(
 
         // Fetch confirmed seats from tickets
         List<SeatPosition> confirmedTicketSeatPositions =
-            (await ticketIssuanceRepository.GetConfirmedTicketsIssuanceByScheduleIdAndScreeningDate(
-                request.ScheduledMovieShowId,
-                request.ScreeningDate))
+            (await ticketIssuanceRepository.ListAsync(
+                new ConfirmedTicketIssuanceByScheduleAndDateSpec(request.ScheduledMovieShowId, request.ScreeningDate)))
             .SelectMany(x => x.TicketList)
             .Select(x => x.SeatPosition)
             .ToList();
 
         // Fetch confirmed seats from holds
         List<SeatPosition> confirmedSeatHoldSeatPositions =
-            (await seatHoldRepository.GetConfirmedListByScheduleIdAndScreeningDate(request.ScheduledMovieShowId,
-                request.ScreeningDate))
+            (await seatHoldRepository.ListAsync(
+                new ActiveSeatHoldsByScheduleAndDateSpec(request.ScheduledMovieShowId, request.ScreeningDate)))
             .Select(x => x.SeatPosition)
             .ToList();
 

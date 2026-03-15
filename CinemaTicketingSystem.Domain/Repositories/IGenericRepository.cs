@@ -44,4 +44,28 @@ public interface IGenericRepository<TEntity> where TEntity : EntityBase
         Expression<Func<TEntity, object>>? orderBy = null,
         bool ascending = true,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Returns a list of entities matching the given specification.
+    /// </summary>
+    Task<List<TEntity>> ListAsync(ISpecification<TEntity> specification,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Returns the first entity matching the given specification, or null if none found.
+    /// </summary>
+    Task<TEntity?> FirstOrDefaultAsync(ISpecification<TEntity> specification,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Returns a single entity matching the given specification, or throws if not exactly one.
+    /// </summary>
+    Task<TEntity> SingleAsync(ISpecification<TEntity> specification,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Returns whether any entity matches the given specification.
+    /// </summary>
+    Task<bool> AnyAsync(ISpecification<TEntity> specification,
+        CancellationToken cancellationToken = default);
 }

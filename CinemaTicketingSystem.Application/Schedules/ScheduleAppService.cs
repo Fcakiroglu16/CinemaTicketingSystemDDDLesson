@@ -5,6 +5,7 @@ using CinemaTicketingSystem.Application.Contracts.DependencyInjections;
 using CinemaTicketingSystem.Application.Contracts.Schedule;
 using CinemaTicketingSystem.Domain.BoundedContexts.Scheduling;
 using CinemaTicketingSystem.Domain.BoundedContexts.Scheduling.Repositories;
+using CinemaTicketingSystem.Domain.BoundedContexts.Scheduling.Specifications;
 using CinemaTicketingSystem.Domain.Repositories;
 using CinemaTicketingSystem.SharedKernel;
 using CinemaTicketingSystem.SharedKernel.ValueObjects;
@@ -52,7 +53,7 @@ public class ScheduleAppService(
             showTime = ShowTime.Create(request.StartTime, movie.Duration);
         }
 
-        List<Schedule> schedules = (await scheduleRepository.WhereAsync(x => x.HallId == hallId)).ToList();
+        List<Schedule> schedules = await scheduleRepository.ListAsync(new SchedulesByHallIdSpec(hallId));
 
         if (schedules.Any(x => x.ShowTime.ConflictsWith(showTime)))
         {
@@ -76,7 +77,7 @@ public class ScheduleAppService(
 
     public async Task<AppResult<List<GetMoviesByHallIdResponse>>> GetMoviesByHallId(Guid hallId)
     {
-        List<Schedule> schedules = await scheduleRepository.GetMoviesByHallIdAsync(hallId);
+        List<Schedule> schedules = await scheduleRepository.ListAsync(new SchedulesByHallIdSpec(hallId));
 
         List<GetMoviesByHallIdResponse> response = schedules
             .Select(x => new GetMoviesByHallIdResponse(x.Id, x.MovieId, x.ShowTime.StartTime, x.ShowTime.EndTime))
