@@ -23,7 +23,7 @@ Accept: application/json
 Accept-Language: tr
 
 ###
-POST {{HostAddress}}/api/v1/catalogs/cinemas/019cf1b1-d822-745c-a1a3-f863958a3e2e/hall
+POST {{HostAddress}}/api/v1/catalogs/cinemas/019d022e-23bd-75c2-98db-216878863d5e/hall
 Accept: application/json
 Content-Type: application/json
 Accept-Language: en
@@ -72,7 +72,7 @@ Accept-Language: en
 }
 
 ###
-GET {{HostAddress}}/api/v1/catalogs/cinemas/019cf1b1-d822-745c-a1a3-f863958a3e2e/hall
+GET {{HostAddress}}/api/v1/catalogs/cinemas/019d022e-23bd-75c2-98db-216878863d5e/hall
 Accept: application/json
 
 ###

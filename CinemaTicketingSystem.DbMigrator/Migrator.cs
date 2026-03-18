@@ -20,7 +20,6 @@ public class Migrator(
         AppDbContext appDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         appDbContext.Database.MigrateAsync(stoppingToken);
 
-
         hostApplicationLifetime.StopApplication();
         return Task.CompletedTask;
     }

@@ -1,19 +1,16 @@
 @HostAddress = http://localhost:5094
-
 ###
-POST {{HostAddress}}/api/v1/schedules/halls/019cf1b2-251e-74f1-baca-a55d2f477603/movies
+POST {{HostAddress}}/api/v1/schedules/halls/019d022f-0608-7430-b9fc-172e8a382f40/movies
 Accept: application/json
 Content-Type: application/json
-
 {
-  "movieId": "019cf1b2-af1e-74de-b11f-f062d561f5d7",
+  "movieId": "019d022f-7312-7e79-a653-58b5490d5eb7",
   "startTime": "19:00:00",
   "Price": {
     "Amount": 100,
     "Currency": "TRY"
   }
 }
-
 ###
-GET {{HostAddress}}/api/v1/schedules/halls/019cf1b2-251e-74f1-baca-a55d2f477603/movies
+GET {{HostAddress}}/api/v1/schedules/halls/019d022f-0608-7430-b9fc-172e8a382f40/movies
 Accept: application/json

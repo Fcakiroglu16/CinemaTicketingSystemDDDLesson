@@ -1,5 +1,5 @@
 @HostAddress = http://localhost:5094
-@accessToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOWNmMWIzLWVjOGQtN2FhMS1hYzczLTcyMzRiODU1ZDJjMSIsImVtYWlsIjoiZi1jYWtpcm9nbHVAb3V0bG9vay5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiZmNha2lyb2dsdTY0NjYiLCJqdGkiOiIzY2JhNjQ4Mi1kYmZhLTRiMDQtOGQyMi03NTEzYmNmYTc5ZTMiLCJuYmYiOjE3NzM1ODE2MjksImV4cCI6MTc3MzU5NjAyOSwiaXNzIjoiYXBpLmNpbmVtYS10aWNrZXRpbmctc3l0ZW0uY29tIn0._NIE5DiB1iABG7SKUnNS1ecFwdPUGHoBH-XIh2o6lDo
+@accessToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOWQwMjNmLTQ5MTctN2MwMi05ZTc5LTQ0M2U0MDQyYmExNCIsImVtYWlsIjoiZi1jYWtpcm9nbHVAb3V0bG9vay5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiZmNha2lyb2dsdTYxNTciLCJqdGkiOiJmZDYzMjllOC00MGU1LTRiYzMtYmU1MS01OGYyNWZiNmIyZTYiLCJuYmYiOjE3NzM4NTkyMjUsImV4cCI6MTc3Mzg3MzYyNSwiaXNzIjoiYXBpLmNpbmVtYS10aWNrZXRpbmctc3l0ZW0uY29tIn0.NKz9O04gRd4JzerCdWI33ih4bLS_--VtyzLbKIEoEL8
 
 ###
 POST {{HostAddress}}/api/v1/ticketing/seatholds
@@ -19,7 +19,7 @@ Authorization: Bearer {{accessToken}}
     }
   ],
   "ScreeningDate": "2025-10-10",
-  "scheduledMovieShowId": "019cf1b3-d207-739d-b137-02345083110f"
+  "scheduledMovieShowId": "019d0232-d968-7f66-8535-6db57bdf8176"
 }
 
 ###
@@ -30,7 +30,7 @@ Authorization: Bearer {{accessToken}}
 
 {
   "ScreeningDate": "2025-10-10",
-  "scheduledMovieShowId": "019cf1b3-d207-739d-b137-02345083110f"
+  "scheduledMovieShowId": "019d0232-d968-7f66-8535-6db57bdf8176"
 }
 
 ###
@@ -41,7 +41,7 @@ Authorization: Bearer {{accessToken}}
 
 {
   "ScreeningDate": "2025-10-10",
-  "scheduledMovieShowId": "019cf1b3-d207-739d-b137-02345083110f"
+  "scheduledMovieShowId": "019d0232-d968-7f66-8535-6db57bdf8176"
 }
 ###
 POST {{HostAddress}}/api/v1/ticketing/reservation
