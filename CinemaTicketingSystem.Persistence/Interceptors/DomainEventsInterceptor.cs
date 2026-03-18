@@ -60,7 +60,7 @@ internal class DomainEventsInterceptor(
         foreach (IAggregateRoot aggr in aggregates)
         {
             integrationEvents.AddRange(aggr.IntegrationEvents);
-            aggr.ClearDomainEvents();
+            aggr.ClearIntegrationEvents();
         }
 
         foreach (IIntegrationEvent ev in integrationEvents) await integrationEventBus.PublishAsync(ev, cancellationToken);
