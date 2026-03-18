@@ -33,7 +33,7 @@ internal class TicketIssuanceConfigurations : IEntityTypeConfiguration<TicketIss
         builder.OwnsOne(x => x.TotalPrice, priceBuilder =>
         {
             priceBuilder.Property(p => p.Amount)
-                .HasColumnName("Amount")
+                .HasColumnName("TotalAmount")
                 //.HasPrecision(9, 2)
                 .IsRequired();
 

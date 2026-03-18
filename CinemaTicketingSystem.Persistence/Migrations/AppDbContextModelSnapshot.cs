@@ -893,7 +893,7 @@ namespace CinemaTicketingSystem.Infrastructure.Persistence.Migrations
 
                             b1.Property<decimal>("Amount")
                                 .HasColumnType("decimal(18,2)")
-                                .HasColumnName("Amount");
+                                .HasColumnName("TotalAmount");
 
                             b1.Property<string>("Currency")
                                 .IsRequired()
